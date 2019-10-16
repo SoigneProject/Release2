@@ -20,7 +20,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "material-ui": "^1.0.0-beta.47",
-    "mongodb": "^3.3.2",
+    "mongodb": "^3.3.3",
     "mongoose": "^5.7.5",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
