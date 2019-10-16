@@ -19,12 +19,10 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
-import pic3 from './3.jpeg';
-import pic4 from './4.jpeg';
-import pic5 from './5.jpeg';
+import pic3 from './images/3.jpeg';
+import pic4 from './images/4.jpeg';
+import pic5 from './images/5.jpeg';
 import TopMenu from './TopMenu';
-
-
 
 
 function Copyright() {

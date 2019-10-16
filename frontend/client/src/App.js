@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import InputField from './InputField';
 import TopMenu from './TopMenu';
 import Avatar from '@material-ui/core/Avatar';
+import FollowersList from './FollowersList';
 import Grid from '@material-ui/core/Grid';
 import 'typeface-roboto';
 import PropTypes from 'prop-types';
@@ -29,24 +30,58 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
-import pic1 from './1.jpg';
-import pic2 from './2.jpg';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import CloseIcon from '@material-ui/icons/Close';
+
 import pic3 from './3.jpeg';
 import pic4 from './4.jpeg';
 import pic5 from './5.jpeg';
-import pic6 from './6.jpeg';
-import Signup from './signModal';
-import logo from './soigne.png';
+import Signup from './Signup';
+import logo from './images/soigne.png';
+import signModal from './signModal';
+import CreatePost from './CreatePost';
   
+
+
 class App extends Component {
   constructor(props) {
-    super(props);
+    super(props);   
   }
+  state = {
+    userObj: undefined,
+      };
+    componentDidMount() {
+      this.getDataFromDb();
+      if (!this.state.intervalIsSet) {
+        let interval = setInterval(this.getDataFromDb, 1000);
+        this.setState({ intervalIsSet: interval });
+      }
+    }
+  
+    // never let a process live forever
+    // always kill a process everytime we are done using it
+    componentWillUnmount() {
+      if (this.state.intervalIsSet) {
+        clearInterval(this.state.intervalIsSet);
+        this.setState({ intervalIsSet: null });
+      }
+    }
+
+   getDataFromDb = () => {
+        fetch('http://localhost:6969/users/kristinaleopandas')
+          .then((res) => res.json())
+          .then((userObj) => this.setState({userObj:userObj}));
+      };
 
   // here is our UI
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
+    const { userObj } = this.state;  
+
     const theme = createMuiTheme({
       overrides: {
         // Style sheet name ⚛️
@@ -60,9 +95,7 @@ class App extends Component {
       },
     });
 
-
-    
-    const inputProps = {
+      const inputProps = {
       step: 300,
     };
     const avatarStyle = {
@@ -83,8 +116,14 @@ class App extends Component {
 
     const tableStyle = {
       minWidth: 20,
-      marginTop: 30,
+      marginTop: 0,
     }
+
+    const tableStyle1 = {
+      minWidth: 100,
+      marginTop: 0,
+    }
+
     const tileStyle = {
 
     }
@@ -117,9 +156,14 @@ class App extends Component {
         },
        ];
 
+   // const rows1 = [
+   //   userObj.followers.forEach(element =>{
+   //     createData(element, "555");
+   //   })
+   // ];
     const rows = [
-      createData(291, 492),
-    ];
+      createData("444", "555"),
+    ]
     function createData(followers, following) {
       return { followers, following };
     }
@@ -127,8 +171,11 @@ class App extends Component {
       return <Avatar src = {props.src} alt = {props.alt} style = {avatarStyle}></Avatar>;
     }
 
+  
     return (
       <div>
+
+
     <TopMenu/>
     
     <Grid container spacing={3}>
@@ -141,6 +188,24 @@ class App extends Component {
 <Typography color = 'textSecondary' align = 'center' variant="h6" component="h2" gutterBottom>
   @kristinaleopandas
 </Typography>
+<FollowersList><Table style = {tableStyle} aria-label="simple table">
+<TableHead>
+  <TableRow>
+    <TableCell align="center">Followers</TableCell>
+    <TableCell align="center">Following</TableCell>
+  </TableRow>
+</TableHead>
+<TableBody>
+          {!userObj
+            ? 'you failed'
+            : userObj.followers.map((entry) => (
+  <TableRow>
+  <TableCell align = "center">{entry.username}</TableCell>
+  <TableCell align = "center">{entry.username}</TableCell>
+</TableRow>
+))}
+</TableBody>
+</Table></FollowersList>
 <Table style = {tableStyle} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -149,7 +214,7 @@ class App extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
+            {rows.map(row => (
             <TableRow key={row.name}>
               <TableCell align="center">{row.followers}</TableCell>
               <TableCell align="center">{row.following}</TableCell>
@@ -157,6 +222,8 @@ class App extends Component {
           ))}
         </TableBody>
       </Table>
+  <Typography style = {{marginTop: 20, marginLeft: 8,}} color = 'textSecondary' align = 'center'>SF Transplant, NY gal at heart. Combining street style and luxury
+  is my passion. Oh, and I also love drinking boba.</Typography>
 
   </div>
   
@@ -184,13 +251,7 @@ class App extends Component {
     
   
   </Grid>
-   
-
-      <div style={{ padding: '10px' }}>
-        <button onClick={() => window.location = 'signModal.js'}>
-          SignUp
-        </button>
-      </div>
+    
       </div>
     );
   }
