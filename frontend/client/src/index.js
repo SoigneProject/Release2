@@ -3,11 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
-import Signup from './Signup'
+import Signup from './signModal'
 import Feed from './Feed'
-import signModal from './signModal'
-import Login from './Login'
-import CreatePost from './CreatePost'
 
 const routing = (
     <Router>
@@ -20,28 +17,16 @@ const routing = (
             <Link to="/Feed">Feed</Link>
           </li>
           <li>
-            <Link to="/Signup">Signup</Link>
-          </li>
-          <li>
-            <Link to="/signModal">signModal</Link>
-          </li>
-          <li>
-            <Link to="/Login">Login</Link>
-          </li>
-          <li>
-            <Link to="/CreatePost">Create Post</Link>
+            <Link to="/signModal">Signup</Link>
           </li>
         </ul>
         <Route exact path="/" component={App} />
         <Route path = "/Feed" component = {Feed} />
-        <Route path= "/Signup" component={Signup} />
-        <Route path= "/signModal" component={signModal} />
-        <Route path= "/Login" component={Login} />
-        <Route path= "/CreatePost" component={CreatePost} />
+        <Route path= "/signModal" component={Signup} />
       </div>
     </Router>
   )
-  ReactDOM.render(<Feed/>, document.getElementById('root'))
+  ReactDOM.render(routing, document.getElementById('root'))
 //ReactDOM.render( < App / > , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
