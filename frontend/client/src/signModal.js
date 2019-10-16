@@ -1,5 +1,5 @@
 import Modal from '@material-ui/core/Modal';
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,9 +19,9 @@ import { withStyles } from '@material-ui/styles';
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 import Feed from "./Feed";
 import { Dimensions } from 'react';
-import logo from './images/soigne.png';
-import bgd from './images/landingbgd.png';
-import TopMenu from './TopMenu';
+import logo from './soigne.png';
+import bgd from './landingbgd.png';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,9 +51,32 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+function onSignUp(fn, ln, em, pass, uname) {
+  // Grab state
+    const email = em;
+    const password = pass;
+    const firstName = fn;
+    const lastName = ln;
+    const username = uname;
+
+  // Post request to backend
+  axios.post('http://localhost:6969/users/signup', {
+    firstName: firstName,
+    lastName: lastName,
+    username: username,
+    emailAddress: email,
+    password: password,
+  })
+}
+
 export default function ServerModal() {
   const classes = useStyles();
   const rootRef = React.useRef(null);
+  const [username, setUserName] = useState('');
+  const [fname, setFirstName] = useState('');
+  const [lname, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <div className={classes.root} ref={rootRef}>
@@ -88,6 +111,8 @@ export default function ServerModal() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                value={fname}
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -99,6 +124,8 @@ export default function ServerModal() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                value={lname}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -110,6 +137,8 @@ export default function ServerModal() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -121,6 +150,8 @@ export default function ServerModal() {
                 label="Username"
                 name="userName"
                 autoComplete="usrname"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -133,6 +164,8 @@ export default function ServerModal() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -156,6 +189,7 @@ export default function ServerModal() {
             variant="contained"
             color="primary first"
             className={classes.submit}
+            OnClick = {onSignUp(fname, lname, email, password, username)}
           >
           Sign Up
           </Button><p></p>
@@ -167,7 +201,7 @@ export default function ServerModal() {
           color= "secondary"
           className={classes.submit}>Have an account? Log in
         </Button>
-
+​
         </form>
       <Box mt={5}>
         <copyright/>
