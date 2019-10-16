@@ -22,6 +22,7 @@ import { Dimensions } from 'react';
 import logo from './soigne.png';
 import bgd from './landingbgd.png';
 import axios from 'axios';
+import {Redirect} from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,7 +52,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function onSignUp(fn, ln, em, pass, uname) {
+function onSignUp(e, history, fn, ln, em, pass, uname) {
+  e.preventDefault();
   // Grab state
     const email = em;
     const password = pass;
@@ -66,10 +68,19 @@ function onSignUp(fn, ln, em, pass, uname) {
     username: username,
     emailAddress: email,
     password: password,
-  })
+  }).then(json => {
+    if (json.data.success) {
+      console.log("SUCCESS");
+      history.push('/');
+    } else {
+      // Handle failed signup
+      console.log("FAIL");
+    }
+  });
 }
 
-export default function ServerModal() {
+export default function ServerModal(props) {
+  const {history} = props;
   const classes = useStyles();
   const rootRef = React.useRef(null);
   const [username, setUserName] = useState('');
@@ -189,7 +200,8 @@ export default function ServerModal() {
             variant="contained"
             color="primary first"
             className={classes.submit}
-            OnClick = {onSignUp(fname, lname, email, password, username)}
+            onClick = {(e) => onSignUp(e, history, fname, lname, email, password, username)}
+            // onClick= {history.push('/')}
           >
           Sign Up
           </Button><p></p>
@@ -201,7 +213,6 @@ export default function ServerModal() {
           color= "secondary"
           className={classes.submit}>Have an account? Log in
         </Button>
-​
         </form>
       <Box mt={5}>
         <copyright/>

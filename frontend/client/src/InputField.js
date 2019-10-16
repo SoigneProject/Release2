@@ -41,7 +41,7 @@ const useStyles = theme => ({
               results: []
             }
       
-            this.handleInputChange = this.handleInputChange.bind(this);
+      //       this.handleInputChange = this.handleInputChange.bind(this);
           }
           
       
@@ -58,17 +58,17 @@ const useStyles = theme => ({
             });
           }
       
-          handleInputChange() {
-            this.setState({
-              query: this.search.value
-            }, () => {
-              if (this.state.query && this.state.query.length > 1) {
-                if (this.state.query.length > 2) {
-                  this.getInfo()
-                }
-              } 
-            })
-          }
+      //     handleInputChange() {
+      //       this.setState({
+      //         query: this.search.value
+      //       }, () => {
+      //         if (this.state.query && this.state.query.length > 1) {
+      //           if (this.state.query.length > 2) {
+      //             this.getInfo()
+      //           }
+      //         } 
+      //       })
+      //     }
       render(){
         const { classes } = this.props;
         return (
@@ -78,14 +78,14 @@ const useStyles = theme => ({
         label="Search for an Outfit:"
         variant="outlined"
         id="mui-theme-provider-outlined-input"
-         inputRef={input => this.search = input}
-          onChange={this.handleInputChange}
+        //  inputRef={input => this.search = input}
+//           onChange={this.handleInputChange}
         InputProps={{
             disableUnderline: true,
            }}
         style = {{}}
       />
-      <Suggestions results={this.state.results} />
+      {/* <Suggestions results={this.state.results} /> */}
       </div>
 
   );
