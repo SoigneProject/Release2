@@ -201,17 +201,19 @@ export default function ServerModal(props) {
             color="primary first"
             className={classes.submit}
             onClick = {(e) => onSignUp(e, history, fname, lname, email, password, username)}
-            // onClick= {history.push('/')}
           >
           Sign Up
           </Button><p></p>
        
         <Button
-          type="submit"
+          type="button"
           fullWidth
           variant="contained"
           color= "secondary"
-          className={classes.submit}>Have an account? Log in
+          className={classes.submit}
+          onClick = {() => history.push('/login')}
+          >
+        Have an account? Log in
         </Button>
         </form>
       <Box mt={5}>

@@ -1,5 +1,5 @@
 import Modal from '@material-ui/core/Modal';
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,6 +21,8 @@ import Feed from "./Feed";
 import { Dimensions } from 'react';
 import logo from './images/soigne.png';
 import bgd from './images/landingbgd.png';
+import axios from 'axios';
+import { setInStorage } from './utils/storage';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,9 +52,34 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ServerModal() {
+function onSignIn(e, history, pass, uname) {
+  e.preventDefault();
+    const password = pass;
+    const username = uname;
+
+  // Post request to backend
+  axios.post('http://localhost:6969/users/signin', {
+    username: username,
+    password: password
+  }).then(json => {
+      console.log('json', json);
+      if (json.data.success) {
+        setInStorage('soigne', {
+          token: json.data.token
+        });
+        history.push('/');
+      } else {
+        console.log("SIGN IN FAILED");
+      }
+    });
+}
+
+export default function ServerModal(props) {
+  const {history} = props;
   const classes = useStyles();
   const rootRef = React.useRef(null);
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <div className={classes.root} ref={rootRef}>
@@ -87,6 +114,8 @@ export default function ServerModal() {
                 label="Username"
                 name="userName"
                 autoComplete="usrname"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -99,6 +128,8 @@ export default function ServerModal() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -110,15 +141,19 @@ export default function ServerModal() {
           fullWidth
           variant="contained"
           color= "secondary"
-          className={classes.submit}>Log in
+          className={classes.submit}
+          onClick = {(e) => onSignIn(e, history, password, username)}
+          >
+          Log in
         </Button> <p></p>
         
         <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary first"
             className={classes.submit}
+            onClick = {() => history.push('/signModal')}
           >
           Not a Member? Sign Up
           </Button><p></p>
