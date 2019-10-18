@@ -66,11 +66,9 @@ function createPost(e, history, ti, desc, iname, ilink) {
     description: desc,
     photo: "Temporary",
   }).then(json => {
-    if (json.data.success) { //Creates post
-      console.log("SUCCESS");
-    } else {
-      // Handle failed post creation?
-      console.log("FAIL");
+    console.log(json);
+    if (json.data.created) { //Creates post
+      console.log("POST CREATION SUCCESS");
       axios.post('http://localhost:6969/items', {
         name: iname,
         url: ilink,
@@ -78,12 +76,16 @@ function createPost(e, history, ti, desc, iname, ilink) {
         retailerID: "1235",
       }).then(json => {
         if (json.data.success) {
-          console.log("SUCCESS");
-        } else {
-          console.log("FAIL");
+          console.log("ITEM CREATION SUCCESS");
           history.push('/');
+        } else {
+          console.log("ITEM CREATION FAIL");
+          history.push('/');    // Temporary redirect
         }
       })
+    } else {
+      // Handle failed post creation?
+      console.log("POST CREATION FAIL");
     }
   });
 }
