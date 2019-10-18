@@ -75,7 +75,7 @@ function createPost(e, history, ti, desc, iname, ilink) {
         clothingCategory: "test",
         retailerID: "1235",
       }).then(json => {
-        if (json.data.success) {
+        if (json.data.created) {
           console.log("ITEM CREATION SUCCESS");
           history.push('/');
         } else {
