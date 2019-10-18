@@ -238,7 +238,7 @@ exports.sign_in = function (req, res) {
             message: 'Error: Password cannot be blank.'
         });
     }
-    username = username.toLowerCase();
+    //username = username.toLowerCase();
     username = username.trim();
     UserModel.find({
         username: username
