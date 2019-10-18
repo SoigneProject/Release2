@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Icon from "@material-ui/core/Icon"
 import AddCircle from "@material-ui/icons/AddCircle";
 import TopMenu from "./TopMenu";
+import axios from 'axios';
 
 const Choices = [
     {
@@ -57,8 +58,39 @@ const titleStyle = {
     marginBottom: 10,
   }
 
-export default function CenteredGrid() {
+function createPost(e, history, ti, desc, iname, ilink) {
+  e.preventDefault();
+  // Post request to backend
+  axios.post('http://localhost:6969/posts', {
+    title: ti,
+    description: desc,
+    photo: "Temporary",
+  }).then(json => {
+    if (json.data.success) { //Creates post
+      console.log("SUCCESS");
+    } else {
+      // Handle failed post creation?
+      console.log("FAIL");
+      axios.post('http://localhost:6969/items', {
+        name: iname,
+        url: ilink,
+        clothingCategory: "test",
+        retailerID: "1235",
+      }).then(json => {
+        if (json.data.success) {
+          console.log("SUCCESS");
+        } else {
+          console.log("FAIL");
+          history.push('/');
+        }
+      })
+    }
+  });
+}
+
+export default function CenteredGrid(props) {
     const classes = useStyles();
+    const {history} = props;
     const [values, setValues] = React.useState({
       name: '',
       age: '',
@@ -152,8 +184,8 @@ export default function CenteredGrid() {
             label="Title"
             fullWidth
             className={classes.textField}
-            value={values.name}
-            onChange={handleChange('name')}
+            value={values.title}
+            onChange={handleChange('title')}
             margin="normal"
             variant="outlined"
             />
@@ -164,7 +196,7 @@ export default function CenteredGrid() {
             fullWidth
             className={classes.textField}
             value={values.Choices}
-            onChange={handleChange('tags')}
+            onChange={handleChange('Choices')}
             SelectProps={{
             native: true,
             MenuProps: {
@@ -174,13 +206,25 @@ export default function CenteredGrid() {
             helperText="Select some tags!"
             margin="normal"
             variant="outlined"
-        >
+          >
         {Choices.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </TextField>
+          <textarea 
+            rows="10"
+            cols="75"
+            id="desc"
+            label="Description"
+            placeholder="Enter a description of your post"
+            className={classes.textarea}
+            value={values.Description}
+            onChange={handleChange('Description')}
+            margin="normal"
+            variant="outlined"
+          ></textarea>
         </div>
         </Grid>
 
@@ -202,7 +246,7 @@ export default function CenteredGrid() {
             id="price"
             label="Price"
             className={classes.textField}
-            value={values.item}
+            value={values.price}
             style = {{width: 100}}
             onChange={handleChange('price')}
             margin="normal"
@@ -213,7 +257,7 @@ export default function CenteredGrid() {
             label="Link"
             className={classes.textField}
             fullWidth
-            value={values.item}
+            value={values.link}
             onChange={handleChange('link')}
             margin="normal"
             variant="outlined"
@@ -225,7 +269,7 @@ export default function CenteredGrid() {
             style = {{width: 40, height: 40, borderRadius: 100, }}
             variant="contained"
             color= "primary"
-            onclick = {createRow}
+            onclick = {createRow()}
             className={classes.submit}> + 
         </Button>
           </div>
@@ -239,6 +283,7 @@ export default function CenteredGrid() {
             style = {{width: 80, height: 60, }}
             variant="contained"
             color= "secondary"
+            onClick = {(e) => createPost(e, history, values.title, values.Description, values.item, values.link)}
             className={classes.submit}>Post
         </Button>
         </div>
