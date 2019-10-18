@@ -10,6 +10,7 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import InputField from './InputField';
+import Search from './Search';
 import logo from './images/soigne.png';
 import Feed from './Feed'
 import signModal from './signModal'
@@ -84,7 +85,8 @@ export default function NavTabs() {
     <div style = {{display: 'inline-flex',}}>
     <img src = {logo} alt = "Logo" style = {{width: '16%', height: 76, marginTop: 5,}}/>
 
-    <InputField/>
+    {/* <InputField/> */}
+    <Search />
     </div>
 
       <AppBar position="static" elevation={0}>
