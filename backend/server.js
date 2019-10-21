@@ -1,39 +1,30 @@
-var express = require('express'),
+const express = require('express'),
   mongoose = require('mongoose'),
   cors = require('cors'),
   app = express(),
-  port = 6969,
+  port = process.env.PORT || 6969,
   userRoute = require('./api/routes/userRoute'),
   postRoute = require('./api/routes/postRoute'),
-  bodyParser = require('body-parser'),
   itemRoute = require('./api/routes/itemRoute'),
   retailerRoute = require('./api/routes/retailerRoute');
+require('dotenv').config();
 
-const uri = "mongodb+srv://Test:Test123@cs160-cluster-gigd4.mongodb.net/Soigne?retryWrites=true&w=majority";
+const uri = process.env.ATLAS_URI || "mongodb+srv://Test:Test123@cs160-cluster-gigd4.mongodb.net/Soigne?retryWrites=true&w=majority";
 mongoose.connect(uri, {
   useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 
-let db = mongoose.connection;
+const db = mongoose.connection;
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // Use CORS
 app.use(cors());
 
-// (optional) only made for logging and
-// bodyParser, parses the request body to be a readable json format
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-app.use(bodyParser.json());
-
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(bodyParser.json());
+// Use built-in bodyparser
+app.use(express.json());
 
 // Register routes
 userRoute(app);
@@ -43,9 +34,9 @@ retailerRoute(app);
 
 // Error message for 404
 app.use(function (req, res) {
-  res.status(404).send("Sorry can't find that!");
+  res.status(404).send("404 Error");
 });
 
-app.listen(port);
-
-console.log('soigne server started on: ' + port);
+app.listen(port, () => {
+  console.log(`Soigne Server is running on port: ${port}`);
+});
