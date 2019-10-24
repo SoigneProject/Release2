@@ -15,6 +15,7 @@ npm start
 ```
 
 ## Dependencies Used:
+- AlgoliaSearch
 - React
 - React-Scripts
 - React-Dom
