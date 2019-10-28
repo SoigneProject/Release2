@@ -9,5 +9,9 @@ module.exports = function (app) {
     app.route('/posts').post(post_controller.create_Post);
     app.route('/posts/id/:id').delete(post_controller.delete_post_with_id);
     app.route('/posts/id/:id').put(post_controller.update_a_post);
+
+    //this is for tags
+    app.route('/posts/addTag/:id').put(post_controller.add_a_tag_to_post);
+    app.route('/posts/removeTag/:id').put(post_controller.remove_a_tag_from_post);
 };
 

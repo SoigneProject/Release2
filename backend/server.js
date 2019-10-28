@@ -7,6 +7,7 @@ const express = require('express'),
   postRoute = require('./api/routes/postRoute'),
   itemRoute = require('./api/routes/itemRoute'),
   retailerRoute = require('./api/routes/retailerRoute');
+  tagRoute = require('./api/routes/tagRoute');
 require('dotenv').config();
 
 const uri = process.env.ATLAS_URI || "mongodb+srv://Test:Test123@cs160-cluster-gigd4.mongodb.net/Soigne?retryWrites=true&w=majority";
@@ -31,6 +32,7 @@ userRoute(app);
 postRoute(app);
 itemRoute(app);
 retailerRoute(app);
+tagRoute(app);
 
 // Error message for 404
 app.use(function (req, res) {
