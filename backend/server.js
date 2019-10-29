@@ -6,7 +6,7 @@ const express = require('express'),
   userRoute = require('./api/routes/userRoute'),
   postRoute = require('./api/routes/postRoute'),
   itemRoute = require('./api/routes/itemRoute'),
-  retailerRoute = require('./api/routes/retailerRoute');
+  retailerRoute = require('./api/routes/retailerRoute'),
   tagRoute = require('./api/routes/tagRoute');
 require('dotenv').config();
 

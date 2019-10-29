@@ -117,8 +117,8 @@ exports.update_a_post = function (req, res) {
 exports.add_a_tag_to_post = function (req, res) {
     var queryID = req.params.id;
     var body = req.body;
-    var tagToAdd = body.tag;
-    var tagObj = {"tag" : tagToAdd};
+    var tagToAdd = body.tagName;
+    var tagObj = {"tagName" : tagToAdd};
     PostModel.findOneAndUpdate({
         _id: queryID}, 
         {$push: {tags: tagObj}},function (err) {
@@ -136,11 +136,11 @@ exports.add_a_tag_to_post = function (req, res) {
 exports.remove_a_tag_from_post = function (req, res){
     var queryID = req.params.id;
     var body = req.body;
-    var tagToDelete = body.user;
-    var tagObj = {"tag" : tagToDelete};
+    var tagToDelete = body.tagName;
+    var tagObj = {"tagName" : tagToDelete};
     PostModel.findOneAndUpdate({
         _id: queryID}, 
-        {$pull: {followers: tagObj}},function (err) {
+        {$pull: {tags: tagObj}},function (err) {
             if (err) return res.json({
                 success: false,
                 error: err
