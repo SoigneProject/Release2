@@ -12,7 +12,7 @@ cd backend
 npm install
 npm update
 ```
-5. Repeat steps 3 and 4 in frontend/client directory
+5. Repeat step 4 in frontend/client directory
 ```
 cd .. (If still in backend directory)
 cd frontend/client
