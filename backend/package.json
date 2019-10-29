@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
     "backend": "nodemon server.js",
     "frontend": "npm run start --prefix ../frontend/client",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "update": "concurrently \"npm update\" \"npm update --prefix ../frontend/client\""
+    "backend_install": "npm install",
+    "frontend_install": "cd ../frontend/client && npm install",
+    "hatch": "concurrently \"npm run backend_install\" \"npm run frontend_install\"",
+    "update": "concurrently \"npm update\" \"cd ../frontend/client && npm update\""
   },
   "keywords": [],
   "author": "",

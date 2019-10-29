@@ -3,21 +3,16 @@
 ## Instructions
 1. Clone the repo
 2. Open in vscode or whatever IDE
-3. Navigate to backend folder in terminal:
+3. Navigate to the backend folder in terminal:
 ```
 cd backend
 ```
 4. Install all required packages with:
 ```
-npm install
-npm update
+npm run hatch
+npm run update
 ```
-5. Repeat step 4 in frontend/client directory
-```
-cd .. (If still in backend directory)
-cd frontend/client
-```
-6. Go back into backend directory and start the app with:
+5. Go back into backend directory and start the app with:
 ```
 npm run dev
 ```
