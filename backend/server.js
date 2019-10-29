@@ -2,11 +2,13 @@ const express = require('express'),
   mongoose = require('mongoose'),
   cors = require('cors'),
   app = express(),
+  passport = require('passport'),
   port = process.env.PORT || 6969,
   userRoute = require('./api/routes/userRoute'),
   postRoute = require('./api/routes/postRoute'),
   itemRoute = require('./api/routes/itemRoute'),
-  retailerRoute = require('./api/routes/retailerRoute');
+  retailerRoute = require('./api/routes/retailerRoute'),
+  profileRoute = require('./api/routes/profileRoute');
 require('dotenv').config();
 require('./api/auth/auth');
 
@@ -28,10 +30,12 @@ app.use(cors());
 app.use(express.json());
 
 // Register routes
-userRoute(app);
-postRoute(app);
-itemRoute(app);
-retailerRoute(app);
+// userRoute(app);
+// postRoute(app);
+// itemRoute(app);
+// retailerRoute(app);
+app.use('/users', userRoute);
+app.use('/user', passport.authenticate('jwt', { session: false }), profileRoute);
 
 // Error message for 404
 app.use(function (req, res) {

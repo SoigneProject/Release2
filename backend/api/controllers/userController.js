@@ -247,96 +247,86 @@ exports.create_a_user = function (req, res) {
 
 // Sign In
 exports.sign_in = function (req, res, next) {
-    passport.authenticate('login', async (err, user, info) => {
-        try {
-            if (err || !user) {
-                const error = new Error('An Error occured')
-                return next(error);
-            }
-            req.login(user, {
-                session: false
-            }, async (error) => {
-                if (error) return next(error)
-                //We don't want to store the sensitive information such as the
-                //user password in the token so we pick only the email and id
-                const body = {
-                    _id: user._id,
-                    email: user.email
-                };
-                //Sign the JWT token and populate the payload with the user email and id
-                const token = jwt.sign({
-                    user: body
-                }, 'top_secret');
-                //Send back the token to the user
-                return res.json({
-                    token
-                });
-            });
-        } catch (error) {
-            return next(error);
+    passport.authenticate('local', { session: false }, function (err, user, info) {
+        if (err) {
+            return next(err);
         }
+        if (!user) {
+            return res.redirect('/login');
+        }
+        // Establish a session
+        req.login(user, { session: false}, (err) => {
+            if (err) return next(err);
+            const body = {
+                _id: user._id,
+                username: user.username
+            };
+            const token = jwt.sign({user: body}, 'secret');
+            return res.json({ token });
+        });
     })(req, res, next);
-    // const {
-    //     password
-    // } = req.body;
-    // let {
-    //     username
-    // } = req.body;
-    // if (!username) {
-    //     return res.send({
-    //         success: false,
-    //         message: 'Error: Username cannot be blank.'
-    //     });
-    // }
-    // if (!password) {
-    //     return res.send({
-    //         success: false,
-    //         message: 'Error: Password cannot be blank.'
-    //     });
-    // }
-    // //username = username.toLowerCase();
-    // username = username.trim();
-    // UserModel.find({
-    //     username: username
-    // }, (err, users) => {
-    //     if (err) {
-    //         return res.send({
-    //             success: false,
-    //             message: 'Error: server error'
-    //         });
-    //     }
-    //     if (users.length != 1) {
-    //         return res.send({
-    //             success: false,
-    //             message: 'Error: Invalid'
-    //         });
-    //     }
-    //     const user = users[0];
-    //     if (!user.validPassword(password)) {
-    //         return res.send({
-    //             success: false,
-    //             message: 'Error: Invalid'
-    //         });
-    //     }
-    //     // Otherwise correct user
-    //     const userSession = new UserSessionModel();
-    //     userSession.userId = user._id;
-    //     userSession.save((err, doc) => {
-    //         if (err) {
-    //             console.log(err);
-    //             return res.send({
-    //                 success: false,
-    //                 message: 'Error: server error'
-    //             });
-    //         }
-    //         return res.send({
-    //             success: true,
-    //             message: 'Valid sign in',
-    //             token: doc._id
-    //         });
-    //     });
-    // });
 };
+// const {
+//     password
+// } = req.body;
+// let {
+//     username
+// } = req.body;
+// if (!username) {
+//     return res.send({
+//         success: false,
+//         message: 'Error: Username cannot be blank.'
+//     });
+// }
+// if (!password) {
+//     return res.send({
+//         success: false,
+//         message: 'Error: Password cannot be blank.'
+//     });
+// }
+// //username = username.toLowerCase();
+// username = username.trim();
+// UserModel.find({
+//     username: username
+// }, (err, users) => {
+//     if (err) {
+//         return res.send({
+//             success: false,
+//             message: 'Error: server error'
+//         });
+//     }
+//     if (users.length != 1) {
+//         return res.send({
+//             success: false,
+//             message: 'Error: Invalid'
+//         });
+//     }
+//     const user = users[0];
+//     if (!user.validPassword(password)) {
+//         return res.send({
+//             success: false,
+//             message: 'Error: Invalid'
+//         });
+//     }
+//     // Otherwise correct user
+//     const userSession = new UserSessionModel();
+//     userSession.userId = user._id;
+//     userSession.save((err, doc) => {
+//         if (err) {
+//             console.log(err);
+//             return res.send({
+//                 success: false,
+//                 message: 'Error: server error'
+//             });
+//         }
+//         return res.send({
+//             success: true,
+//             message: 'Valid sign in',
+//             token: doc._id
+//         });
+//     });
+// });
+// };
 
 // Log Out
 exports.logout = function (req, res) {
@@ -379,14 +369,7 @@ exports.secure = function (req, res, next) {
             console.log("no user");
             return res.redirect('/login');
         }
-        req.logIn(user, function (err) {
-            if (err) {
-                console.log("login err");
-                return next(err);
-            }
-            console.log("redirect");
-            return res.redirect('/users/' + user.username);
-        });
+        
     })(req, res, next);
     //     if (err) {
     //         return res.send({
@@ -401,6 +384,13 @@ exports.secure = function (req, res, next) {
     //     });
     // });
 };
+
+exports.profile = function (req, res) {
+    return res.json({
+        message : 'You made it to the secure route',
+        username : req.username
+      });
+}
 
 // Verify User
 // exports.verify_a_user = function (req, res) {
