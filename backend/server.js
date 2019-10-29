@@ -30,12 +30,11 @@ app.use(cors());
 app.use(express.json());
 
 // Register routes
-// userRoute(app);
-// postRoute(app);
-// itemRoute(app);
-// retailerRoute(app);
 app.use('/users', userRoute);
 app.use('/user', passport.authenticate('jwt', { session: false }), profileRoute);
+app.use('/items', itemRoute);
+app.use('/posts', postRoute);
+app.use('/retailers', retailerRoute);
 
 // Error message for 404
 app.use(function (req, res) {

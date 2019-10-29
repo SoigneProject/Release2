@@ -1,7 +1,9 @@
+/*
+* Parent Route: /users
+*/
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/userModel');
-// var UserSessionModel = require('../models/userSessionModel');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
@@ -117,32 +119,32 @@ router.post('/signin', function (req, res, next) {
     })(req, res, next);
 })
 
-router.get('/logout', function (req, res) {
-    // Get the token
-    const token = req.query.token;
-    // ?token=test
-    // Verify the token is one of a kind and it's not deleted.
-    UserSessionModel.findOneAndUpdate({
-        _id: token,
-        isDeleted: false
-    }, {
-        $set: {
-            isDeleted: true
-        }
-    }, null, (err, sessions) => {
-        if (err) {
-            console.log(err);
-            return res.send({
-                success: false,
-                message: 'Error: Server error'
-            });
-        }
-        return res.send({
-            success: true,
-            message: 'Logged out'
-        });
-    });
-})
+// router.get('/logout', function (req, res) {
+//     // Get the token
+//     const token = req.query.token;
+//     // ?token=test
+//     // Verify the token is one of a kind and it's not deleted.
+//     UserSessionModel.findOneAndUpdate({
+//         _id: token,
+//         isDeleted: false
+//     }, {
+//         $set: {
+//             isDeleted: true
+//         }
+//     }, null, (err, sessions) => {
+//         if (err) {
+//             console.log(err);
+//             return res.send({
+//                 success: false,
+//                 message: 'Error: Server error'
+//             });
+//         }
+//         return res.send({
+//             success: true,
+//             message: 'Logged out'
+//         });
+//     });
+// })
 
 // Get a user
 router.get('/:username', function (req, res) {
