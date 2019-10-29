@@ -51,5 +51,7 @@ npm run update
 - Cors
 - Concurrently
 - Express
+- Passport-local
+- Passport-jwt
 
 ### If you get a bug, copy paste debug output and let me know :)
