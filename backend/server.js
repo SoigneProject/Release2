@@ -8,6 +8,7 @@ const express = require('express'),
   itemRoute = require('./api/routes/itemRoute'),
   retailerRoute = require('./api/routes/retailerRoute');
 require('dotenv').config();
+require('./api/auth/auth');
 
 const uri = process.env.ATLAS_URI || "mongodb+srv://Test:Test123@cs160-cluster-gigd4.mongodb.net/Soigne?retryWrites=true&w=majority";
 mongoose.connect(uri, {

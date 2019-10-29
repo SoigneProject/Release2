@@ -1,5 +1,8 @@
 var UserModel = require('../models/userModel');
 var UserSessionModel = require('../models/userSessionModel');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+
 // Delete a user
 exports.delete_a_user = function (req, res) {
     var queryUsername = req.params.username;
@@ -32,80 +35,104 @@ exports.update_a_user = function (req, res) {
     });
 };
 
-exports.add_Follower = function(req,res){
+exports.add_Follower = function (req, res) {
     var queryUsername = req.params.username;
     var body = req.body;
     var follower = body.user;
-    var followerObj = {"username" : follower};
+    var followerObj = {
+        "username": follower
+    };
     UserModel.findOneAndUpdate({
-        username: queryUsername}, 
-        {$push: {followers: followerObj}},function (err) {
-            if (err) return res.json({
-                success: false,
-                error: err
-            });
-            return res.json({
-                success: true,
-                user: body
-            });
+        username: queryUsername
+    }, {
+        $push: {
+            followers: followerObj
+        }
+    }, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
         });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
 }
 
-exports.remove_Follower = function(req,res){
+exports.remove_Follower = function (req, res) {
     var queryUsername = req.params.username;
     var body = req.body;
     var follower = body.user;
-    var followerObj = {"username" : follower};
+    var followerObj = {
+        "username": follower
+    };
     UserModel.findOneAndUpdate({
-        username: queryUsername}, 
-        {$pull: {followers: followerObj}},function (err) {
-            if (err) return res.json({
-                success: false,
-                error: err
-            });
-            return res.json({
-                success: true,
-                user: body
-            });
+        username: queryUsername
+    }, {
+        $pull: {
+            followers: followerObj
+        }
+    }, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
         });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
 }
 
-exports.follow_Someone = function(req, res){
+exports.follow_Someone = function (req, res) {
     var queryUsername = req.params.username;
     var body = req.body;
     var userToFollow = body.user;
-    var userToFollowObj = {"username" : userToFollow};
+    var userToFollowObj = {
+        "username": userToFollow
+    };
     UserModel.findOneAndUpdate({
-        username: queryUsername}, 
-        {$push: {following: userToFollowObj}},function (err) {
-            if (err) return res.json({
-                success: false,
-                error: err
-            });
-            return res.json({
-                success: true,
-                user: body
-            });
+        username: queryUsername
+    }, {
+        $push: {
+            following: userToFollowObj
+        }
+    }, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
         });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
 }
 
-exports.unfollow_Someone = function(req, res){
+exports.unfollow_Someone = function (req, res) {
     var queryUsername = req.params.username;
     var body = req.body;
     var userToFollow = body.user;
-    var userToFollowObj = {"username" : userToFollow};
+    var userToFollowObj = {
+        "username": userToFollow
+    };
     UserModel.findOneAndUpdate({
-        username: queryUsername}, 
-        {$pull: {following: userToFollowObj}},function (err) {
-            if (err) return res.json({
-                success: false,
-                error: err
-            });
-            return res.json({
-                success: true,
-                user: body
-            });
+        username: queryUsername
+    }, {
+        $pull: {
+            following: userToFollowObj
+        }
+    }, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
         });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
 }
 
 // Get all users
@@ -138,7 +165,7 @@ exports.get_a_user = function (req, res) {
     });
 };
 
-// Create a user
+// Create a user/Signup
 exports.create_a_user = function (req, res) {
     let user = new UserModel();
     const {
@@ -219,125 +246,190 @@ exports.create_a_user = function (req, res) {
 };
 
 // Sign In
-exports.sign_in = function (req, res) {
-    const {
-        password
-    } = req.body;
-    let {
-        username
-    } = req.body;
-    if (!username) {
-        return res.send({
-            success: false,
-            message: 'Error: Username cannot be blank.'
-        });
-    }
-    if (!password) {
-        return res.send({
-            success: false,
-            message: 'Error: Password cannot be blank.'
-        });
-    }
-    //username = username.toLowerCase();
-    username = username.trim();
-    UserModel.find({
-        username: username
-    }, (err, users) => {
-        if (err) {
-            return res.send({
-                success: false,
-                message: 'Error: server error'
-            });
-        }
-        if (users.length != 1) {
-            return res.send({
-                success: false,
-                message: 'Error: Invalid'
-            });
-        }
-        const user = users[0];
-        if (!user.validPassword(password)) {
-            return res.send({
-                success: false,
-                message: 'Error: Invalid'
-            });
-        }
-        // Otherwise correct user
-        const userSession = new UserSessionModel();
-        userSession.userId = user._id;
-        userSession.save((err, doc) => {
-            if (err) {
-                console.log(err);
-                return res.send({
-                    success: false,
-                    message: 'Error: server error'
-                });
+exports.sign_in = function (req, res, next) {
+    passport.authenticate('login', async (err, user, info) => {
+        try {
+            if (err || !user) {
+                const error = new Error('An Error occured')
+                return next(error);
             }
-            return res.send({
-                success: true,
-                message: 'Valid sign in',
-                token: doc._id
+            req.login(user, {
+                session: false
+            }, async (error) => {
+                if (error) return next(error)
+                //We don't want to store the sensitive information such as the
+                //user password in the token so we pick only the email and id
+                const body = {
+                    _id: user._id,
+                    email: user.email
+                };
+                //Sign the JWT token and populate the payload with the user email and id
+                const token = jwt.sign({
+                    user: body
+                }, 'top_secret');
+                //Send back the token to the user
+                return res.json({
+                    token
+                });
             });
-        });
-    });
+        } catch (error) {
+            return next(error);
+        }
+    })(req, res, next);
+    // const {
+    //     password
+    // } = req.body;
+    // let {
+    //     username
+    // } = req.body;
+    // if (!username) {
+    //     return res.send({
+    //         success: false,
+    //         message: 'Error: Username cannot be blank.'
+    //     });
+    // }
+    // if (!password) {
+    //     return res.send({
+    //         success: false,
+    //         message: 'Error: Password cannot be blank.'
+    //     });
+    // }
+    // //username = username.toLowerCase();
+    // username = username.trim();
+    // UserModel.find({
+    //     username: username
+    // }, (err, users) => {
+    //     if (err) {
+    //         return res.send({
+    //             success: false,
+    //             message: 'Error: server error'
+    //         });
+    //     }
+    //     if (users.length != 1) {
+    //         return res.send({
+    //             success: false,
+    //             message: 'Error: Invalid'
+    //         });
+    //     }
+    //     const user = users[0];
+    //     if (!user.validPassword(password)) {
+    //         return res.send({
+    //             success: false,
+    //             message: 'Error: Invalid'
+    //         });
+    //     }
+    //     // Otherwise correct user
+    //     const userSession = new UserSessionModel();
+    //     userSession.userId = user._id;
+    //     userSession.save((err, doc) => {
+    //         if (err) {
+    //             console.log(err);
+    //             return res.send({
+    //                 success: false,
+    //                 message: 'Error: server error'
+    //             });
+    //         }
+    //         return res.send({
+    //             success: true,
+    //             message: 'Valid sign in',
+    //             token: doc._id
+    //         });
+    //     });
+    // });
 };
 
 // Log Out
 exports.logout = function (req, res) {
     // Get the token
-    const token  = req.query.token;
-    // ?token=test
-    // Verify the token is one of a kind and it's not deleted.
-    UserSessionModel.findOneAndUpdate({
-      _id: token,
-      isDeleted: false
-    }, {
-      $set: {
-        isDeleted:true
-      }
-    }, null, (err, sessions) => {
-      if (err) {
-        console.log(err);
-        return res.send({
-          success: false,
-          message: 'Error: Server error'
-        });
-      }
-      return res.send({
-        success: true,
-        message: 'Logged out'
-      });
-    });
-};
-
-// Verify User
-exports.verify_a_user = function (req, res) {
-    // Get the token
     const token = req.query.token;
     // ?token=test
     // Verify the token is one of a kind and it's not deleted.
-    UserSessionModel.find({
-      _id: token,
-      isDeleted: false
-    }, (err, sessions) => {
-      if (err) {
-        console.log(err);
+    UserSessionModel.findOneAndUpdate({
+        _id: token,
+        isDeleted: false
+    }, {
+        $set: {
+            isDeleted: true
+        }
+    }, null, (err, sessions) => {
+        if (err) {
+            console.log(err);
+            return res.send({
+                success: false,
+                message: 'Error: Server error'
+            });
+        }
         return res.send({
-          success: false,
-          message: 'Error: Server error'
+            success: true,
+            message: 'Logged out'
         });
-      }
-      if (sessions.length != 1) {
-        return res.send({
-          success: false,
-          message: 'Error: Invalid'
-        });
-      } else {
-        // DO ACTION
-        return res.send({
-          success: true,
-          message: 'Good'
-        });
-      }
     });
 };
+
+// Secure Route Test
+exports.secure = function (req, res, next) {
+    passport.authenticate('jwt', {
+        session: false
+    }, function (err, user, info) {
+        if (err) {
+            console.log("err");
+            return next(err);
+        }
+        if (!user) {
+            console.log("no user");
+            return res.redirect('/login');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                console.log("login err");
+                return next(err);
+            }
+            console.log("redirect");
+            return res.redirect('/users/' + user.username);
+        });
+    })(req, res, next);
+    //     if (err) {
+    //         return res.send({
+    //             success: false,
+    //             message: 'You are not authorized'
+    //         });
+    //     }
+    //     return res.json({
+    //         message: 'You made it to the secure route',
+    //         user: req.user,
+    //         token: req.query.secret_token
+    //     });
+    // });
+};
+
+// Verify User
+// exports.verify_a_user = function (req, res) {
+//     // Get the token
+//     const token = req.query.token;
+//     // ?token=test
+//     // Verify the token is one of a kind and it's not deleted.
+//     UserSessionModel.find({
+//         _id: token,
+//         isDeleted: false
+//     }, (err, sessions) => {
+//         if (err) {
+//             console.log(err);
+//             return res.send({
+//                 success: false,
+//                 message: 'Error: Server error'
+//             });
+//         }
+//         if (sessions.length != 1) {
+//             return res.send({
+//                 success: false,
+//                 message: 'Error: Invalid'
+//             });
+//         } else {
+//             // DO ACTION
+//             return res.send({
+//                 success: true,
+//                 message: 'Good'
+//             });
+//         }
+//     });
+// };
