@@ -10,13 +10,17 @@
     "backend_install": "npm install",
     "frontend_install": "cd ../frontend/client && npm install",
     "hatch": "concurrently \"npm run backend_install\" \"npm run frontend_install\"",
-    "update": "concurrently \"npm update\" \"cd ../frontend/client && npm update\""
+    "update": "concurrently \"npm update\" \"cd ../frontend/client && npm update\"",
+    "test": "mocha --timeout 10000"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
+    "body-parser": "^1.13.2",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "concurrently": "^4.1.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -30,6 +34,9 @@
   },
   "devDependencies": {
     "eslint": "^6.6.0",
-    "eslint-plugin-react": "^7.16.0"
+    "eslint-plugin-react": "^7.16.0",
+    "mocha": "^6.2.2",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
   }
 }
