@@ -2,13 +2,16 @@ const express = require('express'),
   mongoose = require('mongoose'),
   cors = require('cors'),
   app = express(),
+  passport = require('passport'),
   port = process.env.PORT || 6969,
   userRoute = require('./api/routes/userRoute'),
   postRoute = require('./api/routes/postRoute'),
   itemRoute = require('./api/routes/itemRoute'),
   retailerRoute = require('./api/routes/retailerRoute'),
-  tagRoute = require('./api/routes/tagRoute');
+  tagRoute = require('./api/routes/tagRoute'),
+  profileRoute = require('./api/routes/profileRoute');
 require('dotenv').config();
+require('./api/auth/auth');
 
 const uri = process.env.ATLAS_URI || "mongodb+srv://Test:Test123@cs160-cluster-gigd4.mongodb.net/Soigne?retryWrites=true&w=majority";
 mongoose.connect(uri, {
@@ -28,11 +31,12 @@ app.use(cors());
 app.use(express.json());
 
 // Register routes
-userRoute(app);
-postRoute(app);
-itemRoute(app);
-retailerRoute(app);
 tagRoute(app);
+app.use('/users', userRoute);
+app.use('/user', passport.authenticate('jwt', { session: false }), profileRoute);
+app.use('/items', itemRoute);
+app.use('/posts', postRoute);
+app.use('/retailers', retailerRoute);
 
 // Error message for 404
 app.use(function (req, res) {

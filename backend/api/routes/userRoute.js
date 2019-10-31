@@ -1,21 +1,299 @@
-module.exports = function (app) {
+/*
+* Parent Route: /users
+*/
+const express = require('express');
+const router = express.Router();
+const UserModel = require('../models/userModel');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
-    var user_controller = require('../controllers/userController');
+router.get('/', function (req, res) {
+    UserModel.find((err, user) => {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.json({
+            success: true,
+            userObj: user
+        });
+    });
+})
 
-    app.route('/users').get(user_controller.get_all_users);
-    app.route('/users/signup').post(user_controller.create_a_user);
-    app.route('/users/signin').post(user_controller.sign_in);
-    app.route('/users/logout').get(user_controller.logout);
-    app.route('/users/verify').get(user_controller.verify_a_user);
-    app.route('/users/:username').get(user_controller.get_a_user);
+router.post('/signup', function (req, res) {
+    let user = new UserModel();
+    const {
+        username,
+        firstName,
+        lastName,
+        password
+    } = req.body;
+
+    let {
+        emailAddress
+    } = req.body;
+
+    // Start
+    if (!username || !firstName || !lastName || !emailAddress || !password) {
+        return res.json({
+            created: false,
+            error: 'INVALID INPUTS'
+        });
+    }
+
+    UserModel.countDocuments({
+        username: username
+    }, function (err, count) {
+        if (err) {
+            return res.send({
+                success: false,
+                message: 'Error: Server error'
+            });
+        } else if (count > 0) {
+            return res.send({
+                success: false,
+                message: 'Error: Account already exists with that username.'
+            });
+        }
 
 
-    app.route('/users/:username').put(user_controller.update_a_user);
-    app.route("/user/follower/:username").put(user_controller.add_Follower);
-    app.route("/user/following/:username").put(user_controller.follow_Someone);
-    app.route("/user/removeFollow/:username").put(user_controller.remove_Follower);
-    app.route("/user/unfollow/:username").put(user_controller.unfollow_Someone);
+        emailAddress = emailAddress.toLowerCase();
+        emailAddress = emailAddress.trim();
+        // Steps:
+        // 1. Verify email doesn't exist
+        // 2. Save
+        UserModel.countDocuments({
+            emailAddress: emailAddress
+        }, (err, previousUsers) => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Server error'
+                });
+            } else if (previousUsers > 0) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Account already exists with that email.'
+                });
+            }
+            // Save the new user
+            user.emailAddress = emailAddress;
+            user.password = user.generateHash(password);
+            user.username = username;
+            user.firstName = firstName;
+            user.lastName = lastName;
+            user.save((err, user) => {
+                if (err) {
+                    return res.send({
+                        success: false,
+                        message: 'Error: Server error'
+                    });
+                }
+                return res.send({
+                    success: true,
+                    username: user,
+                    message: 'Signed up'
+                });
+            });
+        });
+    });
+})
 
+router.post('/signin', function (req, res, next) {
+    passport.authenticate('local', { session: false }, function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/login');
+        }
+        // Establish a session
+        req.login(user, { session: false}, (err) => {
+            if (err) return next(err);
+            const body = {
+                username: user.username
+            };
+            const token = jwt.sign({user: body}, 'secret');
+            return res.json({ token });
+        });
+    })(req, res, next);
+})
 
-    app.route('/users/:username').delete(user_controller.delete_a_user);
-};
+// router.get('/logout', function (req, res) {
+//     // Get the token
+//     const token = req.query.token;
+//     // ?token=test
+//     // Verify the token is one of a kind and it's not deleted.
+//     UserSessionModel.findOneAndUpdate({
+//         _id: token,
+//         isDeleted: false
+//     }, {
+//         $set: {
+//             isDeleted: true
+//         }
+//     }, null, (err, sessions) => {
+//         if (err) {
+//             console.log(err);
+//             return res.send({
+//                 success: false,
+//                 message: 'Error: Server error'
+//             });
+//         }
+//         return res.send({
+//             success: true,
+//             message: 'Logged out'
+//         });
+//     });
+// })
+
+// Get a user
+router.get('/:username', function (req, res) {
+    var queryUsername = req.params.username;
+    UserModel.findOne({
+        username: queryUsername
+    }, function (err, obj) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.send(obj);
+    });
+})
+
+// Update a user
+router.get('/:username', function (req, res) {
+    var queryUsername = req.params.username;
+    var body = req.body;
+    UserModel.findOneAndUpdate({
+        username: queryUsername
+    }, body, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
+})
+
+// Delete a user
+router.get('/:username', function (req, res) {
+    var queryUsername = req.params.username;
+    UserModel.findOneAndDelete({
+        username: queryUsername
+    }, function (err, obj) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.send(obj);
+    });
+})
+
+// Add a follower
+router.put('/follower/:username', function (req, res) {
+    var queryUsername = req.params.username;
+    var body = req.body;
+    var follower = body.user;
+    var followerObj = {
+        "username": follower
+    };
+    UserModel.findOneAndUpdate({
+        username: queryUsername
+    }, {
+        $push: {
+            followers: followerObj
+        }
+    }, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
+})
+
+// Follow a user
+router.put('/following/:username', function (req, res) {
+    var queryUsername = req.params.username;
+    var body = req.body;
+    var userToFollow = body.user;
+    var userToFollowObj = {
+        "username": userToFollow
+    };
+    UserModel.findOneAndUpdate({
+        username: queryUsername
+    }, {
+        $push: {
+            following: userToFollowObj
+        }
+    }, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
+})
+
+// Remove a follower
+router.put('/removeFollow/:username', function (req, res) {
+    var queryUsername = req.params.username;
+    var body = req.body;
+    var follower = body.user;
+    var followerObj = {
+        "username": follower
+    };
+    UserModel.findOneAndUpdate({
+        username: queryUsername
+    }, {
+        $pull: {
+            followers: followerObj
+        }
+    }, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
+})
+
+// Unfollow a user
+router.put('/unfollow/:username', function (req, res) {
+    var queryUsername = req.params.username;
+    var body = req.body;
+    var userToFollow = body.user;
+    var userToFollowObj = {
+        "username": userToFollow
+    };
+    UserModel.findOneAndUpdate({
+        username: queryUsername
+    }, {
+        $pull: {
+            following: userToFollowObj
+        }
+    }, function (err) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.json({
+            success: true,
+            user: body
+        });
+    });
+})
+
+module.exports = router;

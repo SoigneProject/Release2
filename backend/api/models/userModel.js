@@ -17,11 +17,13 @@ const UserSchema = new Schema({
     },
     username: {
         type: String,
-        required: [true, "Please enter a display name"]
+        required: [true, "Please enter a display name"],
+        unique: true
     },
     emailAddress: {
         type: String,
-        required: [true, "Please enter your email address"]
+        required: [true, "Please enter your email address"],
+        unique: true
     },
     password: {
         type: String,
