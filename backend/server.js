@@ -31,12 +31,12 @@ app.use(cors());
 app.use(express.json());
 
 // Register routes
-tagRoute(app);
 app.use('/users', userRoute);
 app.use('/user', passport.authenticate('jwt', { session: false }), profileRoute);
 app.use('/items', itemRoute);
 app.use('/posts', postRoute);
 app.use('/retailers', retailerRoute);
+app.use('/tags', tagRoute);
 
 // Error message for 404
 app.use(function (req, res) {

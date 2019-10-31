@@ -1,11 +1,81 @@
-module.exports = function (app) {
+/*
+ * Parent Route: /tags
+ */
+const express = require('express');
+const router = express.Router();
+const TagModel = require('../models/tagModel');
 
-    var tag_controller = require('../controllers/tagController');
-    app.route('/tags').get(tag_controller.get_all_tags);
-    app.route('/tags/name/:name').get(tag_controller.get_a_tag_by_name);
+// Get all tags
+router.get('/', function (req, res) {
+    TagModel.find((err, tag) => {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.json({
+            success: true,
+            tagObj: tag
+        });
+    });
+})
 
-    app.route('/tags/create').post(tag_controller.create_a_tag);
+// Get a tag by name
+router.get('/name/:name', function (req, res) {
+    var queryName = req.params.name;
+    TagModel.findOne({
+        name: queryName
+    }, function (err, obj) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.send(obj);
+    });
+})
 
+// Create a tag
+router.post('/create', function (req, res) {
+    let tag = new TagModel();
+    const {
+        name
+    } = req.body;
 
+    if (!name) {
+        return res.json({
+            created: false,
+            error: 'INVALID INPUTS'
+        });
+    }
+    //name = name.trim();
+    TagModel.countDocuments({
+        name: name
+    }, function (err, count) {
+        if (err) {
+            return res.send({
+                success: false,
+                message: 'Error: Server error'
+            });
+        } else if (count > 0) {
+            return res.send({
+                success: false,
+                message: 'Error: Tag Name Already Exists, Please select from created tags.'
+            });
+        }
+        tag.name = name;
+        tag.save((err, tag) => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Server error'
+                });
+            }
+            return res.send({
+                success: true,
+                name: tag,
+                message: 'Tag Created'
+            });
+        });
+    });
+})
 
-}
+module.exports = router;
