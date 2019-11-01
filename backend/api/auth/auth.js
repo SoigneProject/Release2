@@ -1,7 +1,6 @@
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
 const UserModel = require('../models/userModel');
 
 // Login Passport
@@ -28,13 +27,19 @@ passport.use(new localStrategy({
     });
 }));
 
+var cookieExtractor = function(req) {
+    var token = null;
+    if (req && req.cookies) token = req.cookies['jwt'];
+    return token;
+}
+
 // JWT Passport
 var opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 'secret';
+opts.jwtFromRequest = cookieExtractor;
+opts.secretOrKey = 'stronksecret';
 
 passport.use(new JWTStrategy(opts, function (user, done) {
-    UserModel.findOne({username: user.user.username}, function(err, user) {
+    UserModel.findOne({username: user.username}, function(err, user) {
         if (err) {
             return done(err, false);
         }

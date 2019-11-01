@@ -1,6 +1,6 @@
 /*
-* Parent Route: /users
-*/
+ * Parent Route: /users
+ */
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/userModel');
@@ -99,24 +99,21 @@ router.post('/signup', function (req, res) {
     });
 })
 
-router.post('/signin', function (req, res, next) {
-    passport.authenticate('local', { session: false }, function (err, user, info) {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.redirect('/login');
-        }
-        // Establish a session
-        req.login(user, { session: false}, (err) => {
-            if (err) return next(err);
-            const body = {
-                username: user.username
-            };
-            const token = jwt.sign({user: body}, 'secret');
-            return res.json({ token });
+router.post('/signin', passport.authenticate('local', {
+    session: false
+}), function (req, res) {
+    const body = {
+        username: req.user.username
+    }
+    jwt.sign(JSON.stringify(body), 'stronksecret', (err, token) => {
+        if (err) return res.json(err);
+        // Set cookie header
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            sameSite: true
         });
-    })(req, res, next);
+        return res.json(body);
+    });
 })
 
 // router.get('/logout', function (req, res) {

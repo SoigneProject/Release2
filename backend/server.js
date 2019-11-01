@@ -9,6 +9,7 @@ const express = require('express'),
   itemRoute = require('./api/routes/itemRoute'),
   retailerRoute = require('./api/routes/retailerRoute'),
   tagRoute = require('./api/routes/tagRoute'),
+  cookieParser = require('cookie-parser'),
   profileRoute = require('./api/routes/profileRoute');
 require('dotenv').config();
 require('./api/auth/auth');
@@ -29,6 +30,9 @@ app.use(cors());
 
 // Use built-in bodyparser
 app.use(express.json());
+
+// Cookie Parser
+app.use(cookieParser('stronksecret'));
 
 // Register routes
 app.use('/users', userRoute);
