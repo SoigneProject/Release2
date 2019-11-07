@@ -22,7 +22,6 @@ import { Dimensions } from 'react';
 import logo from './images/soigne.png';
 import bgd from './images/landingbgd.png';
 import axios from 'axios';
-import { setInStorage } from './utils/storage';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,9 +63,6 @@ function onSignIn(e, history, pass, uname) {
   }).then(json => {
       console.log('json', json);
       if (json.data.success) {
-        setInStorage('soigne', {
-          token: json.data.token
-        });
         history.push('/');
       } else {
         console.log("SIGN IN FAILED");

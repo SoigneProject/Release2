@@ -112,7 +112,10 @@ router.post('/signin', passport.authenticate('local', {
             httpOnly: true,
             sameSite: true
         });
-        return res.json(body);
+        return res.send({
+            username: req.user.username,
+            success: true
+        });
     });
 })
 
