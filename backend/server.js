@@ -1,6 +1,7 @@
 const express = require('express'),
   mongoose = require('mongoose'),
   cors = require('cors'),
+  bodyParser = require('body-parser'),
   app = express(),
   passport = require('passport'),
   port = process.env.PORT || 6969,
@@ -26,10 +27,13 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // Use CORS
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:3000'       // Change depending on domain
+}));
 
 // Use built-in bodyparser
-app.use(express.json());
+app.use(bodyParser.json());
 
 // Cookie Parser
 app.use(cookieParser('stronksecret'));

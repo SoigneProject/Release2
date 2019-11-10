@@ -61,7 +61,6 @@ function onSignIn(e, history, pass, uname) {
     username: username,
     password: password
   }).then(json => {
-      console.log('json', json);
       if (json.data.success) {
         history.push('/');
       } else {

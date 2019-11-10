@@ -105,18 +105,22 @@ router.post('/signin', passport.authenticate('local', {
     const body = {
         username: req.user.username
     }
-    jwt.sign(JSON.stringify(body), 'stronksecret', (err, token) => {
-        if (err) return res.json(err);
-        // Set cookie header
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            sameSite: true
+    req.login(body, {session: false}, (error) => {
+        if (error) res.status(400).send({ error });
+        jwt.sign(JSON.stringify(body), 'stronksecret', (err, token) => {
+            if (err) return res.json(err);
+            // Set cookie header
+            res.cookie('jwt', token, {
+                httpOnly: true,
+                sameSite: true
+            });
+            return res.send({
+                username: req.user.username,
+                success: true
+            });
         });
-        return res.send({
-            username: req.user.username,
-            success: true
-        });
-    });
+    })
+    
 })
 
 // router.get('/logout', function (req, res) {

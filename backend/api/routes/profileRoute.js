@@ -12,4 +12,14 @@ router.get('/profile', (req, res, next) => {
   })
 });
 
+router.get('/currentuser', function (req, res) {
+  if (req.user === undefined) {
+    res.json({});
+  } else {
+    res.json({
+      username: req.user.username
+    });
+  }
+});
+
 module.exports = router;

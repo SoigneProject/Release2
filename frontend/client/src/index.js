@@ -9,30 +9,11 @@ import signModal from "./signModal";
 import Login from "./Login";
 import CreatePost from "./CreatePost";
 import Search from "./Search";
+import Profile from "./Profile";
 
 const routing = (
   <Router>
     <div>
-      {/* <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/Feed">Feed</Link>
-          </li>
-          <li>
-            <Link to="/Signup">Signup</Link>
-          </li>
-          <li>
-            <Link to="/signModal">signModal</Link>
-          </li>
-          <li>
-            <Link to="/Login">Login</Link>
-          </li>
-          <li>
-            <Link to="/CreatePost">Create Post</Link>
-          </li>
-        </ul> */}
       <Route exact path="/" component={App} />
       <Route path="/Feed" component={Feed} />
       <Route path="/Signup" component={Signup} />
@@ -40,6 +21,7 @@ const routing = (
       <Route path="/Login" component={Login} />
       <Route path="/CreatePost" component={CreatePost} />
       <Route path="/Search" component={Search} />
+      <Route path="/Profile" component={Profile} />
     </div>
   </Router>
 );
