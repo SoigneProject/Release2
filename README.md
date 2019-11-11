@@ -41,6 +41,7 @@ npm run update
 - React-Scripts
 - React-Dom
 - React-Router-Dom
+- React-InstantSearch-Dom
 - Typeface-Roboto
 - Material-Ui
 - Formiz
@@ -51,7 +52,11 @@ npm run update
 - Cors
 - Concurrently
 - Express
+- Passport
 - Passport-local
 - Passport-jwt
+- Jsonwebtoken
+- Dotenv
+- Cookie-parser
 
 ### If you get a bug, copy paste debug output and let me know :)
