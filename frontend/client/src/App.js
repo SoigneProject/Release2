@@ -43,6 +43,7 @@ import Signup from "./Signup";
 import logo from "./images/soigne.png";
 import signModal from "./signModal";
 import CreatePost from "./CreatePost";
+import Nav from "./nav";
 
 class App extends Component {
   constructor(props) {
@@ -173,6 +174,7 @@ class App extends Component {
 
     return (
       <div>
+
         <TopMenu />
         <Grid container spacing={3}>
           <Grid item xs={4}>

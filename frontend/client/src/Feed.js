@@ -23,6 +23,8 @@ import pic3 from './images/3.jpeg';
 import pic4 from './images/4.jpeg';
 import pic5 from './images/5.jpeg';
 import TopMenu from './TopMenu';
+import PostPopup from './PostPopup';
+
 
 
 function Copyright() {
@@ -167,9 +169,7 @@ export default function Feed() {
           title={tile.title}
           subtitle={<span>by: {tile.author}</span>}
           actionIcon={
-            <IconButton aria-label={`info about ${tile.title}`} >
-              <InfoIcon />
-            </IconButton>
+            <PostPopup></PostPopup>
           }
         />
       </GridListTile>
