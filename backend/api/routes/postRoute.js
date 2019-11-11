@@ -4,6 +4,15 @@
 const express = require('express');
 const router = express.Router();
 const PostModel = require('../models/postModel');
+const multiPart = require('connect-multiparty');
+const multiPartMiddleware = multiPart();
+const cloudinary = require('cloudinary');
+
+cloudinary.config({
+    cloud_name: 'soigne-pix',
+    api_key: '472288961331361',
+    api_secret: 'VylP7m3EhxWbbzWEE8NBAcbcxKs'
+});
 
 // Get all posts
 router.get('/', function (req, res) {
@@ -49,15 +58,18 @@ router.get('/title/:title', function (req, res) {
 })
 
 // Create a post
-router.post('/', function (req, res) {
-    let post = new PostModel();
+router.post('/', multiPartMiddleware, function (req, res) {
+    console.log(req.body);
     const {
         title,
         description,
         photo
     } = req.body;
 
-    if (!title || !description || !photo)
+    var result = cloudinary.uploader.upload(photo);
+    console.log(result);
+    let post = new PostModel();
+    if (!title || !description)
         return res.json({
             created: false,
             error: 'INVALID INPUTS'
@@ -68,7 +80,8 @@ router.post('/', function (req, res) {
     post.dateTime = ourDate;
     post.title = title;
     post.description = description;
-    post.photo = photo;
+    post.photo = result.url;
+    post.photo_id = result.public_id;
     // we need to find a way to link the user
     // Get the current user from cookies
 
@@ -78,6 +91,11 @@ router.post('/', function (req, res) {
             error: err
         });
         return res.json({
+            title: title,
+            dateTime: ourDate,
+            description: description,
+            photo: result.url,
+            photo_id: result.public_id,
             created: true
         });
     });
@@ -120,6 +138,7 @@ router.delete('/id/:id', function (req, res) {
 // app.route('/posts/removeTag/:id').put(post_controller.remove_a_tag_from_post);
 // };
 
+// Add a tag to post by id
 router.put('/addTag/:id', function (req, res) {
     var queryID = req.params.id;
     var body = req.body;
@@ -145,6 +164,7 @@ router.put('/addTag/:id', function (req, res) {
     });
 })
 
+// Remove tag from post by id
 router.put('/removeTag/:id', function (req, res) {
     var queryID = req.params.id;
     var body = req.body;
@@ -170,6 +190,7 @@ router.put('/removeTag/:id', function (req, res) {
     });
 })
 
+// Get all posts by tag name
 router.get('/AllPostsByTag/:tagName', function (req, res) {
     console.log("All post by tag name");
     var queryTagName = req.params.tagName;
