@@ -93,6 +93,7 @@ export default class CreatableInputOnly extends Component<*, State> {
   render() {
     const { inputValue, value } = this.state;
     return (
+      <Typography>
       <CreatableSelect 
         style = {useStyles}
         components={components}
@@ -106,9 +107,10 @@ export default class CreatableInputOnly extends Component<*, State> {
         onChange={this.handleChange}
         onInputChange={this.handleInputChange}
         onKeyDown={this.handleKeyDown}
-        placeholder="Enter your tags!"
+        placeholder="Enter your tags"
         value={value}
       />
+      </Typography>
     );
   }
 }

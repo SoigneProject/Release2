@@ -11,6 +11,8 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import TopMenu from "./TopMenu";
 import axios from 'axios';
 import TagList from './TagList.js';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import MultLinks from './MultLinks.js';
  
 const useStyles = makeStyles(theme => ({
   root: {
@@ -189,48 +191,7 @@ export default function CenteredGrid(props) {
         <Grid item xs>
         <Typography style = {titleStyle} align = 'Center' variant="h4" component="h4" >
     Link Us!</Typography>
-          <div className = {classes.paper}>
-          <TextField
-            id="item"
-            label="Item Name"
-            className={classes.textField}
-            value={values.item}
-            onChange={handleChange('item')}
-            style = {{width: 160,}}
-            margin="normal"
-            variant="outlined"
-          />
-            <TextField
-            id="price"
-            label="Price"
-            className={classes.textField}
-            value={values.price}
-            style = {{width: 100}}
-            onChange={handleChange('price')}
-            margin="normal"
-            variant="outlined"
-          />
-            <TextField
-            id="link"
-            label="Link"
-            className={classes.textField}
-            fullWidth
-            value={values.link}
-            onChange={handleChange('link')}
-            margin="normal"
-            variant="outlined"
-          />
-          </div>
-          <div className ={classes.paper}>
-          <Button
-            type="submit"
-            style = {{width: 40, height: 40, borderRadius: 100, }}
-            variant="contained"
-            color= "primary"
-            onclick = {createRow()}
-            className={classes.submit}> + 
-        </Button>
-          </div>
+        <MultLinks></MultLinks>
         </Grid>
       </Grid>
         
