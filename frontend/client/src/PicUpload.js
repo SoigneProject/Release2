@@ -1,6 +1,9 @@
+/*
+* PicUpload.js
+* A temp file to test photo uploading functionality. Need to implement it in official Create Post component
+*/
 import React, { Component } from "react";
 import axios from "axios";
-import FormData from "form-data";
 
 class PicUpload extends Component {
   constructor(props) {
@@ -36,37 +39,17 @@ class PicUpload extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const form = new FormData();
-    form.append()
+    const formData = new FormData();
+    formData.append('file', this.state.file);
+    formData.append('title', this.state.title);
+    formData.append('description', this.state.description);
+
     axios
-      .post("http://localhost:6969/posts", {
-        title: this.state.title,
-        description: this.state.description,
-        photo: this.state.file.name
-      }, {
-          headers: form.getHeaders()
-      })
+      .post("http://localhost:6969/posts", formData)
       .then(json => {
-        console.log(json);
         if (json.data.created) {
           //Creates post
           console.log("POST CREATION SUCCESS");
-        //   axios
-        //     .post("http://localhost:6969/items", {
-        //       name: iname,
-        //       url: ilink,
-        //       clothingCategory: "test",
-        //       retailerID: "1235"
-        //     })
-        //     .then(json => {
-        //       if (json.data.created) {
-        //         console.log("ITEM CREATION SUCCESS");
-        //         history.push("/");
-        //       } else {
-        //         console.log("ITEM CREATION FAIL");
-        //         history.push("/"); // Temporary redirect
-        //       }
-        //     });
         } else {
           // Handle failed post creation?
           console.log("POST CREATION FAIL");
