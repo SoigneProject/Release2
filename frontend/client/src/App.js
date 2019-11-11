@@ -35,7 +35,6 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import CloseIcon from "@material-ui/icons/Close";
-
 import pic3 from "./3.jpeg";
 import pic4 from "./4.jpeg";
 import pic5 from "./5.jpeg";

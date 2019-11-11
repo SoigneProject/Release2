@@ -1,4 +1,5 @@
 import React from 'react';
+import { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -9,27 +10,10 @@ import Icon from "@material-ui/core/Icon"
 import AddCircle from "@material-ui/icons/AddCircle";
 import TopMenu from "./TopMenu";
 import axios from 'axios';
-import PostButton from "./PostButton";
-
-const Choices = [
-    {
-      value: '#fallfashion',
-      label: '#fallfashion',
-    },
-    {
-      value: '#hotgirlsummer',
-      label: '#hotgirlsummer',
-    },
-    {
-      value: '#streetstyle',
-      label: '#streetstyle',
-    },
-    {
-      value: '#sunsoutbunsout',
-      label: '#sunsoutbunsout',
-    },
-  ];
-  
+import TagList from './TagList.js';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import MultLinks from './MultLinks.js';
+ 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -181,8 +165,6 @@ export default function CenteredGrid(props) {
           </div>
         </Grid>
 
-
-
         <Grid item xs>
         <Typography style = {titleStyle} align = 'Center' variant="h4" component="h4" >
     Describe it</Typography>
@@ -197,90 +179,24 @@ export default function CenteredGrid(props) {
             margin="normal"
             variant="outlined"
             />
-            <TextField
-            id="tags"
-            select
-            label="Tags"
-            fullWidth
-            className={classes.textField}
-            value={values.Choices}
-            onChange={handleChange('Choices')}
-            SelectProps={{
-            native: true,
-            MenuProps: {
-                className: classes.menu,
-            },
-            }}
-            helperText="Select some tags!"
-            margin="normal"
-            variant="outlined"
-          >
-        {Choices.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </TextField>
-          <textarea 
-            rows="10"
-            cols="75"
-            id="desc"
-            label="Description"
-            placeholder="Enter a description of your post"
-            className={classes.textarea}
-            value={values.Description}
-            onChange={handleChange('Description')}
-            margin="normal"
-            variant="outlined"
-          ></textarea>
+          <TagList></TagList>
+          <TextField
+                id="desc"
+                label="Description"
+                fullWidth
+                className={classes.textField}
+                value={values.description}
+                onChange={handleChange('Description')}
+                margin="normal"
+                variant="outlined"
+                />
         </div>
         </Grid>
 
         <Grid item xs>
         <Typography style = {titleStyle} align = 'Center' variant="h4" component="h4" >
     Link Us!</Typography>
-          <div className = {classes.paper}>
-          <TextField
-            id="item"
-            label="Item Name"
-            className={classes.textField}
-            value={values.item}
-            onChange={handleChange('item')}
-            style = {{width: 160,}}
-            margin="normal"
-            variant="outlined"
-          />
-            <TextField
-            id="price"
-            label="Price"
-            className={classes.textField}
-            value={values.price}
-            style = {{width: 100}}
-            onChange={handleChange('price')}
-            margin="normal"
-            variant="outlined"
-          />
-            <TextField
-            id="link"
-            label="Link"
-            className={classes.textField}
-            fullWidth
-            value={values.link}
-            onChange={handleChange('link')}
-            margin="normal"
-            variant="outlined"
-          />
-          </div>
-          <div className ={classes.paper}>
-          <Button
-            type="submit"
-            style = {{width: 40, height: 40, borderRadius: 100, }}
-            variant="contained"
-            color= "primary"
-            onclick = {createRow()}
-            className={classes.submit}> + 
-        </Button>
-          </div>
+        <MultLinks></MultLinks>
         </Grid>
       </Grid>
         
