@@ -44,6 +44,7 @@ import logo from "./images/soigne.png";
 import signModal from "./signModal";
 import CreatePost from "./CreatePost";
 import Nav from "./nav";
+import Bio from './Bio';
 
 class App extends Component {
   constructor(props) {
@@ -100,7 +101,8 @@ class App extends Component {
 
     const tableStyle = {
       minWidth: 20,
-      marginTop: 0
+      marginTop: 0,
+      marginBottom: 40,
     };
 
     const tableStyle1 = {
@@ -240,6 +242,8 @@ class App extends Component {
                   ))}
                 </TableBody>
               </Table>
+            
+            <Bio style = {{marginTop: 20, marginLeft: 8,}}></Bio>
               <Typography
                 style={{ marginTop: 20, marginLeft: 8 }}
                 color="textSecondary"
