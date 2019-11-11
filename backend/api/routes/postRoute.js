@@ -171,12 +171,21 @@ router.put('/removeTag/:id', function (req, res) {
 })
 
 router.get('/AllPostsByTag/:tagName', function (req, res) {
-    console.log("All post by tag name");
+    // console.log("All post by tag name");
+    // var queryTagName = req.params.tagName;
+    // PostModel.find({ "tags.name": queryTagName}).then(function(tags) {
+    //     console.log(tags);
+    //     return res.status(200).json(tags);
+    // })
     var queryTagName = req.params.tagName;
-    PostModel.find({ "tags.name": queryTagName}).then(function(tags) {
-        console.log(tags);
-        return res.status(200).json(tags);
-    })
+    PostModel.find({'tags': { $elemMatch: { 'tagName': queryTagName}}},
+    function (err, obj) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.send(obj);
+    });
 })
 
 module.exports = router;
