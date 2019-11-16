@@ -10,6 +10,10 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import TopMenu from "./TopMenu";
 import axios from 'axios';
 
+var user = "";
+axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
+.then(json => user = json.data.username);
+
 const Choices = [
     {
       value: '#fallfashion',
@@ -63,10 +67,10 @@ function createPost(e, history, ti, desc, iname, ilink) {
   // Post request to backend
   axios.post('http://localhost:6969/posts', {
     title: ti,
+    username: user,
     description: desc,
     photo: "Temporary",
   }).then(json => {
-    console.log(json);
     if (json.data.created) { //Creates post
       console.log("POST CREATION SUCCESS");
       axios.post('http://localhost:6969/items', {

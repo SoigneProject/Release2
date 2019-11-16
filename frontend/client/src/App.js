@@ -43,28 +43,41 @@ import Signup from "./Signup";
 import logo from "./images/soigne.png";
 import signModal from "./signModal";
 import CreatePost from "./CreatePost";
+import { isUndefined } from "util";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      userObj: undefined
+      userObj: {
+        bio: "",
+        emailAddress: "",
+        firstName: "loading",
+        lastName: "loading",
+        followers: ["test"],
+        following: ["test2"],
+        password: "temp",
+        username: "loading",
+      },
     };
   }
 
   componentDidMount() {
     // Retreive user data
-    fetch("http://localhost:6969/users/kristinaleopandas")
-      .then(res => res.json())
-      .then(userObj => this.setState({ userObj: userObj }));
-  }
+    axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
+      .then(json => axios.get('http://localhost:6969/users/' + json.data.username))
+      .then(json => {
+        this.setState({userObj: json.data});
+      });
+    }
 
   // here is our UI
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
     const { userObj } = this.state;
+    console.log(userObj);
 
     const theme = createMuiTheme({
       overrides: {
@@ -135,7 +148,7 @@ class App extends Component {
       }
     ];
 
-    const rows = [createData("444", "555")];
+    const rows = [createData(userObj.followers.length, userObj.following.length)];
     function createData(followers, following) {
       return { followers, following };
     }
@@ -184,7 +197,7 @@ class App extends Component {
                 component="h2"
                 gutterBottom
               >
-                Kristina Leo
+                {userObj.firstName} {userObj.lastName}
               </Typography>
               <Typography
                 color="textSecondary"
@@ -193,7 +206,7 @@ class App extends Component {
                 component="h2"
                 gutterBottom
               >
-                @kristinaleopandas
+                {userObj.username}
               </Typography>
               <FollowersList>
                 <Table style={tableStyle} aria-label="simple table">
@@ -243,8 +256,7 @@ class App extends Component {
                 color="textSecondary"
                 align="center"
               >
-                SF Transplant, NY gal at heart. Combining street style and
-                luxury is my passion. Oh, and I also love drinking boba.
+                {userObj.bio}
               </Typography>
             </div>
           </Grid>
