@@ -8,6 +8,9 @@ var PostSchema = new Schema({
     title: {
         type: String
     },
+    username: {
+        type: String
+    },
     dateTime: {
         type: Date,
         default: Date.now
