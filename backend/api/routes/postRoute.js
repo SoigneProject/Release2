@@ -53,11 +53,12 @@ router.post('/', function (req, res) {
     let post = new PostModel();
     const {
         title,
+        username,
         description,
         photo
     } = req.body;
 
-    if (!title || !description || !photo)
+    if (!title || !description || !username || !photo)
         return res.json({
             created: false,
             error: 'INVALID INPUTS'
@@ -67,6 +68,7 @@ router.post('/', function (req, res) {
     ourDate.setHours(ourDate.getHours() + 7);
     post.dateTime = ourDate;
     post.title = title;
+    post.username = username;
     post.description = description;
     post.photo = photo;
     // we need to find a way to link the user
