@@ -55,11 +55,19 @@ class App extends Component {
         emailAddress: "",
         firstName: "loading",
         lastName: "loading",
-        followers: ["test"],
-        following: ["test2"],
+        followers: [{username: "test"}],
+        following: [{username: "test2"}],
         password: "temp",
         username: "loading",
       },
+      userPosts: [{
+        dateTime: "loading",
+        description: "temp",
+        photo: "temp",
+        tags: [],
+        title: "loading",
+        username: "temp",
+      }]
     };
   }
 
@@ -69,6 +77,10 @@ class App extends Component {
       .then(json => axios.get('http://localhost:6969/users/' + json.data.username))
       .then(json => {
         this.setState({userObj: json.data});
+        axios.get('http://localhost:6969/posts/title/ccc')
+        .then(json => {
+          this.setState({userPosts: json.data});
+        });
       });
     }
 
@@ -76,8 +88,9 @@ class App extends Component {
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
-    const { userObj } = this.state;
+    const { userObj, userPosts } = this.state;
     console.log(userObj);
+    console.log(userPosts);
 
     const theme = createMuiTheme({
       overrides: {
@@ -190,7 +203,7 @@ class App extends Component {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <div style={paperStyle}>
-              <AvatarLarge alt="pic" src={pic}></AvatarLarge>
+              <AvatarLarge alt={userObj.emailAddress} src={userObj.emailAddress}></AvatarLarge> {/* change src/alt to user's profile pic */}
               <Typography
                 align="center"
                 variant="h3"
@@ -262,12 +275,12 @@ class App extends Component {
           </Grid>
           <Grid item xs={8}>
             <GridList spacing={1} style={gridStyle} cellHeight={500}>
-              {tileData.map(tile => (
-                <GridListTile style={tileStyle} key={tile.img}>
-                  <img src={tile.img} alt={tile.title} />
+              {userPosts.map(tile => (
+                <GridListTile style={tileStyle} key={tile.title}>
+                  <img src={tile.title} alt={tile.title} /> {/*change source to tile.image*/}
                   <GridListTileBar
                     title={tile.title}
-                    subtitle={<span>by: {tile.author}</span>}
+                    subtitle={<span>by: {tile.username}</span>}
                     actionIcon={
                       <IconButton aria-label={`info about ${tile.title}`}>
                         <InfoIcon />
