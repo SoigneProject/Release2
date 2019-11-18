@@ -33,10 +33,10 @@ router.get("/", function (req, res) {
 });
 
 //get all posts by username
-router.get("username/:poster_name", function (req, res){
-    var queryUsername = req.params.poster_name;
+router.get("/username/:username", function (req, res){
+    var queryUsername = req.params.username;
     PostModel.find({
-        poster_name: queryUsername
+        username: queryUsername
     },
     function (err, obj) {
         if (err)
@@ -95,11 +95,11 @@ router.post("/", function (req, res) {
         const {
             title,
             description,
-            poster_name
+            username,
         } = req.body;
         cloudinary.uploader.upload(req.file.path, function (result) {
             let post = new PostModel();
-            if (!title || !description) {
+            if (!title || !description || !username) {
                 return res.json({
                     created: false,
                     error: "INVALID INPUTS"
@@ -110,7 +110,7 @@ router.post("/", function (req, res) {
             post.dateTime = ourDate;
             post.title = title;
             post.description = description;
-            post.poster_name = poster_name;
+            post.username = username;
             post.photo = result.url;
             post.photo_id = result.public_id;
             post.save(err => {
@@ -129,6 +129,7 @@ router.post("/", function (req, res) {
                     title: title,
                     dateTime: ourDate,
                     description: description,
+                    username: username,
                     photo: result.url,
                     photo_id: result.public_id,
                     created: true

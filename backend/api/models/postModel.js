@@ -15,7 +15,7 @@ var PostSchema = new Schema({
     description: {
         type: String
     },
-    username: { //change this to a user // user
+    username: { 
         type: String
     },
     photo: {
@@ -26,9 +26,6 @@ var PostSchema = new Schema({
     photo_id: {
         type: String
     },
-    tags: [postTagsSchema],
-    poster_name:{
-        type: String
-    }
+    tags: [postTagsSchema]
 });
 module.exports = mongoose.model('Post', PostSchema);
