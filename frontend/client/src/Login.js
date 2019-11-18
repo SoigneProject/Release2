@@ -59,7 +59,9 @@ function onSignIn(e, history, pass, uname) {
   // Post request to backend
   axios.post('http://localhost:6969/users/signin', {
     username: username,
-    password: password
+    password: password,
+  }, {
+    withCredentials: true
   }).then(json => {
       if (json.data.success) {
         history.push('/');

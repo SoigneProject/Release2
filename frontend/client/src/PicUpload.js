@@ -11,7 +11,8 @@ class PicUpload extends Component {
     this.state = {
       title: "",
       description: "",
-      file: null
+      file: null,
+      photo: ""     // ADDED
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDescChange = this.handleDescChange.bind(this);
@@ -55,8 +56,20 @@ class PicUpload extends Component {
     });
   }
 
+  // ADDED
+  componentDidMount() {
+    axios
+      .get("http://localhost:6969/posts/id/5dd1fce19fed3b13d06c6ffc")
+      .then(res => {
+        this.setState({
+          photo: res.data.photo
+        });
+      });
+  }
+
   render() {
     return (
+      <div>
       <form onSubmit={this.handleSubmit}>
         <div class="field">
           <label> Title </label>
@@ -86,6 +99,8 @@ class PicUpload extends Component {
           Post
         </button>
       </form>
+      <img src={this.state.photo}></img>
+      </div>
     );
   }
 }
