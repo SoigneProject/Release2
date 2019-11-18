@@ -12,6 +12,7 @@ class PicUpload extends Component {
       title: "",
       description: "",
       file: null,
+      username: "Cogart",
       photo: ""
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -44,8 +45,10 @@ class PicUpload extends Component {
     formData.append("file", this.state.file);
     formData.append("title", this.state.title);
     formData.append("description", this.state.description);
+    formData.append("username", this.state.username);
 
     axios.post("http://localhost:6969/posts", formData).then(json => {
+      console.log(json);
       if (json.data.created) {
         //Creates post
         console.log("POST CREATION SUCCESS");

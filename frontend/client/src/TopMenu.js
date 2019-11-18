@@ -107,7 +107,7 @@ export default function NavTabs() {
         >
           <LinkTab label="Sign Up" href="./signModal" {...a11yProps(0)} />
           <LinkTab label="Login" href="./Login" {...a11yProps(1)} />
-          <LinkTab label="Kristina" href="/" {...a11yProps(3)} />
+          <LinkTab label="My Profile" href="/" {...a11yProps(3)} />
           <LinkTab label="Trending" href="./Feed" {...a11yProps(4)} />
           <LinkTab label="Create Post" href="./CreatePost" {...a11yProps(5)} />
         </Tabs>

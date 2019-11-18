@@ -49,22 +49,46 @@ class App extends Component {
     super(props);
 
     this.state = {
-      userObj: undefined
+      userObj: {
+        bio: "",
+        emailAddress: "",
+        firstName: "loading",
+        lastName: "loading",
+        followers: [{username: "test"}],
+        following: [{username: "test2"}],
+        password: "temp",
+        username: "loading",
+      },
+      userPosts: [{
+        dateTime: "loading",
+        description: "temp",
+        photo: "temp",
+        tags: [],
+        title: "loading",
+        username: "temp",
+      }],
     };
   }
 
   componentDidMount() {
     // Retreive user data
-    fetch("http://localhost:6969/users/kristinaleopandas")
-      .then(res => res.json())
-      .then(userObj => this.setState({ userObj: userObj }));
+    axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
+    .then(json => axios.get('http://localhost:6969/users/' + json.data.username))
+    .then(json => {
+      this.setState({userObj: json.data});
+      axios.get('http://localhost:6969/posts/username/' + this.state.userObj.username)
+      .then(json => {
+        this.setState({userPosts: json.data});
+      });
+    });
   }
 
   // here is our UI
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
-    const { userObj } = this.state;
+    const { userObj, userPosts} = this.state;
+    console.log(userPosts);
 
     const theme = createMuiTheme({
       overrides: {
@@ -112,30 +136,8 @@ class App extends Component {
     const gridStyle = {
       marginTop: 20
     };
-    const tileData = [
-      {
-        img: pic3,
-        title: "Image",
-        author: "author"
-      },
-      {
-        img: pic4,
-        title: "Image",
-        author: "author"
-      },
-      {
-        img: pic5,
-        title: "Image",
-        author: "author"
-      },
-      {
-        img: pic3,
-        title: "Image",
-        author: "author"
-      }
-    ];
 
-    const rows = [createData("444", "555")];
+    const rows = [createData(userObj.followers.length, userObj.following.length)];
     function createData(followers, following) {
       return { followers, following };
     }
@@ -177,14 +179,14 @@ class App extends Component {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <div style={paperStyle}>
-              <AvatarLarge alt="pic" src={pic}></AvatarLarge>
+              <AvatarLarge alt={userPosts[0].photo} src={userPosts[0].photo}></AvatarLarge>
               <Typography
                 align="center"
                 variant="h3"
                 component="h2"
                 gutterBottom
               >
-                Kristina Leo
+                {userObj.firstName} {userObj.lastName}
               </Typography>
               <Typography
                 color="textSecondary"
@@ -193,7 +195,7 @@ class App extends Component {
                 component="h2"
                 gutterBottom
               >
-                @kristinaleopandas
+                {userObj.username}
               </Typography>
               <FollowersList>
                 <Table style={tableStyle} aria-label="simple table">
@@ -243,21 +245,20 @@ class App extends Component {
                 color="textSecondary"
                 align="center"
               >
-                SF Transplant, NY gal at heart. Combining street style and
-                luxury is my passion. Oh, and I also love drinking boba.
+                {userObj.bio}
               </Typography>
             </div>
           </Grid>
           <Grid item xs={8}>
             <GridList spacing={1} style={gridStyle} cellHeight={500}>
-              {tileData.map(tile => (
-                <GridListTile style={tileStyle} key={tile.img}>
-                  <img src={tile.img} alt={tile.title} />
+              {userPosts.map(post => (
+                <GridListTile style={tileStyle} key={post.title}>
+                  <img src={post.photo} alt={post.photo} />
                   <GridListTileBar
-                    title={tile.title}
-                    subtitle={<span>by: {tile.author}</span>}
+                    title={post.title}
+                    subtitle={<span>by: {post.username}</span>}
                     actionIcon={
-                      <IconButton aria-label={`info about ${tile.title}`}>
+                      <IconButton aria-label={`info about ${post.title}`}>
                         <InfoIcon />
                       </IconButton>
                     }

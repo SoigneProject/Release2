@@ -10,6 +10,10 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import TopMenu from "./TopMenu";
 import axios from 'axios';
 
+var user = "";
+axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
+.then(json => user = json.data.username);
+
 const Choices = [
     {
       value: '#fallfashion',
@@ -58,15 +62,16 @@ const titleStyle = {
     marginBottom: 10,
   }
 
-function createPost(e, history, ti, desc, iname, ilink) {
+function createPost(e, history, ph, ti, desc, iname, ilink) {
   e.preventDefault();
-  // Post request to backend
-  axios.post('http://localhost:6969/posts', {
-    title: ti,
-    description: desc,
-    photo: "Temporary",
-  }).then(json => {
-    console.log(json);
+  console.log(ph);
+  const formData = new FormData();
+  formData.append("file", ph);
+  formData.append("title", ti);
+  formData.append("description", desc);
+  formData.append("username", user);
+  axios.post("http://localhost:6969/posts", formData)
+  .then(json => {
     if (json.data.created) { //Creates post
       console.log("POST CREATION SUCCESS");
       axios.post('http://localhost:6969/items', {
@@ -98,11 +103,17 @@ export default function CenteredGrid(props) {
       age: '',
       multiline: 'Controlled',
       Choices: '',
+      photo: "temp",
     });
   
     const handleChange = name => event => {
       setValues({ ...values, [name]: event.target.value });
     };
+
+    const handleFileChange = name => event => {
+      setValues({ ...values, [name]: event.target.files[0] });
+      console.log(values.photo);
+    }
 
     const createRow = () =>{
         return(
@@ -166,16 +177,18 @@ export default function CenteredGrid(props) {
     Upload a Photo</Typography>
           <div className={classes.paper}>
           <Button
-          type="submit"
+          name="photo"
+          type="file"
           style = {{width: 300, height: 400,}}
           variant="contained"
           color= "neutral"
-          className={classes.submit}> <Icon><AddCircle/></Icon>
+          className={classes.submit}
+          value={values.photo}
+          onChange={handleFileChange()}> <Icon><AddCircle/></Icon>
           </Button>
+          <input name="photo" type="file" onChange={handleFileChange('photo')} />
           </div>
         </Grid>
-
-
 
         <Grid item xs>
         <Typography style = {titleStyle} align = 'Center' variant="h4" component="h4" >
@@ -285,7 +298,7 @@ export default function CenteredGrid(props) {
             style = {{width: 80, height: 60, }}
             variant="contained"
             color= "secondary"
-            onClick = {(e) => createPost(e, history, values.title, values.Description, values.item, values.link)}
+            onClick = {(e) => createPost(e, history, values.photo, values.title, values.Description, values.item, values.link)}
             className={classes.submit}>Post
         </Button>
         </div>
