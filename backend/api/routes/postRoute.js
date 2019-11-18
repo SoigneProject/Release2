@@ -32,6 +32,23 @@ router.get("/", function (req, res) {
     });
 });
 
+//get all posts by username
+router.get("username/:poster_name", function (req, res){
+    var queryUsername = req.params.poster_name;
+    PostModel.find({
+        poster_name: queryUsername
+    },
+    function (err, obj) {
+        if (err)
+            return res.json({
+                success: false,
+                error: err
+            });
+        return res.send(obj);
+        }
+    );
+});
+
 // Get post with id
 router.get("/id/:id", function (req, res) {
     // Get a user
@@ -77,7 +94,8 @@ router.post("/", function (req, res) {
         }
         const {
             title,
-            description
+            description,
+            poster_name
         } = req.body;
         cloudinary.uploader.upload(req.file.path, function (result) {
             let post = new PostModel();
@@ -92,6 +110,7 @@ router.post("/", function (req, res) {
             post.dateTime = ourDate;
             post.title = title;
             post.description = description;
+            post.poster_name = poster_name;
             post.photo = result.url;
             post.photo_id = result.public_id;
             post.save(err => {
