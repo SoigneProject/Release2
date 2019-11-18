@@ -12,7 +12,7 @@ class PicUpload extends Component {
       title: "",
       description: "",
       file: null,
-      photo: ""     // ADDED
+      photo: ""
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDescChange = this.handleDescChange.bind(this);
@@ -56,7 +56,6 @@ class PicUpload extends Component {
     });
   }
 
-  // ADDED
   componentDidMount() {
     axios
       .get("http://localhost:6969/posts/id/5dd1fce19fed3b13d06c6ffc")
