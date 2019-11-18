@@ -58,5 +58,7 @@ npm run update
 - Jsonwebtoken
 - Dotenv
 - Cookie-parser
+- Multer
+- Cloudinary
 
 ### If you get a bug, copy paste debug output and let me know :)

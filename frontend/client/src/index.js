@@ -10,6 +10,7 @@ import Login from "./Login";
 import CreatePost from "./CreatePost";
 import Search from "./Search";
 import Profile from "./Profile";
+import Upload from "./PicUpload";
 
 const routing = (
   <Router>
@@ -22,6 +23,7 @@ const routing = (
       <Route path="/CreatePost" component={CreatePost} />
       <Route path="/Search" component={Search} />
       <Route path="/Profile" component={Profile} />
+      <Route path="/Upload" component={Upload} />
     </div>
   </Router>
 );

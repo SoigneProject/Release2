@@ -23,6 +23,9 @@ var PostSchema = new Schema({
         type: String,
         required: "Please select a picture for your post"
     },
+    photo_id: {
+        type: String
+    },
     tags: [postTagsSchema]
 });
 module.exports = mongoose.model('Post', PostSchema);
