@@ -3,7 +3,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class SearchBarTest {
+public class LogoutTest {
 	static WebDriver driver;
 	
 	public static void main(String[] args) {
@@ -31,7 +31,7 @@ public class SearchBarTest {
 	 * Test: 
 	 * @return boolean
 	 */
-	private static boolean testSearchBar() {
+	private static boolean testLogout() {
 		return false;
 	}	
 }
