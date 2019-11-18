@@ -29,6 +29,13 @@ const UserSchema = new Schema({
         type: String,
         default: ''
     },
+    bio: {
+        type: String,
+        default: ''
+    },
+    // profilePic: {
+    //     type: 
+    // },
     followers: [FollowerSchema],
     following: [FollowingSchema]
 });
