@@ -60,5 +60,6 @@ npm run update
 - Cookie-parser
 - Multer
 - Cloudinary
+- Cloudinary-React
 
 ### If you get a bug, copy paste debug output and let me know :)
