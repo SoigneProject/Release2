@@ -13,6 +13,7 @@ import axios from 'axios';
 import TagList from './TagList.js';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MultLinks from './MultLinks.js';
+import PostButton from './PostButton';
  
 const useStyles = makeStyles(theme => ({
   root: {

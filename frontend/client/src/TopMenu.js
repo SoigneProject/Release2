@@ -28,6 +28,8 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Results from './Results';
+import MyFeed from './MyFeed';
 
 
 function TabPanel(props) {
@@ -161,17 +163,18 @@ export default function NavTabs() {
           
           TabIndicatorProps={{
             style: {
-              backgroundColor: "tomato "
+              backgroundColor: "white "
 
             }
           }}
           style = {{backgroundColor: 'white', color: 'black'}}
         >
-          <LinkTab label="Sign Up" href="./signModal" {...a11yProps(0)} />
-          <LinkTab label="Login" href="./Login" {...a11yProps(1)} />
+        
           <LinkTab label="Kristina" href="/" {...a11yProps(3)} />
           <LinkTab label="Trending" href="./Feed" {...a11yProps(4)} />
           <LinkTab label="Create Post" href="./CreatePost" {...a11yProps(5)} />
+          <LinkTab label="My Feed" href="./MyFeed" {...a11yProps(6)} />
+
         </Tabs>
       </AppBar>
       

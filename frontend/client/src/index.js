@@ -9,6 +9,9 @@ import signModal from "./signModal";
 import Login from "./Login";
 import CreatePost from "./CreatePost";
 import Search from "./Search";
+import Results from "./Results";
+import MyFeed from './MyFeed';
+
 
 const routing = (
   <Router>
@@ -40,6 +43,9 @@ const routing = (
       <Route path="/Login" component={Login} />
       <Route path="/CreatePost" component={CreatePost} />
       <Route path="/Search" component={Search} />
+      <Route path ="/Results" component = {Results}/>
+      <Route path ="/MyFeed" component = {MyFeed}/>
+
     </div>
   </Router>
 );
