@@ -147,7 +147,6 @@ export default function CenteredGrid(props) {
   return (
     <div className={classes.root}>
       <TopMenu/>
-      <PostButton></PostButton>
         <Typography style = {titleStyle} align = 'Left' variant="h2" component="h2" >
     Create a Post</Typography>
 
