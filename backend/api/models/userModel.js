@@ -33,9 +33,13 @@ const UserSchema = new Schema({
         type: String,
         default: ''
     },
-    // profilePic: {
-    //     type: 
-    // },
+    profilePic: {
+        type: String,
+        // Default to generic avatar
+    },
+    profilePic_id: {
+        type: String
+    },
     followers: [FollowerSchema],
     following: [FollowingSchema]
 });
