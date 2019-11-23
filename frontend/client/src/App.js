@@ -58,6 +58,9 @@ class App extends Component {
         following: [{username: "test2"}],
         password: "temp",
         username: "loading",
+        profilePic: "temp",
+        profilePic_id: "temp",
+
       },
       userPosts: [{
         dateTime: "loading",
@@ -68,6 +71,19 @@ class App extends Component {
         username: "temp",
       }],
     };
+
+    this.handleFileChange = this.handleFileChange.bind(this);
+  }
+
+
+  handleFileChange(event) {
+    const formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    axios.put('http://localhost:6969/users/' + this.state.userObj.username, formData)
+    .then(json => {
+      console.log(json.data);
+      this.setState({userObj: json.data})
+    });
   }
 
   componentDidMount() {
@@ -88,7 +104,7 @@ class App extends Component {
   // see them render into our screen
   render() {
     const { userObj, userPosts} = this.state;
-    console.log(userPosts);
+    console.log(userObj);
 
     const theme = createMuiTheme({
       overrides: {
@@ -137,7 +153,7 @@ class App extends Component {
       marginTop: 20
     };
 
-    const rows = [createData(userObj.followers.length, userObj.following.length)];
+    var rows = [createData(userObj.followers.length, userObj.following.length)];
     function createData(followers, following) {
       return { followers, following };
     }
@@ -179,7 +195,8 @@ class App extends Component {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <div style={paperStyle}>
-              <AvatarLarge alt={userPosts[0].photo} src={userPosts[0].photo}></AvatarLarge>
+              <AvatarLarge alt={userObj.profilePic} src={userObj.profilePic}></AvatarLarge>
+              <input name="photo" type="file" onChange={this.handleFileChange} />
               <Typography
                 align="center"
                 variant="h3"
