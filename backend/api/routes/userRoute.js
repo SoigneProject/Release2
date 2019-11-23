@@ -7,6 +7,19 @@ const UserModel = require('../models/userModel');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
+const multer = require('multer');
+const upload = multer({
+    dest: 'uploads/'
+}).single('file');
+const fs = require('fs');
+const cloudinary = require("cloudinary");
+
+cloudinary.config({
+    cloud_name: "soigne-pix",
+    api_key: "472288961331361",
+    api_secret: "VylP7m3EhxWbbzWEE8NBAcbcxKs"
+});
+
 router.get('/', function (req, res) {
     UserModel.find((err, user) => {
         if (err) return res.json({
@@ -164,7 +177,48 @@ router.get('/:username', function (req, res) {
     });
 })
 
+//Leo update photo version:
+// Update a user's photo
+// Upload photo, then upload to cloud (similar to post way of uploading photo)
+//Retrieve current user and set body to that.
+//return that object
+router.put('/:username', function (req, res) {
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        console.log(req);
+        var queryUsername = req.params.username;
+        UserModel.findOne({
+            username: queryUsername
+        }, function (err, obj) {
+            var body = obj;
+            cloudinary.uploader.upload(req.file.path, function (result) {
+                body.profilePic = result.url;
+                body.profilePic_id = result.public_id;
+    
+                UserModel.findOneAndUpdate({
+                    username: queryUsername
+                }, body, function (err) {
+                    if (err) return res.json({
+                        success: false,
+                        error: err
+                    });
+                    return res.json({
+                        success: true,
+                        user: body
+                    });
+                });
+            });
+        });
+    });
+})
+
+/*
 // Update a user
+// Original put method.
 router.put('/:username', function (req, res) {
     var queryUsername = req.params.username;
     var body = req.body;
@@ -181,6 +235,8 @@ router.put('/:username', function (req, res) {
         });
     });
 })
+*/
+
 
 // Delete a user
 router.get('/:username', function (req, res) {
