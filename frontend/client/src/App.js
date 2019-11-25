@@ -43,6 +43,7 @@ import logo from "./images/soigne.png";
 import signModal from "./signModal";
 import CreatePost from "./CreatePost";
 import Nav from "./nav";
+import ForgotPassword from "./ForgotPassword";
 import Bio from './Bio';
 
 class App extends Component {
@@ -179,6 +180,7 @@ class App extends Component {
         <TopMenu />
         <Grid container spacing={3}>
           <Grid item xs={4}>
+          <ForgotPassword></ForgotPassword>
             <div style={paperStyle}>
               <AvatarLarge alt="pic" src={pic}></AvatarLarge>
               <Typography
