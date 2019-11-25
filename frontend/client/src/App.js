@@ -81,8 +81,8 @@ class App extends Component {
     formData.append("file", event.target.files[0]);
     axios.put('http://localhost:6969/users/' + this.state.userObj.username, formData)
     .then(json => {
-      console.log(json.data);
-      this.setState({userObj: json.data})
+      // console.log(json.data);
+      this.setState({userObj: json.data.user})
     });
   }
 
@@ -104,7 +104,7 @@ class App extends Component {
   // see them render into our screen
   render() {
     const { userObj, userPosts} = this.state;
-    console.log(userObj);
+    // console.log(userObj);
 
     const theme = createMuiTheme({
       overrides: {

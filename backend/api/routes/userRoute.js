@@ -189,7 +189,7 @@ router.put('/:username', function (req, res) {
         } else if (err) {
             return res.status(500).json(err)
         }
-        console.log(req);
+        // console.log(req);
         var queryUsername = req.params.username;
         UserModel.findOne({
             username: queryUsername
@@ -205,6 +205,12 @@ router.put('/:username', function (req, res) {
                     if (err) return res.json({
                         success: false,
                         error: err
+                    });
+                    // Remove temp file
+                    fs.unlink(req.file.path, (err) => {
+                        if (err) {
+                            console.log(err);
+                        }
                     });
                     return res.json({
                         success: true,
