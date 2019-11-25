@@ -243,14 +243,7 @@ class App extends Component {
               </Table>
             
             <Bio style = {{marginTop: 20, marginLeft: 8,}}></Bio>
-              <Typography
-                style={{ marginTop: 20, marginLeft: 8 }}
-                color="textSecondary"
-                align="center"
-              >
-                SF Transplant, NY gal at heart. Combining street style and
-                luxury is my passion. Oh, and I also love drinking boba.
-              </Typography>
+             
             </div>
           </Grid>
           <Grid item xs={8}>
