@@ -11,6 +11,9 @@ import CreatePost from "./CreatePost";
 import Search from "./Search";
 import Profile from "./Profile";
 import Upload from "./PicUpload";
+import Results from "./Results";
+import MyFeed from './MyFeed';
+
 
 const routing = (
   <Router>
@@ -22,8 +25,9 @@ const routing = (
       <Route path="/Login" component={Login} />
       <Route path="/CreatePost" component={CreatePost} />
       <Route path="/Search" component={Search} />
-      <Route path="/Profile" component={Profile} />
-      <Route path="/Upload" component={Upload} />
+      <Route path ="/Results" component = {Results}/>
+      <Route path ="/MyFeed" component = {MyFeed}/>
+
     </div>
   </Router>
 );

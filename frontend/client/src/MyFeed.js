@@ -150,7 +150,7 @@ export default function Feed() {
     <Grid container spacing={3}>
     <Grid item xs={6}>
     <Typography style = {titleStyle} align = 'Left' variant="h3" component="h2" >
-    Trending</Typography>
+    My Feed</Typography>
     </Grid>
     <Grid item xs = {6}>
     <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className={classes.button}>

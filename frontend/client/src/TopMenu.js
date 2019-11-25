@@ -17,6 +17,20 @@ import signModal from './signModal'
 import Login from './Login'
 import CreatePost from './CreatePost'
 import App from './App'
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import MenuIcon from '@material-ui/icons/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Results from './Results';
+import MyFeed from './MyFeed';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -55,7 +69,7 @@ function LinkTab(props) {
     <Tab
       component="a"
       onClick={event => {
-        event.SignIn();
+        //event.SignIn();
       }}
       {...props}
     />
@@ -71,6 +85,16 @@ const useStyles = makeStyles(theme => ({
   },
 
 }));
+const useStyles1 = makeStyles({
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: 'auto',
+  },
+});
+
+ 
 
 export default function NavTabs() {
   const classes = useStyles();
@@ -79,6 +103,40 @@ export default function NavTabs() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const classes1 = useStyles1();
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (side, open) => event => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [side]: open });
+  };
+
+  const sideList = side => (
+    <div
+      className={classes1.list}
+      role="presentation"
+      onClick={toggleDrawer(side, false)}
+      onKeyDown={toggleDrawer(side, false)}
+    >
+      <List>
+        {['Sign Up', 'Login', 'Kristina', 'Trending'].map((text, index) => (
+          <MenuItem button key={text} href="./signModal">
+            <ListItemText primary={text} href="./signModal"/>
+          </MenuItem>
+        ))}
+      </List>
+      <Divider />
+     
+    </div>
+  );
 
   return (
     <div className={classes.root}>
@@ -87,11 +145,17 @@ export default function NavTabs() {
 
     {/* <InputField/> */}
     <Search />
+    
     </div>
-
+    {/*<div style = {{display: 'inline-block', float: 'right', marginTop: 27, marginRight: 10,}}>
+    <Button onClick={toggleDrawer('right', true)}><MenuIcon></MenuIcon></Button>
+    <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)}>
+    {sideList('right')}
+  </Drawer>
+  </div>
+  */}
       <AppBar position="static" elevation={0}>
         <Tabs
-          variant="fullWidth"
           value={value}
           onChange={handleChange}
           tabItemContainerStyle={{width: '400px'}}
@@ -99,17 +163,18 @@ export default function NavTabs() {
           
           TabIndicatorProps={{
             style: {
-              backgroundColor: "tomato "
+              backgroundColor: "white "
 
             }
           }}
           style = {{backgroundColor: 'white', color: 'black'}}
         >
-          <LinkTab label="Sign Up" href="./signModal" {...a11yProps(0)} />
-          <LinkTab label="Login" href="./Login" {...a11yProps(1)} />
-          <LinkTab label="My Profile" href="/" {...a11yProps(3)} />
+        
+          <LinkTab label="Kristina" href="/" {...a11yProps(3)} />
           <LinkTab label="Trending" href="./Feed" {...a11yProps(4)} />
           <LinkTab label="Create Post" href="./CreatePost" {...a11yProps(5)} />
+          <LinkTab label="My Feed" href="./MyFeed" {...a11yProps(6)} />
+
         </Tabs>
       </AppBar>
       

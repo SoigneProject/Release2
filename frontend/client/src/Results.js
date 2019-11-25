@@ -149,8 +149,8 @@ export default function Feed() {
     <TopMenu></TopMenu>
     <Grid container spacing={3}>
     <Grid item xs={6}>
-    <Typography style = {titleStyle} align = 'Left' variant="h3" component="h2" >
-    Trending</Typography>
+    <Typography style = {titleStyle} align = 'Left' variant="h5" component="h2" >
+    Search Results for "results here"</Typography>
     </Grid>
     <Grid item xs = {6}>
     <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className={classes.button}>

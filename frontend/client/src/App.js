@@ -35,7 +35,6 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import CloseIcon from "@material-ui/icons/Close";
-
 import pic3 from "./3.jpeg";
 import pic4 from "./4.jpeg";
 import pic5 from "./5.jpeg";
@@ -43,6 +42,9 @@ import Signup from "./Signup";
 import logo from "./images/soigne.png";
 import signModal from "./signModal";
 import CreatePost from "./CreatePost";
+import Nav from "./nav";
+import ForgotPassword from "./ForgotPassword";
+import Bio from './Bio';
 
 class App extends Component {
   constructor(props) {
@@ -139,7 +141,8 @@ class App extends Component {
 
     const tableStyle = {
       minWidth: 20,
-      marginTop: 0
+      marginTop: 0,
+      marginBottom: 40,
     };
 
     const tableStyle1 = {
@@ -191,9 +194,11 @@ class App extends Component {
 
     return (
       <div>
+
         <TopMenu />
         <Grid container spacing={3}>
           <Grid item xs={4}>
+          <ForgotPassword></ForgotPassword>
             <div style={paperStyle}>
               <AvatarLarge alt={userObj.profilePic} src={userObj.profilePic}></AvatarLarge>
               <input name="photo" type="file" onChange={this.handleFileChange} />
@@ -257,13 +262,11 @@ class App extends Component {
                   ))}
                 </TableBody>
               </Table>
-              <Typography
-                style={{ marginTop: 20, marginLeft: 8 }}
-                color="textSecondary"
-                align="center"
-              >
-                {userObj.bio}
-              </Typography>
+   
+            
+            <Bio style = {{marginTop: 20, marginLeft: 8,}}>                {userObj.bio}
+</Bio>
+             
             </div>
           </Grid>
           <Grid item xs={8}>
