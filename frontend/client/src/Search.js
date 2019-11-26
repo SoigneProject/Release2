@@ -11,7 +11,8 @@ import {
  Highlight,
  // SearchBox,
  connectSearchBox
-} from "react-instantsearch-dom";const SearchChoices = [
+} from "react-instantsearch-dom";import { Grid } from "@material-ui/core";
+const SearchChoices = [
  {
    value: 'user',
    label: 'user',
@@ -77,11 +78,30 @@ import {
        marginTop: 13
      }}
    >
-         <TextField
+   <Grid container spacing={1}>
+   <Grid item xs={10}>
+
+   <TextField
+     className={classes.root}
+     label="Search for an Outfit:"
+     variant="outlined"
+     id="mui-theme-provider-outlined-input"
+     InputProps={{
+       disableUnderline: true
+     }}
+     value={currentRefinement}
+     onChange={event => refine(event.currentTarget.value)}
+     style={{width: "100%"}}
+   />{" "}
+   {currentRefinement ? <Hits hitComponent={Hit} /> : null}
+   </Grid>
+   <Grid item xs={1}>
+
+   <TextField style = {{width: 100}}
            id="criteria"
            select
            label="Search Criteria"
-           fullWidth
+           fullwidth = "false"
            className={classes.root}
            value={searchCriteria}
            onChange={(e) => setSearchCriteria(e.target.value)}
@@ -91,7 +111,6 @@ import {
                className: classes.menu,
            },
            }}
-           helperText="Select your search criteria"
            margin="normal"
            variant="outlined"
          >
@@ -101,29 +120,12 @@ import {
          </option>
        ))}
      ></TextField>
-     <TextField
-       className={classes.root}
-       label="Search for an Outfit:"
-       variant="outlined"
-       id="mui-theme-provider-outlined-input"
-       InputProps={{
-         disableUnderline: true
-       }}
-       value={currentRefinement}
-       onChange={event => refine(event.currentTarget.value)}
-       style={{width: "100%"}}
-     />{" "}
-     {currentRefinement ? <Hits hitComponent={Hit} /> : null}
-     >
-         <Button
-           type="search"
-           variant="contained"
-           color="primary first"
-           className={classes.submit}
-           onClick = {(e) => onSearch(e, searchCriteria, currentRefinement)}
-         >
-         search
-         </Button><p></p>
+     </Grid> 
+            
+     
+     </Grid>
+     
+        
    </div>
  );
 };const CustomSearchBox = connectSearchBox(SearchBox);export default function Search() {
