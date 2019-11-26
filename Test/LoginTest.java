@@ -10,8 +10,9 @@ public class LoginTest {
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\sssup\\OneDrive\\Documents\\Soigne Test");
 
 		//Open the Chrome browser.
-		WebDriver driver = new ChromeDriver();
+		driver = new ChromeDriver();
 
+		//Maximize the window size.
 		driver.manage().window().maximize();
 
 		if (testLogin()) {
