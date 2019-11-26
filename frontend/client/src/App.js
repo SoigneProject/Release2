@@ -45,6 +45,7 @@ import CreatePost from "./CreatePost";
 import Nav from "./nav";
 import ForgotPassword from "./ForgotPassword";
 import Bio from './Bio';
+import { isUndefined } from "util";
 
 class App extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class App extends Component {
         tags: [],
         title: "loading",
         username: "temp",
-      }],
+      }]
     };
 
     this.handleFileChange = this.handleFileChange.bind(this);
@@ -105,8 +106,9 @@ class App extends Component {
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
-    const { userObj, userPosts} = this.state;
+    const { userObj, userPosts } = this.state;
     // console.log(userObj);
+    // console.log(userPosts);
 
     const theme = createMuiTheme({
       overrides: {
@@ -156,7 +158,7 @@ class App extends Component {
       marginTop: 20
     };
 
-    var rows = [createData(userObj.followers.length, userObj.following.length)];
+    const rows = [createData(userObj.followers.length, userObj.following.length)];
     function createData(followers, following) {
       return { followers, following };
     }
