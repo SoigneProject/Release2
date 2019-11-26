@@ -11,7 +11,7 @@ public class SignUpTest {
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\sssup\\OneDrive\\Documents\\Soigne Test\\chromedriver_win32");
 
 		//Open the Chrome browser.
-		WebDriver driver = new ChromeDriver();
+		driver = new ChromeDriver();
 
 		//Maximize the browser window.
 		driver.manage().window().maximize();
