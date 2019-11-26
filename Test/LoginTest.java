@@ -4,9 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LoginTest {
-	static Webdriver driver;
+	static WebDriver driver;
 	public static void main(String[] args) {
-
 		//Setting driver properties.
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\sssup\\OneDrive\\Documents\\Soigne Test");
 
@@ -29,7 +28,7 @@ public class LoginTest {
 	private static boolean testLogin() {
 		try {
 			//Navigate the driver to the website's URL.
-			driver.navigate().to("http://localhost:3000/Login");
+			driver.navigate().to("http://localhost:3000/login");
 
 			//Wait for the element to load.
 			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
