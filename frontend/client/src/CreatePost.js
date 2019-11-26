@@ -19,6 +19,10 @@ var user = "";
 axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
 .then(json => user = json.data.username);
 
+var user = "";
+axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
+.then(json => user = json.data.username);
+
 const Choices = [
     {
       value: '#fallfashion',
@@ -71,7 +75,7 @@ const titleStyle = {
 
 function createPost(e, history, ph, ti, desc, iname, ilink) {
   e.preventDefault();
-  console.log(ph);
+  // console.log(ph);
   const formData = new FormData();
   formData.append("file", ph);
   formData.append("title", ti);

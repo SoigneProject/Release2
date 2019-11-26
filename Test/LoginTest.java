@@ -16,10 +16,10 @@ public class LoginTest {
 		driver.manage().window().maximize();
 
 		if (testLogin()) {
-			System.out.println("Sign Up Test: Successful");
+			System.out.println("Login Test: Successful");
 		}
 		else {
-			System.out.println("Sign up Test: Failed");
+			System.out.println("Login Test: Failed");
 		}
 		
 		driver.close();
@@ -35,13 +35,13 @@ public class LoginTest {
 			driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
 			//Enter the username.
-			driver.findElement(By.cssSelector("#userName")).sendKeys(""); //insert a username.
+			driver.findElement(By.cssSelector("#userName")).sendKeys("Cogart"); //insert a username.
 
 			//Wait for the element to load.
 			driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 
 			//Enter the password.
-			driver.findElement(By.cssSelector("#password")).sendKeys(""); //insert a password.
+			driver.findElement(By.cssSelector("#password")).sendKeys("cs160"); //insert a password.
 
 			//Click on the Login button.
 			driver.findElement(By.cssSelector("#server-modal-description > form > button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSecondary.MuiButton-fullWidth")).click();
