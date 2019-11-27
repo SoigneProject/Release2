@@ -74,6 +74,33 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
+function onPassChangeSubmit(e, history, oldPass, oldPassConf, newPass, newPassConf) {
+  e.preventDefault();
+  if (oldPass !== oldPassConf) alert('Old password does not match');
+  if (newPass !== newPassConf) alert('New password does not match');
+  if (oldPass === newPass) alert('New password must be different than old password');
+  const newPass = newPass;
+
+  // PUT request to backend
+  axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
+    .then(json => axios.get('http://localhost:6969/users/' + json.data.username))
+    .then(json => axios.put("http://localhost:6969/users/" + json.data.username,
+      {
+        password: password
+      },
+      {
+        withCredentials: true
+      }
+    ))
+    .then(json => {
+      if (json.data.success) {
+        history.push("/");
+      } else {
+        console.log("SIGN IN FAILED");
+      }
+    });
+}
+
 export default function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
 
@@ -84,7 +111,10 @@ export default function CustomizedDialogs(props) {
     setOpen(false);
   };
   const classes = styles();
-
+  const [oldPass, setOldPass] = useState('');
+  const [oldPassConf, setOldPassConf] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [newPassConf, setNewPassConf] = useState('');
 
   return (
     <div>
@@ -104,13 +134,15 @@ export default function CustomizedDialogs(props) {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="oldPass"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                id="oldPass"
                 label="Old Password"
                 autoFocus
+                value={oldPass}
+                onChange={(e) => setOldPass(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -118,10 +150,12 @@ export default function CustomizedDialogs(props) {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
+                id="oldPassConf"
                 label="Confirm Password"
-                name="lastName"
+                name="oldPassConf"
                 autoComplete="lname"
+                value={oldPassConf}
+                onChange={(e) => setOldPassConf(e.target.value)}
               />
             </Grid>
            
@@ -135,6 +169,8 @@ export default function CustomizedDialogs(props) {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={newPass}
+                onChange={(e) => setNewPass(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -146,7 +182,8 @@ export default function CustomizedDialogs(props) {
                 label="Confirm Password"
                 type="password"
                 id="confirmPassword"
-                //autoComplete="current-password"
+                value={newPassConf}
+                onChange={(e) => setNewPassConf(e.target.value)}
               />
             </Grid>
             
@@ -156,6 +193,7 @@ export default function CustomizedDialogs(props) {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={onPassChangeSubmit}
             >
               Change your Password
             </Button>
