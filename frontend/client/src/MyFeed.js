@@ -68,7 +68,6 @@ class MyFeed extends Component
               {
                 axios.get("http://localhost:6969/posts/username/" + this.state.following[i].username)
                 .then(json => {
-                  console.log(json);
                   this.state.userPosts.push(json.data);
                 });
               }
@@ -137,7 +136,7 @@ class MyFeed extends Component
       My Feed</Typography>
       </Grid>
       <Grid item xs = {6}>
-      <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className="button">
+      <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className="button" href="./CreatePost">
       Create Post
     </Button>
     </Grid>
