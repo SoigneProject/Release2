@@ -6,7 +6,6 @@ const router = express.Router();
 const UserModel = require('../models/userModel');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-
 const multer = require('multer');
 const upload = multer({
     dest: 'uploads/'
