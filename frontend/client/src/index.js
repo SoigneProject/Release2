@@ -25,8 +25,9 @@ const routing = (
       <Route path="/Login" component={Login} />
       <Route path="/CreatePost" component={CreatePost} />
       <Route path="/Search" component={Search} />
-      <Route path ="/Results" component = {Results}/>
-      <Route path ="/MyFeed" component = {MyFeed}/>
+      <Route path="/Results" component={Results}/>
+      <Route path="/MyFeed" component={MyFeed}/>
+      <Route path="/profile" component={Profile}/>
 
     </div>
   </Router>

@@ -44,7 +44,7 @@ import signModal from "./signModal";
 import CreatePost from "./CreatePost";
 import Nav from "./nav";
 import ForgotPassword from "./ForgotPassword";
-import Bio from './Bio';
+import Bio from "./Bio";
 import { isUndefined } from "util";
 
 class App extends Component {
@@ -57,49 +57,60 @@ class App extends Component {
         emailAddress: "",
         firstName: "loading",
         lastName: "loading",
-        followers: [{username: "test"}],
-        following: [{username: "test2"}],
+        followers: [{ username: "test" }],
+        following: [{ username: "test2" }],
         password: "temp",
         username: "loading",
         profilePic: "temp",
-        profilePic_id: "temp",
-
+        profilePic_id: "temp"
       },
-      userPosts: [{
-        dateTime: "loading",
-        description: "temp",
-        photo: "temp",
-        tags: [],
-        title: "loading",
-        username: "temp",
-      }]
+      userPosts: [
+        {
+          dateTime: "loading",
+          description: "temp",
+          photo: "temp",
+          tags: [],
+          title: "loading",
+          username: "temp"
+        }
+      ]
     };
 
     this.handleFileChange = this.handleFileChange.bind(this);
   }
 
-
   handleFileChange(event) {
     const formData = new FormData();
     formData.append("file", event.target.files[0]);
-    axios.put('http://localhost:6969/users/' + this.state.userObj.username, formData)
-    .then(json => {
-      // console.log(json.data);
-      this.setState({userObj: json.data.user})
-    });
+    axios
+      .put(
+        "http://localhost:6969/users/" + this.state.userObj.username,
+        formData
+      )
+      .then(json => {
+        // console.log(json.data);
+        this.setState({ userObj: json.data.user });
+      });
   }
 
   componentDidMount() {
     // Retreive user data
-    axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
-    .then(json => axios.get('http://localhost:6969/users/' + json.data.username))
-    .then(json => {
-      this.setState({userObj: json.data});
-      axios.get('http://localhost:6969/posts/username/' + this.state.userObj.username)
+    axios
+      .get("http://localhost:6969/user/currentuser", { withCredentials: true })
+      .then(json =>
+        axios.get("http://localhost:6969/users/" + json.data.username)
+      )
       .then(json => {
-        this.setState({userPosts: json.data});
+        this.setState({ userObj: json.data });
+        axios
+          .get(
+            "http://localhost:6969/posts/username/" +
+              this.state.userObj.username
+          )
+          .then(json => {
+            this.setState({ userPosts: json.data });
+          });
       });
-    });
   }
 
   // here is our UI
@@ -144,7 +155,7 @@ class App extends Component {
     const tableStyle = {
       minWidth: 20,
       marginTop: 0,
-      marginBottom: 40,
+      marginBottom: 40
     };
 
     const tableStyle1 = {
@@ -158,7 +169,9 @@ class App extends Component {
       marginTop: 20
     };
 
-    const rows = [createData(userObj.followers.length, userObj.following.length)];
+    const rows = [
+      createData(userObj.followers.length, userObj.following.length)
+    ];
     function createData(followers, following) {
       return { followers, following };
     }
@@ -196,14 +209,20 @@ class App extends Component {
 
     return (
       <div>
-
         <TopMenu />
         <Grid container spacing={3}>
           <Grid item xs={4}>
-          <ForgotPassword></ForgotPassword>
+            <ForgotPassword></ForgotPassword>
             <div style={paperStyle}>
-              <AvatarLarge alt={userObj.profilePic} src={userObj.profilePic}></AvatarLarge>
-              <input name="photo" type="file" onChange={this.handleFileChange} />
+              <AvatarLarge
+                alt={userObj.profilePic}
+                src={userObj.profilePic}
+              ></AvatarLarge>
+              <input
+                name="photo"
+                type="file"
+                onChange={this.handleFileChange}
+              />
               <Typography
                 align="center"
                 variant="h3"
@@ -229,20 +248,6 @@ class App extends Component {
                       <TableCell align="center">Following</TableCell>
                     </TableRow>
                   </TableHead>
-                  {/* <TableBody>
-                    {!userObj
-                      ? "you failed"
-                      : userObj.followers.map((entry, i) => (
-                          <TableRow key={i}>
-                            <TableCell align="center">
-                              {entry.username}
-                            </TableCell>
-                            <TableCell align="center">
-                              {entry.username}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                  </TableBody> */}
                   <TableBody>
                     {!userObj ? "you failed" : generateCells()}
                   </TableBody>
@@ -264,11 +269,8 @@ class App extends Component {
                   ))}
                 </TableBody>
               </Table>
-   
-            
-            <Bio style = {{marginTop: 20, marginLeft: 8,}}>                {userObj.bio}
-</Bio>
-             
+
+              <Bio style={{ marginTop: 20, marginLeft: 8 }}> {userObj.bio}</Bio>
             </div>
           </Grid>
           <Grid item xs={8}>
