@@ -61,5 +61,6 @@ npm run update
 - Multer
 - Cloudinary
 - Cloudinary-React
+- Nodemon
 
 ### If you get a bug, copy paste debug output and let me know :)
