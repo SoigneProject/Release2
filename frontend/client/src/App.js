@@ -73,7 +73,8 @@ class App extends Component {
           title: "loading",
           username: "temp"
         }
-      ]
+      ],
+      isAuthenticating: true
     };
 
     this.handleFileChange = this.handleFileChange.bind(this);
@@ -88,7 +89,6 @@ class App extends Component {
         formData
       )
       .then(json => {
-        // console.log(json.data);
         this.setState({ userObj: json.data.user });
       });
   }
@@ -97,19 +97,24 @@ class App extends Component {
     // Retreive user data
     axios
       .get("http://localhost:6969/user/currentuser", { withCredentials: true })
-      .then(json =>
-        axios.get("http://localhost:6969/users/" + json.data.username)
-      )
       .then(json => {
-        this.setState({ userObj: json.data });
-        axios
-          .get(
-            "http://localhost:6969/posts/username/" +
-              this.state.userObj.username
-          )
-          .then(json => {
-            this.setState({ userPosts: json.data });
-          });
+        if (!json.data.username) {
+          this.props.history.push("/signModal");
+        } else {
+          axios
+            .get("http://localhost:6969/users/" + json.data.username)
+            .then(json => {
+              this.setState({ userObj: json.data, isAuthenticating: false });
+              axios
+                .get(
+                  "http://localhost:6969/posts/username/" +
+                    this.state.userObj.username
+                )
+                .then(json => {
+                  this.setState({ userPosts: json.data });
+                });
+            });
+        }
       });
   }
 
@@ -117,9 +122,9 @@ class App extends Component {
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
+    if (this.state.isAuthenticating) return null;
+
     const { userObj, userPosts } = this.state;
-    // console.log(userObj);
-    // console.log(userPosts);
 
     const theme = createMuiTheme({
       overrides: {
@@ -296,5 +301,9 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  history: PropTypes.any
+};
 
 export default App;

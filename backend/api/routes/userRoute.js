@@ -157,6 +157,13 @@ router.get('/:username', function (req, res) {
     });
 })
 
+// Get a blank user (used for failure redirect)
+router.get('/guest', function (req, res) {
+    return res.json({
+        username: ''
+    });
+})
+
 //Leo update photo version:
 // Update a user's photo
 // Upload photo, then upload to cloud (similar to post way of uploading photo)
