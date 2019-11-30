@@ -48,7 +48,7 @@ npm run update
 - Mongoose
 - MongoDB
 - Axios
-- Bcrypt
+- BcryptJS
 - Cors
 - Concurrently
 - Express
