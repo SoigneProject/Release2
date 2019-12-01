@@ -5,13 +5,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom'
 import {
  InstantSearch,
  Hits,
  Highlight,
  // SearchBox,
  connectSearchBox
-} from "react-instantsearch-dom";import { Grid } from "@material-ui/core";
+} from "react-instantsearch-dom";
+import { Grid } from "@material-ui/core";
+
 const SearchChoices = [
  {
    value: 'user',
@@ -25,7 +28,9 @@ const SearchChoices = [
    value: 'item',
    label: 'item',
  },
-];function onSearch(e, choice, value) {
+];
+
+function onSearch(e, choice, value) {
  e.preventDefault();
  console.log(choice);
  if(choice === 'user'){
@@ -47,10 +52,14 @@ const SearchChoices = [
      console.log(response);
    });
  }
-}const searchClient = algoliasearch(
+}
+
+const searchClient = algoliasearch(
  "OGBGRUY2SI",
  "ab515a53dc0869e5c6a5a1a84d8bdefc"
-);const useStyles = makeStyles(() => ({
+);
+
+const useStyles = makeStyles(() => ({
  root: {
    flexWrap: "wrap",
    width: "100%",
@@ -69,9 +78,14 @@ const SearchChoices = [
    }
  },
  margin: {}
-}));const SearchBox = ({currentRefinement, refine}) => {
+}));
+
+const SearchBox = ({currentRefinement, refine}) => {
  const classes = useStyles();
- const [searchCriteria, setSearchCriteria] = React.useState('user');  return (
+
+ const [searchCriteria, setSearchCriteria] = React.useState('user');  
+ 
+ return (
    <div
      style={{
        width: "100%",
@@ -91,6 +105,11 @@ const SearchChoices = [
      }}
      value={currentRefinement}
      onChange={event => refine(event.currentTarget.value)}
+     onKeyPress={event => {
+       if (event.key === 'Enter') {
+         onSearch(event, currentRefinement, searchCriteria);
+       }
+     }}
      style={{width: "100%"}}
    />{" "}
    {currentRefinement ? <Hits hitComponent={Hit} /> : null}
@@ -128,7 +147,9 @@ const SearchChoices = [
         
    </div>
  );
-};const CustomSearchBox = connectSearchBox(SearchBox);export default function Search() {
+};const CustomSearchBox = connectSearchBox(SearchBox);
+
+export default function Search(prop) {
  return (
    <div style={{width: "100%"}}>
    <InstantSearch indexName="dev_USERS" searchClient={searchClient}>

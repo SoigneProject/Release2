@@ -46,43 +46,37 @@ class MyFeed extends Component
       ],
       username: "temp",
       following: [{username: "temp"}],
-      isAuthenticating: true,
     }
   }
 
   
   componentDidMount() {
     // Retreive user data
-    axios
-      .get("http://localhost:6969/user/currentuser", { withCredentials: true })
+    axios.get("http://localhost:6969/user/currentuser", {withCredentials: true})
+    .then(json => {
+      axios.get("http://localhost:6969/users/" + json.data.username)
       .then(json => {
-        if (!json.data.username) {
-          this.props.history.push("/signModal");
-        } else {
-          axios
-            .get("http://localhost:6969/users/" + json.data.username)
-            .then(json => {
-              this.setState({ username: json.data.username, following: json.data.following, isAuthenticating: false });
-              this.state.userPosts.pop();
-              for(var i = 0; i < this.state.following.length; i++)
-              {
-                axios.get("http://localhost:6969/posts/username/" + this.state.following[i].username)
-                .then(json => {
-                  this.state.userPosts.push(json.data);
-                });
-              }
-              this.setState({userPosts: this.state.userPosts})
-            });
+        const temp = [];
+        for(var i = 0; i < json.data.following.length; i++)
+        {
+          axios.get("http://localhost:6969/posts/username/" + json.data.following[i].username)
+          .then(json => {
+            for(var j = 0; j < json.data.length; j++)
+            {
+              temp.push(json.data[j]);
+            }
+            this.setState({userPosts: temp});
+          });
         }
       });
+    });
   }
 
   render()
   {
-    if (this.state.isAuthenticating) return null;
+    //if (this.state.isAuthenticating) return null;
 
     const { userPosts} = this.state;
-
     const theme = createMuiTheme({
       '@global' : {
         body: {
@@ -170,163 +164,3 @@ class MyFeed extends Component
 }
 
 export default MyFeed;
-
-/*
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const useStyles = makeStyles(theme => ({
-  '@global': {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
-export default function Feed() {
-  const classes = useStyles();
-  const tileStyle = {
-
-  }
-
-  const gridStyle = {
-    marginTop: 20,
-
-  }
-  const tileData = [
-      
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic4,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic5,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic4,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic5,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic4,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic5,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-     ];
-     const titleStyle = {
-       marginTop: 20,
-     }
-
-  return (
-    <div>
-    <TopMenu></TopMenu>
-    <Grid container spacing={3}>
-    <Grid item xs={6}>
-    <Typography style = {titleStyle} align = 'Left' variant="h3" component="h2" >
-    My Feed</Typography>
-    </Grid>
-    <Grid item xs = {6}>
-    <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className={classes.button}>
-    Create Post
-  </Button>
-  </Grid>
-  </Grid>
-    <Grid container spacing={3}>
-    <Grid item xs={12}>
-    <GridList cols = {4} spacing={5} style = {gridStyle} cellHeight={500} >
-
-    {tileData.map(tile => (
-      <GridListTile style = {tileStyle} key={tile.img}>
-        <img src={tile.img} alt={tile.title} />
-        <GridListTileBar
-          title={tile.title}
-          subtitle={<span>by: {tile.author}</span>}
-          actionIcon={
-            <PostPopup></PostPopup>
-          }
-        />
-      </GridListTile>
-    ))}
-  </GridList>
-  
-    </Grid>
-    
-  
-  </Grid>
-  </div>
-
-  );
-}
-*/
