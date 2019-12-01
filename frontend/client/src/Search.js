@@ -32,25 +32,12 @@ const SearchChoices = [
 
 function onSearch(e, choice, value) {
  e.preventDefault();
- console.log(choice);
  if(choice === 'user'){
-   axios.get("http://localhost:6969/users/" + value)
-   .then(response => {
-     console.log(response);
-   });
- }
- else if(choice === 'post'){
-   axios.get('http://localhost:6969/posts/title/' + value)
-   .then(response => {
-     console.log(response);
-   });
+   //route user to /UserResult/value
  }
  else
  {
-   axios.get('http://localhost:6969/items/name/' + value)
-   .then(response => {
-     console.log(response);
-   });
+   //route user to /Results/value,choice
  }
 }
 
@@ -113,6 +100,15 @@ const SearchBox = ({currentRefinement, refine}) => {
      style={{width: "100%"}}
    />{" "}
    {currentRefinement ? <Hits hitComponent={Hit} /> : null}
+   <Button
+    id="mui-theme-provider-outlined-input"
+    type="submit"
+    style = {{width: 80, height: 60, }}
+    variant="contained"
+    color= "secondary"
+    href="/Results"
+    className={classes.submit}>Search
+  ></Button>
    </Grid>
    <Grid item xs={1}>
 
