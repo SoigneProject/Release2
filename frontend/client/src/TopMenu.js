@@ -127,9 +127,9 @@ export default function NavTabs() {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-        {['Sign Up', 'Login', 'Kristina', 'Trending'].map((text, index) => (
-          <MenuItem button key={text} href="./signModal">
-            <ListItemText primary={text} href="./signModal"/>
+        {['Sign Up', 'Login', 'My Profile', 'Trending'].map((text, index) => (
+          <MenuItem button key={text} href="/signModal">
+            <ListItemText primary={text} href="/signModal"/>
           </MenuItem>
         ))}
       </List>
@@ -171,9 +171,9 @@ export default function NavTabs() {
         >
         
           <LinkTab label="My Profile" href="/" {...a11yProps(3)} />
-          <LinkTab label="Trending" href="./Feed" {...a11yProps(4)} />
-          <LinkTab label="Create Post" href="./CreatePost" {...a11yProps(5)} />
-          <LinkTab label="My Feed" href="./MyFeed" {...a11yProps(6)} />
+          <LinkTab label="Trending" href="/Feed" {...a11yProps(4)} />
+          <LinkTab label="Create Post" href="/CreatePost" {...a11yProps(5)} />
+          <LinkTab label="My Feed" href="/MyFeed" {...a11yProps(6)} />
 
         </Tabs>
       </AppBar>

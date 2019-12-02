@@ -71,12 +71,27 @@ function onSignUp(e, history, fn, ln, em, pass, uname) {
   }).then(json => {
     if (json.data.success) {
       console.log("SUCCESS");
+      axios.post('http://localhost:6969/users/signin', {
+        username: username,
+        password: password,
+      }, {
+        withCredentials: true
+      }).then(json => {
+          if (json.data.success) {
+            history.push('/');
+          } else {
+            console.log("SIGN IN FAILED");
+          }
+        });
+      }});
+  /*
       history.push('/');
     } else {
       // Handle failed signup
       console.log("FAIL");
     }
   });
+  */
 }
 
 export default function ServerModal(props) {

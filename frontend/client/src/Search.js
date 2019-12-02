@@ -30,17 +30,6 @@ const SearchChoices = [
  },
 ];
 
-function onSearch(e, choice, value) {
- e.preventDefault();
- if(choice === 'user'){
-   //route user to /UserResult/value
- }
- else
- {
-   //route user to /Results/value,choice
- }
-}
-
 const searchClient = algoliasearch(
  "OGBGRUY2SI",
  "ab515a53dc0869e5c6a5a1a84d8bdefc"
@@ -94,21 +83,18 @@ const SearchBox = ({currentRefinement, refine}) => {
      onChange={event => refine(event.currentTarget.value)}
      onKeyPress={event => {
        if (event.key === 'Enter') {
-         onSearch(event, currentRefinement, searchCriteria);
+         if(searchCriteria === 'user'){
+          window.location.assign("/UserResult/"+currentRefinement);
+         }
+         else
+         {
+           window.location.assign("/Results/" + currentRefinement + "," + searchCriteria);
+         }
        }
      }}
      style={{width: "100%"}}
    />{" "}
    {currentRefinement ? <Hits hitComponent={Hit} /> : null}
-   <Button
-    id="mui-theme-provider-outlined-input"
-    type="submit"
-    style = {{width: 80, height: 60, }}
-    variant="contained"
-    color= "secondary"
-    href="/Results"
-    className={classes.submit}>Search
-  ></Button>
    </Grid>
    <Grid item xs={1}>
 

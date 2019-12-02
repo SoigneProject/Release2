@@ -90,12 +90,18 @@ class App extends Component {
         {
             axios.get("http://localhost:6969/users/" + id.id)
             .then(json => {
-                console.log(json);
-                this.setState({ userObj: json.data, isAuthenticating: false});
-                axios.get("http://localhost:6969/posts/username/" + this.state.userObj.username)
-                .then(json => {
-                    this.setState({ userPosts: json.data});
-                });
+                if(!json.data.username)
+                {
+                  this.props.history.push('/Results/'+ id.id + "," + "user");
+                }
+                else
+                {
+                  this.setState({ userObj: json.data, isAuthenticating: false});
+                  axios.get("http://localhost:6969/posts/username/" + this.state.userObj.username)
+                  .then(json => {
+                      this.setState({ userPosts: json.data});
+                  });
+                }
             });
         }
     });

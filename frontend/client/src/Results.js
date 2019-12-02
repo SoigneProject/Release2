@@ -43,14 +43,6 @@ class Results extends Component
           username: "temp"
         }
       ],
-      queryItems: [
-        {
-          name: "temp",
-          url: "temp",
-          clothingCategory: "temp",
-          retailerID: "temp"
-        }
-      ],
       id: "temp",
       type: "temp",
     }
@@ -60,29 +52,32 @@ class Results extends Component
   componentDidMount() {
     // Retreive user data
     const {id, type} = this.props.match.params
-    if(type === 'posts')
+    if(type === 'post')
     {
-      console.log(type);
       axios.get("http://localhost:6969/posts/title/" + id)
       .then(json => {
         console.log(json.data);
         this.setState({ queryPosts: json.data, id: id, type: type})
       });
     }
-    else if(type === 'items')
+    else if(type === 'item')
     {
-      axios.get('http://localhost:6969/items/name/' + id)
+      axios.get('http://localhost:6969/posts/AllPostByItem/' + id)
       .then(json => {
         console.log(json.data);
-        this.setState({ queryItems: json.data, id: id, type: type})
+        this.setState({ queryPosts: json.data, id: "item " + id, type: "post"})
       });
+    }
+    else
+    {
+      this.state.queryPosts.pop();
+      this.setState({id: id, type: type})
     }
   }
 
   render()
   {
     const posts = this.state.queryPosts;
-    const items = this.state.queryItems;
     const {id, type} = this.state;
     const theme = createMuiTheme({
       '@global' : {

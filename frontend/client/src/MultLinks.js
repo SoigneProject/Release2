@@ -10,9 +10,11 @@ class MultLinks extends Component {
   constructor() {
     super();
     this.state = {
-      add: []
+      add: [],
     };
+
   }
+  
   addInputField = event => {
     const add = this.state.add;
     const size = add.length + 1;
@@ -28,6 +30,7 @@ class MultLinks extends Component {
       [event.target.name]: event.target.value
     });
   };
+
   render() {
     return (
       <div>
@@ -62,7 +65,7 @@ class MultLinks extends Component {
         return (
         <Grid>
             <TextField
-            id="item"
+            id={"item"+index}
             label="Item Name"
             style={{ width: 160, marginRight: 20 , marginTop: 32}}
             margin="normal"
@@ -70,7 +73,7 @@ class MultLinks extends Component {
             variant="outlined"
             />
             <TextField
-            id="price"
+            id={"price"+index}
             label="Price"
             style={{ width: 100, marginTop: 32 }}
             margin="normal"
@@ -80,7 +83,7 @@ class MultLinks extends Component {
                 }}
             />
             <TextField
-            id="link"
+            id={"link"+index}
             label="Link"
             fullWidth
             margin="normal"
