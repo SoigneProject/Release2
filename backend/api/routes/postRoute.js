@@ -242,7 +242,7 @@ router.put("/removeTag/:id", function (req, res) {
 });
 
 // Add a Item to post by id
-router.put("/addTag/:id", function (req, res) {
+router.put("/addItem/:id", function (req, res) {
     var queryID = req.params.id;
     var body = req.body;
     var itemToAdd = body.itemName;
@@ -270,7 +270,7 @@ router.put("/addTag/:id", function (req, res) {
     );
 });
 // Remove Item from post by id
-router.put("/removeTag/:id", function (req, res) {
+router.put("/removeItem/:id", function (req, res) {
     var queryID = req.params.id;
     var body = req.body;
     var itemToDelete = body.tagName;
