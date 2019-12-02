@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,163 +24,132 @@ import pic4 from './images/4.jpeg';
 import pic5 from './images/5.jpeg';
 import TopMenu from './TopMenu';
 import PostPopup from './PostPopup';
+import axios from 'axios';
+import { createMuiTheme } from "@material-ui/core/styles";
 
+class Feed extends Component
+{
+  constructor(props) {
+    super(props);
 
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const useStyles = makeStyles(theme => ({
-  '@global': {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
-export default function Feed() {
-  const classes = useStyles();
-  const tileStyle = {
-
+    this.state = {
+      allPosts: [
+        {
+          dateTime: "loading",
+          description: "temp",
+          photo: "temp",
+          tags: [],
+          title: "loading",
+          username: "temp"
+        }
+      ],
+    }
   }
 
-  const gridStyle = {
-    marginTop: 20,
-
-  }
-  const tileData = [
-      
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic4,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic5,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic4,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic5,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic4,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic5,
-        title: 'Image',
-        author: 'author',
-      },
-      {
-        img: pic3,
-        title: 'Image',
-        author: 'author',
-      },
-     ];
-     const titleStyle = {
-       marginTop: 20,
-     }
-
-  return (
-    <div>
-    <TopMenu></TopMenu>
-    <Grid container spacing={3}>
-    <Grid item xs={6}>
-    <Typography style = {titleStyle} align = 'Left' variant="h3" component="h2" >
-    Trending</Typography>
-    </Grid>
-    <Grid item xs = {6}>
-    <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className={classes.button}>
-    Create Post
-  </Button>
-  </Grid>
-  </Grid>
-    <Grid container spacing={3}>
-    <Grid item xs={12}>
-    <GridList cols = {4} spacing={5} style = {gridStyle} cellHeight={500} >
-
-    {tileData.map(tile => (
-      <GridListTile style = {tileStyle} key={tile.img}>
-        <img src={tile.img} alt={tile.title} />
-        <GridListTileBar
-          title={tile.title}
-          subtitle={<span>by: {tile.author}</span>}
-          actionIcon={
-            <PostPopup></PostPopup>
-          }
-        />
-      </GridListTile>
-    ))}
-  </GridList>
   
+  componentDidMount() {
+    // Retreive user data
+    axios
+      .get("http://localhost:6969/user/currentuser", { withCredentials: true })
+      .then(json => {
+        if (!json.data.username) {
+          this.props.history.push("/signModal");
+        } else {
+          axios.get("http://localhost:6969/posts/")
+          .then(json => {
+            this.setState({ allPosts: json.data.postObj});
+          })
+        }
+      });
+  }
+
+  render()
+  {
+    const { allPosts} = this.state;
+    const theme = createMuiTheme({
+      '@global' : {
+        body: {
+          backgroundColor: "white",
+        }
+      }
+    });
+
+    const paperStyle = {
+      marginTop: 8,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }
+
+    const avatarStyle = {
+      margin: 1,
+      backgroundColor: "gray",
+    }
+
+    const formStyle = {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: 3,
+    }
+
+    const submitStyle = {
+      marginTop: 3,
+      marginBottom: 0,
+      marginRight: 2,
+    }
+
+    const tileStyle = {
+  
+    }
+  
+    const gridStyle = {
+      marginTop: 20,
+  
+    }
+
+    const titleStyle = {
+      marginTop: 20,
+    }
+
+    return (
+      <div>
+      <TopMenu></TopMenu>
+      <Grid container spacing={3}>
+      <Grid item xs={6}>
+      <Typography style = {titleStyle} align = 'Left' variant="h3" component="h2" >
+      Trending</Typography>
+      </Grid>
+      <Grid item xs = {6}>
+      <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className="button" href="./CreatePost">
+      Create Post
+    </Button>
     </Grid>
+    </Grid>
+      <Grid container spacing={3}>
+      <Grid item xs={12}>
+      <GridList cols = {4} spacing={5} style = {gridStyle} cellHeight={500} >
+  
+      {allPosts.map(post => (
+        <GridListTile style = {tileStyle} key={post.title}>
+          <img src={post.photo} alt={post.photo} />
+          <GridListTileBar
+            title={post.title}
+            subtitle={<span>by: {post.username}</span>}
+            actionIcon={
+              <PostPopup></PostPopup>
+            }
+          />
+        </GridListTile>
+      ))}
+    </GridList>
     
+      </Grid>
+      
+    
+    </Grid>
+    </div>
   
-  </Grid>
-  </div>
-
-  );
+    );
+  }
 }
+
+export default Feed;

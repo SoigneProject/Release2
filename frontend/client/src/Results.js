@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component }  from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,9 +24,158 @@ import pic4 from './images/4.jpeg';
 import pic5 from './images/5.jpeg';
 import TopMenu from './TopMenu';
 import PostPopup from './PostPopup';
+import axios from 'axios';
+import { createMuiTheme } from "@material-ui/core/styles";
+
+class Results extends Component
+{
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      queryPosts: [
+        {
+          dateTime: "loading",
+          description: "temp",
+          photo: "temp",
+          tags: [],
+          title: "loading",
+          username: "temp"
+        }
+      ],
+      queryItems: [
+        {
+          name: "temp",
+          url: "temp",
+          clothingCategory: "temp",
+          retailerID: "temp"
+        }
+      ],
+      id: "temp",
+      type: "temp",
+    }
+  }
+
+  
+  componentDidMount() {
+    // Retreive user data
+    const {id, type} = this.props.match.params
+    if(type === 'posts')
+    {
+      console.log(type);
+      axios.get("http://localhost:6969/posts/title/" + id)
+      .then(json => {
+        console.log(json.data);
+        this.setState({ queryPosts: json.data, id: id, type: type})
+      });
+    }
+    else if(type === 'items')
+    {
+      axios.get('http://localhost:6969/items/name/' + id)
+      .then(json => {
+        console.log(json.data);
+        this.setState({ queryItems: json.data, id: id, type: type})
+      });
+    }
+  }
+
+  render()
+  {
+    const posts = this.state.queryPosts;
+    const items = this.state.queryItems;
+    const {id, type} = this.state;
+    const theme = createMuiTheme({
+      '@global' : {
+        body: {
+          backgroundColor: "white",
+        }
+      }
+    });
+
+    const paperStyle = {
+      marginTop: 8,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }
+
+    const avatarStyle = {
+      margin: 1,
+      backgroundColor: "gray",
+    }
+
+    const formStyle = {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: 3,
+    }
+
+    const submitStyle = {
+      marginTop: 3,
+      marginBottom: 0,
+      marginRight: 2,
+    }
+
+    const tileStyle = {
+  
+    }
+  
+    const gridStyle = {
+      marginTop: 20,
+  
+    }
+
+    const titleStyle = {
+      marginTop: 20,
+    }
+
+    return (
+      <div>
+      <TopMenu></TopMenu>
+      <Grid container spacing={3}>
+      <Grid item xs={6}>
+      <Typography style = {titleStyle} align = 'Left' variant="h3" component="h2" >
+      Search Results for {type} containing {id} </Typography>
+      </Grid>
+      <Grid item xs = {6}>
+      <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className="button" href="./CreatePost">
+      Create Post
+    </Button>
+    </Grid>
+    </Grid>
+      <Grid container spacing={3}>
+      <Grid item xs={12}>
+      <GridList cols = {4} spacing={5} style = {gridStyle} cellHeight={500} >
+  
+      {posts.map(post => (
+        <GridListTile style = {tileStyle} key={post.title}>
+          <img src={post.photo} alt={post.photo} />
+          <GridListTileBar
+            title={post.title}
+            subtitle={<span>by: {post.username}</span>}
+            actionIcon={
+              <PostPopup></PostPopup>
+            }
+          />
+        </GridListTile>
+      ))}
+    </GridList>
+    
+      </Grid>
+      
+    
+    </Grid>
+    </div>
+  
+    );
+  }
+}
+
+export default Results;
 
 
 
+
+/*
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -184,3 +333,4 @@ export default function Feed() {
 
   );
 }
+*/

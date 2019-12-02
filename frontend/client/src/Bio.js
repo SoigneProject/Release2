@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Typography from "@material-ui/core/Typography";
+import axios from 'axios';
 
 function contentEditable(WrappedComponent) {
 
@@ -87,14 +88,45 @@ function contentEditable(WrappedComponent) {
 
 class Bio extends React.Component {
 
+  constructor(props){
+    super(props);
+
+    this.state = {
+      userObj: {
+        bio: "",
+        emailAddress: "",
+        firstName: "loading",
+        lastName: "loading",
+        followers: [{ username: "test" }],
+        following: [{ username: "test2" }],
+        password: "temp",
+        username: "loading",
+        profilePic: "temp",
+        profilePic_id: "temp"
+      }
+    }
+  }
+
+  componentDidMount()
+  {
+    axios.get("http://localhost:6969/user/currentuser", { withCredentials: true })
+    .then(json => {
+      axios.get("http://localhost:6969/users/" + json.data.username)
+      .then(json => {
+        this.setState({userObj: json.data});
+      })
+    });
+  }
+
   render() {
+    const userObj = this.state.userObj;
+    console.log(userObj.bio);
     let EditableDIV = contentEditable('div');
     let EditableH1 = contentEditable('Typography');
   
     return (
       <div>
-        <EditableH1 value="SF Transplant, NY gal at heart. Combining street style and
-        luxury is my passion. Oh, and I also love drinking boba."/>
+        <EditableH1 value={userObj.bio}/>
       </div>
     )
   }

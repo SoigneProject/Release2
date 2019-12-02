@@ -40,7 +40,7 @@ app.use(cookieParser('stronksecret'));
 
 // Register routes
 app.use('/users', userRoute);
-app.use('/user', passport.authenticate('jwt', { session: false }), profileRoute);
+app.use('/user', passport.authenticate('jwt', { session: false, failureRedirect: '/users/guest' }), profileRoute);
 app.use('/items', itemRoute);
 app.use('/posts', postRoute);
 app.use('/retailers', retailerRoute);

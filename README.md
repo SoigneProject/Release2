@@ -48,7 +48,7 @@ npm run update
 - Mongoose
 - MongoDB
 - Axios
-- Bcrypt
+- BcryptJS
 - Cors
 - Concurrently
 - Express
@@ -61,5 +61,6 @@ npm run update
 - Multer
 - Cloudinary
 - Cloudinary-React
+- Nodemon
 
 ### If you get a bug, copy paste debug output and let me know :)

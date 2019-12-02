@@ -6,7 +6,6 @@ const router = express.Router();
 const UserModel = require('../models/userModel');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-
 const multer = require('multer');
 const upload = multer({
     dest: 'uploads/'
@@ -136,32 +135,12 @@ router.post('/signin', passport.authenticate('local', {
     
 })
 
-// router.get('/logout', function (req, res) {
-//     // Get the token
-//     const token = req.query.token;
-//     // ?token=test
-//     // Verify the token is one of a kind and it's not deleted.
-//     UserSessionModel.findOneAndUpdate({
-//         _id: token,
-//         isDeleted: false
-//     }, {
-//         $set: {
-//             isDeleted: true
-//         }
-//     }, null, (err, sessions) => {
-//         if (err) {
-//             console.log(err);
-//             return res.send({
-//                 success: false,
-//                 message: 'Error: Server error'
-//             });
-//         }
-//         return res.send({
-//             success: true,
-//             message: 'Logged out'
-//         });
-//     });
-// })
+router.get('/logout', function (req, res) {
+    res.cookie('jwt', '', {expires: new Date(0)});
+    return res.send({
+        loggedOut: true
+    });
+})
 
 // Get a user
 router.get('/:username', function (req, res) {
@@ -174,6 +153,13 @@ router.get('/:username', function (req, res) {
             error: err
         });
         return res.send(obj);
+    });
+})
+
+// Get a blank user (used for failure redirect)
+router.get('/guest', function (req, res) {
+    return res.json({
+        username: ''
     });
 })
 
