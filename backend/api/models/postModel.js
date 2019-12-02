@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 const postTagsSchema = new Schema({tagName: String});
+const postItemsSchema = new Schema({itemName: String});
 
 
 var PostSchema = new Schema({
@@ -29,6 +30,7 @@ var PostSchema = new Schema({
     photo_id: {
         type: String
     },
-    tags: [postTagsSchema]
+    tags: [postTagsSchema],
+    items: [postItemsSchema]
 });
 module.exports = mongoose.model('Post', PostSchema);

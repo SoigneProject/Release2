@@ -241,6 +241,63 @@ router.put("/removeTag/:id", function (req, res) {
     );
 });
 
+// Add a Item to post by id
+router.put("/addTag/:id", function (req, res) {
+    var queryID = req.params.id;
+    var body = req.body;
+    var itemToAdd = body.itemName;
+    var itemObj = {
+        tagName: itemToAdd
+    };
+    PostModel.findOneAndUpdate({
+            _id: queryID
+        }, {
+            $push: {
+                items: itemObj
+            }
+        },
+        function (err) {
+            if (err)
+                return res.json({
+                    success: false,
+                    error: err
+                });
+            return res.json({
+                success: true,
+                post: body
+            });
+        }
+    );
+});
+// Remove Item from post by id
+router.put("/removeTag/:id", function (req, res) {
+    var queryID = req.params.id;
+    var body = req.body;
+    var itemToDelete = body.tagName;
+    var itemObj = {
+        itemName: itemToDelete
+    };
+    PostModel.findOneAndUpdate({
+            _id: queryID
+        }, {
+            $pull: {
+                items: itemObj
+            }
+        },
+        function (err) {
+            if (err)
+                return res.json({
+                    success: false,
+                    error: err
+                });
+            return res.json({
+                success: true,
+                post: body
+            });
+        }
+    );
+});
+//this will get all the posts with a specific tag
 router.get('/AllPostsByTag/:tagName', function (req, res) {
     var queryTagName = req.params.tagName;
     PostModel.find({'tags': { $elemMatch: { 'tagName': queryTagName}}},
@@ -252,5 +309,16 @@ router.get('/AllPostsByTag/:tagName', function (req, res) {
         return res.send(obj);
     });
 })
-
+//this will get all of the posts that have a specific item in them
+router.get('/AllPostByItem/:itemName', function (req, res) {
+    var queryItemName = req.params.itemName;
+    PostModel.find({'items': { $elemMatch: { 'itemName': queryItemName}}},
+    function (err, obj) {
+        if (err) return res.json({
+            success: false,
+            error: err
+        });
+        return res.send(obj);
+    });
+})
 module.exports = router;
