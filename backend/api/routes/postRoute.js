@@ -273,7 +273,7 @@ router.put("/addItem/:id", function (req, res) {
 router.put("/removeItem/:id", function (req, res) {
     var queryID = req.params.id;
     var body = req.body;
-    var itemToDelete = body.tagName;
+    var itemToDelete = body.itemName;
     var itemObj = {
         itemName: itemToDelete
     };
