@@ -82,6 +82,13 @@ const SearchChoices = [
    <Grid item xs={10}>
 
    <TextField
+   onKeyPress={(ev) => {
+    console.log(`Pressed keyCode ${ev.key}`);
+    if (ev.key === 'Enter') {
+      window.location.assign("/Results");
+      ev.preventDefault();
+    }
+  }}
      className={classes.root}
      label="Search for an Outfit:"
      variant="outlined"

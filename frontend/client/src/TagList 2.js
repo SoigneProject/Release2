@@ -11,9 +11,6 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import TopMenu from "./TopMenu";
 import axios from 'axios';
 
-
-const tags = ['#testing', '#123', '#hello', '#hotgirlsummer', '#kennethleeishot',
-'#kristinakennethlovesboba']
  
 const useStyles = makeStyles(theme => ({
     root: {
@@ -112,7 +109,6 @@ export default class CreatableInputOnly extends Component<*, State> {
         onKeyDown={this.handleKeyDown}
         placeholder="Enter your tags"
         value={value}
-        options = {tags} 
       />
       </Typography>
     );

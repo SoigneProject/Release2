@@ -14,6 +14,8 @@ import TagList from './TagList.js';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MultLinks from './MultLinks.js';
 import PostButton from './PostButton';
+import Tags from './MultiSelectTags';
+import Items from './Items';
 
 var user = "";
 axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
@@ -219,7 +221,6 @@ export default function CenteredGrid(props) {
             margin="normal"
             variant="outlined"
             />
-          <TagList></TagList>
           <TextField
                 id="desc"
                 label="Description"
@@ -230,6 +231,8 @@ export default function CenteredGrid(props) {
                 margin="normal"
                 variant="outlined"
                 />
+                <Tags></Tags>
+
         </div>
         </Grid>
 

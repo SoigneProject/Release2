@@ -4,7 +4,6 @@ import Icon from "@material-ui/core/Icon";
 import AddCircle from "@material-ui/icons/AddCircle";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { spacing } from '@material-ui/system';
-import Items from './Items';
 
 
 class MultLinks extends Component {
@@ -33,18 +32,14 @@ class MultLinks extends Component {
     return (
       <div>
         <Grid>
-        <Grid container spacing={1}>
-        <Grid item xs={5}>
-            <Items
+          <Grid>
+            <TextField
             id="item"
             label="Item Name"
             style={{ width: 160, marginRight: 20, marginTop: 32}}
             margin="normal"
             variant="outlined"
-            ></Items>
-            </Grid>
-            <Grid item xs={5}>
-
+            />
             <TextField
             id="price"
             label="Price"
@@ -55,12 +50,6 @@ class MultLinks extends Component {
                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                 }}
             />
-            </Grid>
-            </Grid>
-
-
-     
-
             <TextField
             id="link"
             label="Link"
@@ -68,23 +57,18 @@ class MultLinks extends Component {
             margin="normal"
             variant="outlined"
             />
+        </Grid>
         {this.state.add.map(index => {
         return (
         <Grid>
-        <Grid container spacing={1}>
-        <Grid item xs={5}>
-
-            <Items
+            <TextField
             id="item"
             label="Item Name"
             style={{ width: 160, marginRight: 20 , marginTop: 32}}
             margin="normal"
             
             variant="outlined"
-            ></Items>
-            </Grid>
-            <Grid item xs={5}>
-
+            />
             <TextField
             id="price"
             label="Price"
@@ -94,8 +78,7 @@ class MultLinks extends Component {
             InputProps={{
                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                 }}
-            /></Grid>
-            </Grid>
+            />
             <TextField
             id="link"
             label="Link"
