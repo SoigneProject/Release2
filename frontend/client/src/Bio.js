@@ -109,18 +109,29 @@ class Bio extends React.Component {
 
   componentDidMount()
   {
-    axios.get("http://localhost:6969/user/currentuser", { withCredentials: true })
-    .then(json => {
-      axios.get("http://localhost:6969/users/" + json.data.username)
+    if(window.location.pathname === "/")
+    {
+      axios.get("http://localhost:6969/user/currentuser", { withCredentials: true })
+      .then(json => {
+        axios.get("http://localhost:6969/users/" + json.data.username)
+        .then(json => {
+          this.setState({userObj: json.data});
+        })
+      });
+    }
+    else
+    {
+      var temp = window.location.pathname;
+      var res = temp.split('/');
+      axios.get("http://localhost:6969/users/" + res[2])
       .then(json => {
         this.setState({userObj: json.data});
-      })
-    });
+      });
+    }
   }
 
   render() {
     const userObj = this.state.userObj;
-    console.log(userObj.bio);
     let EditableDIV = contentEditable('div');
     let EditableH1 = contentEditable('Typography');
   

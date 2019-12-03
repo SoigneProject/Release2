@@ -73,13 +73,60 @@ class App extends Component {
           username: "temp"
         }
       ],
+      isClicked: false,
       isAuthenticating: true
     };
   }
 
+  followUser(){
+    var youUser = "";
+    axios.get("http://localhost:6969/user/currentuser", {withCredentials: true})
+    .then(json => {
+      youUser = json.data.username;
+      axios.put("http://localhost:6969/users/following/" + youUser, {
+        user: this.state.userObj.username
+    })
+      .then(json => {
+        axios.put("http://localhost:6969/users/follower/" + this.state.userObj.username, {
+          user: youUser
+        })
+        .then(json => {
+          axios.get("http://localhost:6969/users/" + this.state.userObj.username)
+          .then(json => {
+            this.setState({isClicked:true, userObj: json.data})
+          });
+        });
+      });
+    });
+  };
+
+  unfollowUser(){
+    var youUser = "";
+    axios.get("http://localhost:6969/user/currentuser", {withCredentials: true})
+    .then(json => {
+      youUser = json.data.username;
+      axios.put("http://localhost:6969/users/unfollow/" + youUser, {
+        user: this.state.userObj.username
+    })
+      .then(json => {
+        axios.put("http://localhost:6969/users/removeFollow/" + this.state.userObj.username, {
+          user: youUser
+        })
+        .then(json => {
+          axios.get("http://localhost:6969/users/" + this.state.userObj.username)
+          .then(json => {
+            this.setState({isClicked:false, userObj: json.data})
+          });
+        });
+      });
+    });
+  };
+
   componentDidMount() {
     // Retreive user data
     const id = this.props.match.params;
+    var youUser = "";
+    var clickStatus = false;
     axios.get("http://localhost:6969/user/currentuser", { withCredentials: true })
     .then(json => {
         if(json.data.username === id.id)
@@ -88,6 +135,7 @@ class App extends Component {
         }
         else
         {
+            youUser = json.data.username;
             axios.get("http://localhost:6969/users/" + id.id)
             .then(json => {
                 if(!json.data.username)
@@ -96,7 +144,14 @@ class App extends Component {
                 }
                 else
                 {
-                  this.setState({ userObj: json.data, isAuthenticating: false});
+                  for(var i = 0; i < json.data.followers.length; i++)
+                  {
+                    if(json.data.followers[i].username === youUser)
+                    {
+                      clickStatus = true;
+                    }
+                  }
+                  this.setState({ userObj: json.data, isClicked: clickStatus, isAuthenticating: false});
                   axios.get("http://localhost:6969/posts/username/" + this.state.userObj.username)
                   .then(json => {
                       this.setState({ userPosts: json.data});
@@ -206,7 +261,6 @@ class App extends Component {
         <TopMenu />
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            <ForgotPassword></ForgotPassword>
             <div style={paperStyle}>
               <AvatarLarge
                 alt={userObj.profilePic}
@@ -229,6 +283,13 @@ class App extends Component {
               >
                 {userObj.username}
               </Typography>
+              <Grid container justify = "center">
+              {(!this.state.isClicked) ?   <Button onClick = {(e) => this.followUser()} variant="outlined" color="primary" fullWidth = "false" style = {{width: 70}}>
+                Follow
+              </Button> :   <Button onClick = {(e) => this.unfollowUser()} variant="contained" color="primary" fullWidth = "false" style = {{width: 100}}>
+                Following
+              </Button>}
+              </Grid>
               <FollowersList>
                 <Table style={tableStyle} aria-label="simple table">
                   <TableHead>

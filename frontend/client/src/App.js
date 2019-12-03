@@ -52,7 +52,6 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isClicked: false,
       userObj: {
         bio: "",
         emailAddress: "",
@@ -86,7 +85,7 @@ class App extends Component {
     formData.append("file", event.target.files[0]);
     axios
       .put(
-        "http://localhost:6969/users/" + this.state.userObj.username,
+        "http://localhost:6969/users/photo/" + this.state.userObj.username,
         formData
       )
       .then(json => {
@@ -246,18 +245,6 @@ class App extends Component {
               >
                 {userObj.username}
               </Typography>
-              <Grid container justify = "center">
-              {(!this.state.isClicked) ?   <Button onClick = {() => this.setState({isClicked:true})} variant="outlined" color="primary" fullWidth = "false" style = {{width: 70}}>
-              Follow
-            </Button> :   <Button onClick = {() => this.setState({isClicked:false})} variant="contained" color="primary" fullWidth = "false" style = {{width: 100}}>
-            Following
-          </Button>}
-
-              
-            </Grid>
-              
-
-             
               <FollowersList>
                 <Table style={tableStyle} aria-label="simple table">
                   <TableHead>
@@ -288,7 +275,7 @@ class App extends Component {
                 </TableBody>
               </Table>
 
-              <Bio style={{ marginTop: 20, marginLeft: 8 }}> {userObj.bio}</Bio>
+              <Bio style={{ marginTop: 20, marginLeft: 8 }}> {userObj.bio} </Bio>
             </div>
           </Grid>
           <Grid item xs={8}>
