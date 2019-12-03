@@ -7,7 +7,7 @@ public class LoginTest {
 	static WebDriver driver;
 	public static void main(String[] args) {
 		//Setting driver properties.
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\sssup\\OneDrive\\Documents\\Soigne Test");
+		System.setProperty("webdriver.chrome.driver", "add your own local path to the webdriver");
 
 		//Open the Chrome browser.
 		driver = new ChromeDriver();
@@ -21,7 +21,7 @@ public class LoginTest {
 		else {
 			System.out.println("Login Test: Failed");
 		}
-		
+
 		driver.close();
 		driver.quit();
 	}
@@ -59,12 +59,12 @@ public class LoginTest {
 			else {
 				return false;
 			} **/
-			
+
 			return true;
 		}
 		catch (final Exception e) {
 			System.out.println(e.getClass().toString());
-			return false;			
+			return false;
 		}
 	}
 }

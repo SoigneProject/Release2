@@ -5,10 +5,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LogoutTest {
 	static WebDriver driver;
-	
+
 	public static void main(String[] args) {
 		//Set the driver properties.
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\sssup\\OneDrive\\Documents\\Soigne Test\\chromedriver_win32");
+		System.setProperty("webdriver.chrome.driver", "add your own local path to the webdriver");
 
 		//Open the Chrome browser.
 		WebDriver driver = new ChromeDriver();
@@ -17,21 +17,21 @@ public class LogoutTest {
 		driver.manage().window().maximize();
 
 		if (testPostCreation()) {
-		
+
 		}
 		else {
-		
+
 		}
-		
+
 		driver.close();
 		driver.quit();
 	}
-	
+
 	/**
-	 * Test: 
+	 * Test:
 	 * @return boolean
 	 */
 	private static boolean testLogout() {
 		return false;
-	}	
+	}
 }
