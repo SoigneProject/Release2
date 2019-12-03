@@ -168,7 +168,7 @@ router.get('/guest', function (req, res) {
 // Upload photo, then upload to cloud (similar to post way of uploading photo)
 //Retrieve current user and set body to that.
 //return that object
-router.put('/:username', function (req, res) {
+router.put('/photo/:username', function (req, res) {
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
@@ -208,10 +208,10 @@ router.put('/:username', function (req, res) {
     });
 })
 
-/*
+
 // Update a user
 // Original put method.
-router.put('/:username', function (req, res) {
+router.put('/info/:username', function (req, res) {
     var queryUsername = req.params.username;
     var body = req.body;
     UserModel.findOneAndUpdate({
@@ -227,7 +227,7 @@ router.put('/:username', function (req, res) {
         });
     });
 })
-*/
+
 
 
 // Delete a user
