@@ -52,6 +52,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      isClicked: false,
       userObj: {
         bio: "",
         emailAddress: "",
@@ -246,9 +247,13 @@ class App extends Component {
                 {userObj.username}
               </Typography>
               <Grid container justify = "center">
-              <Button variant="outlined" color="primary" fullWidth = "false" style = {{width: 50}}>
+              {(!this.state.isClicked) ?   <Button onClick = {() => this.setState({isClicked:true})} variant="outlined" color="primary" fullWidth = "false" style = {{width: 70}}>
               Follow
-            </Button>
+            </Button> :   <Button onClick = {() => this.setState({isClicked:false})} variant="contained" color="primary" fullWidth = "false" style = {{width: 100}}>
+            Following
+          </Button>}
+
+              
             </Grid>
               
 
