@@ -49,10 +49,7 @@ public class LoginTest {
 
 			//Wait for the element to load.
 			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-
-			//Click the Have An Account? Log In Button.
-			//driver.findElement(By.cssSelector("#firstName")).sendKeys("");
-
+			
 			/**if (driver.findElement(By.tagName("h1")).getText().equals("")) {
 				return true;
 			}
