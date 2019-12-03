@@ -245,6 +245,14 @@ class App extends Component {
               >
                 {userObj.username}
               </Typography>
+              <Grid container justify = "center">
+              <Button variant="outlined" color="primary" fullWidth = "false" style = {{width: 50}}>
+              Follow
+            </Button>
+            </Grid>
+              
+
+             
               <FollowersList>
                 <Table style={tableStyle} aria-label="simple table">
                   <TableHead>
