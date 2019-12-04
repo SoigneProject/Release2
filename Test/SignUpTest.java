@@ -95,7 +95,7 @@ public class SignUpTest {
 	private static boolean testLoginButton() {
 		try {
 			//Clicks Have An Account? Log In Button.
-			driver.findElement(By.cssSelector("#server-modal-description > form > button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSecondary.MuiButton-fullWidth"));
+			driver.findElement(By.cssSelector("#server-modal-description > form > button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSecondary.MuiButton-fullWidth")).click();
 			
 			//Wait for page to load.
 			Thread.sleep(5000);
