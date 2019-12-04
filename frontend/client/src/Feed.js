@@ -65,7 +65,7 @@ class Feed extends Component
 
   render()
   {
-    const { allPosts} = this.state;
+    const {allPosts} = this.state;
     const theme = createMuiTheme({
       '@global' : {
         body: {
@@ -135,7 +135,7 @@ class Feed extends Component
             title={post.title}
             subtitle={<span>by: {post.username}</span>}
             actionIcon={
-              <PostPopup></PostPopup>
+              <PostPopup id={post._id}></PostPopup>
             }
           />
         </GridListTile>

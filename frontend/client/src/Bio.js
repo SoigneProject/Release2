@@ -130,6 +130,11 @@ class Bio extends React.Component {
     }
   }
 
+  changeBio()
+  {
+    console.log("Hello");
+  };
+
   render() {
     const userObj = this.state.userObj;
     let EditableDIV = contentEditable('div');

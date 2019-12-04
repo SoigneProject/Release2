@@ -46,6 +46,7 @@ import Nav from "./nav";
 import ForgotPassword from "./ForgotPassword";
 import Bio from "./Bio";
 import { isUndefined } from "util";
+import PostPopup from './PostPopup';
 
 class App extends Component {
   constructor(props) {
@@ -287,9 +288,7 @@ class App extends Component {
                     title={post.title}
                     subtitle={<span>by: {post.username}</span>}
                     actionIcon={
-                      <IconButton aria-label={`info about ${post.title}`}>
-                        <InfoIcon />
-                      </IconButton>
+                      <PostPopup id={post._id}></PostPopup>
                     }
                   />
                 </GridListTile>

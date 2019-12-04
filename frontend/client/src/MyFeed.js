@@ -146,7 +146,7 @@ class MyFeed extends Component
             title={post.title}
             subtitle={<span>by: {post.username}</span>}
             actionIcon={
-              <PostPopup></PostPopup>
+              <PostPopup id={post._id}></PostPopup>
             }
           />
         </GridListTile>
