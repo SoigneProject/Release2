@@ -13,8 +13,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-
-
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -79,12 +78,11 @@ function onPassChangeSubmit(e, history, oldPass, oldPassConf, newPass, newPassCo
   if (oldPass !== oldPassConf) alert('Old password does not match');
   if (newPass !== newPassConf) alert('New password does not match');
   if (oldPass === newPass) alert('New password must be different than old password');
-  const newPass = newPass;
+  const password = newPass;
 
   // PUT request to backend
   axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
-    .then(json => axios.get('http://localhost:6969/users/' + json.data.username))
-    .then(json => axios.put("http://localhost:6969/users/" + json.data.username,
+    .then(json => axios.put('http://localhost:6969/users/' + json.data.username,
       {
         password: password
       },
@@ -94,9 +92,10 @@ function onPassChangeSubmit(e, history, oldPass, oldPassConf, newPass, newPassCo
     ))
     .then(json => {
       if (json.data.success) {
+        alert("Password changed");
         history.push("/");
       } else {
-        console.log("SIGN IN FAILED");
+        console.log("PASSWORD CHANGE FAILED");
       }
     });
 }
