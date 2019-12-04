@@ -19,6 +19,7 @@ cloudinary.config({
     api_secret: "VylP7m3EhxWbbzWEE8NBAcbcxKs"
 });
 
+// Get all users
 router.get('/', function (req, res) {
     UserModel.find((err, user) => {
         if (err) return res.json({
@@ -32,6 +33,7 @@ router.get('/', function (req, res) {
     });
 })
 
+// Create a user
 router.post('/signup', function (req, res) {
     let user = new UserModel();
     const {
@@ -67,7 +69,6 @@ router.post('/signup', function (req, res) {
                 message: 'Error: Account already exists with that username.'
             });
         }
-
 
         emailAddress = emailAddress.toLowerCase();
         emailAddress = emailAddress.trim();
@@ -111,6 +112,7 @@ router.post('/signup', function (req, res) {
     });
 })
 
+// Create a JWT token when signing in and saves it in a cookie
 router.post('/signin', passport.authenticate('local', {
     session: false
 }), function (req, res) {
@@ -135,6 +137,7 @@ router.post('/signin', passport.authenticate('local', {
     
 })
 
+// Log out by deleting cookie
 router.get('/logout', function (req, res) {
     res.cookie('jwt', '', {expires: new Date(0)});
     return res.send({
@@ -228,10 +231,8 @@ router.put('/info/:username', function (req, res) {
     });
 })
 
-
-
 // Delete a user
-router.get('/:username', function (req, res) {
+router.delete('/:username', function (req, res) {
     var queryUsername = req.params.username;
     UserModel.findOneAndDelete({
         username: queryUsername

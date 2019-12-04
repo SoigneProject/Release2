@@ -33,18 +33,18 @@ router.get("/", function (req, res) {
 });
 
 //get all posts by username
-router.get("/username/:username", function (req, res){
+router.get("/username/:username", function (req, res) {
     var queryUsername = req.params.username;
     PostModel.find({
-        username: queryUsername
-    },
-    function (err, obj) {
-        if (err)
-            return res.json({
-                success: false,
-                error: err
-            });
-        return res.send(obj);
+            username: queryUsername
+        },
+        function (err, obj) {
+            if (err)
+                return res.json({
+                    success: false,
+                    error: err
+                });
+            return res.send(obj);
         }
     );
 });
@@ -178,11 +178,6 @@ router.delete("/id/:id", function (req, res) {
     );
 });
 
-// //this is for tags
-// app.route('/posts/addTag/:id').put(post_controller.add_a_tag_to_post);
-// app.route('/posts/removeTag/:id').put(post_controller.remove_a_tag_from_post);
-// };
-
 // Add a tag to post by id
 router.put("/addTag/:id", function (req, res) {
     var queryID = req.params.id;
@@ -271,6 +266,7 @@ router.put("/addItem/:id", function (req, res) {
         }
     );
 });
+
 // Remove Item from post by id
 router.put("/removeItem/:id", function (req, res) {
     var queryID = req.params.id;
@@ -299,28 +295,43 @@ router.put("/removeItem/:id", function (req, res) {
         }
     );
 });
+
 //this will get all the posts with a specific tag
 router.get('/AllPostsByTag/:tagName', function (req, res) {
     var queryTagName = req.params.tagName;
-    PostModel.find({'tags': { $elemMatch: { 'tagName': queryTagName}}},
-    function (err, obj) {
-        if (err) return res.json({
-            success: false,
-            error: err
+    PostModel.find({
+            'tags': {
+                $elemMatch: {
+                    'tagName': queryTagName
+                }
+            }
+        },
+        function (err, obj) {
+            if (err) return res.json({
+                success: false,
+                error: err
+            });
+            return res.send(obj);
         });
-        return res.send(obj);
-    });
 })
+
 //this will get all of the posts that have a specific item in them
-router.get('/AllPostByItem/:itemName', function (req, res) {
+router.get('/AllPostsByItem/:itemName', function (req, res) {
     var queryItemName = req.params.itemName;
-    PostModel.find({'items': { $elemMatch: { 'itemName': queryItemName}}},
-    function (err, obj) {
-        if (err) return res.json({
-            success: false,
-            error: err
+    PostModel.find({
+            'items': {
+                $elemMatch: {
+                    'itemName': queryItemName
+                }
+            }
+        },
+        function (err, obj) {
+            if (err) return res.json({
+                success: false,
+                error: err
+            });
+            return res.send(obj);
         });
-        return res.send(obj);
-    });
 })
+
 module.exports = router;

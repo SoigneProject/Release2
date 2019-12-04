@@ -19,9 +19,6 @@ var PostSchema = new Schema({
     description: {
         type: String
     },
-    username: { 
-        type: String
-    },
     photo: {
         //should be a jpeg 
         type: String,
