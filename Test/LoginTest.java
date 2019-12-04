@@ -76,7 +76,7 @@ public class LoginTest {
 	private static boolean testSignUp() {
 		try {
 			//Clicks Have An Account? Log In Button.
-			driver.findElement(By.cssSelector("#server-modal-description > form > button:nth-child(5)"));
+			driver.findElement(By.cssSelector("#server-modal-description > form > button:nth-child(5)")).click();
 			
 			//Wait for page to load.
 			Thread.sleep(5000);
