@@ -131,7 +131,7 @@ class PostPopup extends Component
      
            </Grid>
            <Grid item xs = {2}>
-           <Typography color = 'secondary'>Price: $1900</Typography>
+           <Typography color = 'secondary'>Price: ${item.price}</Typography>
      
            </Grid>
      

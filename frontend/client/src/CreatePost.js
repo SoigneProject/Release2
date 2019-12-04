@@ -55,6 +55,8 @@ async function createPost(e, history, ph, ti, desc) {
   var itemCount = item;
   var link = "link";
   var linkCount = link;
+  var price = "price";
+  var priceCount = price;
   var madePost = "";
   e.preventDefault();
   const formData = new FormData();
@@ -69,15 +71,17 @@ async function createPost(e, history, ph, ti, desc) {
       .then(json => {
         madePost = json.data[json.data.length-1];
         console.log(madePost);
-        while(document.getElementById(itemCount) !== null && document.getElementById(linkCount) !== null)
+        while(document.getElementById(itemCount) !== null && document.getElementById(linkCount) !== null && document.getElementById(priceCount) !== null)
         {
             let itemName = document.getElementById(itemCount).value;
             let linkName = document.getElementById(linkCount).value;
+            let priceValue = document.getElementById(priceCount).value;
             axios.post('http://localhost:6969/items', { 
             name: itemName,
             url: linkName,
             clothingCategory: "test",
             retailerID: "1111",
+            price: priceValue,
           }).then(json => {
             console.log(itemName);
             axios.get('http://localhost:6969/items/name/' + itemName)
@@ -92,7 +96,8 @@ async function createPost(e, history, ph, ti, desc) {
           });
           count = count + 1;
           itemCount = item+count;
-          linkCount = link+count;  
+          linkCount = link+count;
+          priceCount = price+count;  
         }
         history.push('/');
       });
@@ -102,29 +107,6 @@ async function createPost(e, history, ph, ti, desc) {
     }
   });
 }
-
-/*
-while(document.getElementById(itemCount) !== null && document.getElementById(linkCount) !== null)
-{
-  axios.post('http://localhost:6969/items', {
-    name: document.getElementById(itemCount).value,
-    url: document.getElementById(linkCount).value,
-    clothingCategory: "test",
-    retailerID: "1111",
-  }).then(json => {
-    if (json.data.created){
-      console.log("yay");
-    }
-    else
-    {
-      console.log(json);
-    }
-  });
-  count = count + 1;
-  itemCount = item+count;
-  linkCount = link+count;
-}
-*/
 
 export default function CenteredGrid(props) {
     const classes = useStyles();

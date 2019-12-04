@@ -92,7 +92,18 @@ class App extends Component {
       .then(json => {
         this.setState({ userObj: json.data.user });
       });
-  }
+  };
+
+  logout() {
+    console.log("hello");
+    axios.get("http://localhost:6969/users/logout", { withCredentials: true })
+    .then(json => {
+      if (json.data.loggedOut) {
+        alert("Logged out");
+        window.location.assign('/');
+      }
+    });
+  };
 
   componentDidMount() {
     // Retreive user data
@@ -275,8 +286,9 @@ class App extends Component {
                   ))}
                 </TableBody>
               </Table>
-              <Bio style={{ marginTop: 20, marginLeft: 8 }}> {userObj.bio} </Bio>
-              <Button style = {{marginTop: 70, padding: 10, marginLeft: 15, float: 'right'}} variant="contained" color="secondary" className="button">
+
+              <Bio style={{ marginTop: 20, marginLeft: 8 }}></Bio>
+              <Button style = {{marginTop: 70, padding: 10, marginLeft: 15, float: 'right'}} variant="contained" color="secondary" className="button" onClick={(e) => this.logout()}>
               Log Out
               </Button>
             </div>
