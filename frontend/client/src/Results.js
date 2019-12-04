@@ -62,7 +62,8 @@ class Results extends Component
     }
     else if(type === 'item')
     {
-      axios.get('http://localhost:6969/posts/AllPostByItem/' + id)
+      console.log(type);
+      axios.get('http://localhost:6969/posts/AllPostsByItem/' + id)
       .then(json => {
         console.log(json.data);
         this.setState({ queryPosts: json.data, id: "item " + id, type: "post"})
