@@ -275,11 +275,10 @@ class App extends Component {
                   ))}
                 </TableBody>
               </Table>
-              <Button style = {{marginTop: 10, padding: 10, marginLeft: 15, float: 'right'}} variant="contained" color="secondary" className="button">
+              <Bio style={{ marginTop: 20, marginLeft: 8 }}> {userObj.bio} </Bio>
+              <Button style = {{marginTop: 70, padding: 10, marginLeft: 15, float: 'right'}} variant="contained" color="secondary" className="button">
               Log Out
               </Button>
-
-              <Bio style={{ marginTop: 20, marginLeft: 8 }}> {userObj.bio} </Bio>
             </div>
           </Grid>
           <Grid item xs={8}>
