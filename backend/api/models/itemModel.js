@@ -19,6 +19,9 @@ var ItemSchema = new Schema({
     },
     retailerID: {
         type: String
+    },
+    price: {
+        type: Number
     }
 
 });

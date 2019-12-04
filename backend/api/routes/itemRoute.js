@@ -68,10 +68,11 @@ router.post('/', function (req, res) {
         name,
         url,
         clothingCategory,
-        retailerID
+        retailerID,
+        price
     } = req.body;
 
-    if(!name || !url || !clothingCategory || !retailerID)
+    if(!name || !url || !clothingCategory || !retailerID || !price)
         return res.json({
             created: false,
             error: 'INVALID INPUTS'
@@ -81,6 +82,7 @@ router.post('/', function (req, res) {
     item.url = url;
     item.clothingCategory = clothingCategory;
     item.retailerID = retailerID;
+    item.price = price;
     
     item.save((err) => {
         if (err) return res.json({
