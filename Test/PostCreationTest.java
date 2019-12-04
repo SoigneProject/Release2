@@ -45,7 +45,7 @@ public class PostCreationTest {
 			driver.findElement(By.cssSelector("#name")).sendKeys("");
 
 			//Enter the Tags.
-			driver.findElement(By.cssSelector("#outlined-tag > div > div.css-1hwfws3")).sendKeys("");
+			driver.findElement(By.xpath("//*[@id=\"react-select-2-input\"]")).sendKeys("sunsoutbunsout");
 
 			//Enter the Description.
 			driver.findElement(By.cssSelector("#desc")).sendKeys("");
