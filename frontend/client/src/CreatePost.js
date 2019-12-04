@@ -14,36 +14,12 @@ import TagList from './TagList.js';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MultLinks from './MultLinks.js';
 import PostButton from './PostButton';
+import SelectInput from '@material-ui/core/Select/SelectInput';
 
 var user = "";
 axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
 .then(json => user = json.data.username);
 
-var user = "";
-axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
-.then(json => user = json.data.username);
-
-const Choices = [
-    {
-      value: '#fallfashion',
-      label: '#fallfashion',
-    },
-    {
-      value: '#hotgirlsummer',
-      label: '#hotgirlsummer',
-    },
-    {
-      value: '#streetstyle',
-      label: '#streetstyle',
-    },
-    {
-      value: '#sunsoutbunsout',
-      label: '#sunsoutbunsout',
-    },
-  ];
-  
-
- 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -73,9 +49,14 @@ const titleStyle = {
     marginBottom: 10,
   }
 
-function createPost(e, history, ph, ti, desc, iname, ilink) {
+async function createPost(e, history, ph, ti, desc) {
+  var count = 0;
+  var item = "item";
+  var itemCount = item;
+  var link = "link";
+  var linkCount = link;
+  var madePost = "";
   e.preventDefault();
-  // console.log(ph);
   const formData = new FormData();
   formData.append("file", ph);
   formData.append("title", ti);
@@ -84,27 +65,66 @@ function createPost(e, history, ph, ti, desc, iname, ilink) {
   axios.post("http://localhost:6969/posts", formData)
   .then(json => {
     if (json.data.created) { //Creates post
-      console.log("POST CREATION SUCCESS");
-      axios.post('http://localhost:6969/items', {
-        name: iname,
-        url: ilink,
-        clothingCategory: "test",
-        retailerID: "1235",
-      }).then(json => {
-        if (json.data.created) {
-          console.log("ITEM CREATION SUCCESS");
-          history.push('/');
-        } else {
-          console.log("ITEM CREATION FAIL");
-          history.push('/');    // Temporary redirect
+      axios.get("http://localhost:6969/posts/username/" + user) //Get post
+      .then(json => {
+        madePost = json.data[json.data.length-1];
+        console.log(madePost);
+        while(document.getElementById(itemCount) !== null && document.getElementById(linkCount) !== null)
+        {
+            let itemName = document.getElementById(itemCount).value;
+            let linkName = document.getElementById(linkCount).value;
+            axios.post('http://localhost:6969/items', { 
+            name: itemName,
+            url: linkName,
+            clothingCategory: "test",
+            retailerID: "1111",
+          }).then(json => {
+            console.log(itemName);
+            axios.get('http://localhost:6969/items/name/' + itemName)
+            .then(json => {
+              axios.put('http://localhost:6969/posts/addItem/' + madePost._id, {
+                itemID: json.data[json.data.length-1]._id,
+                itemName: json.data[json.data.length-1].name,
+              }).then(json => {
+                console.log("Done!");
+              })
+            });
+          });
+          count = count + 1;
+          itemCount = item+count;
+          linkCount = link+count;  
         }
-      })
+        history.push('/');
+      });
     } else {
       // Handle failed post creation?
       console.log("POST CREATION FAIL");
     }
   });
 }
+
+/*
+while(document.getElementById(itemCount) !== null && document.getElementById(linkCount) !== null)
+{
+  axios.post('http://localhost:6969/items', {
+    name: document.getElementById(itemCount).value,
+    url: document.getElementById(linkCount).value,
+    clothingCategory: "test",
+    retailerID: "1111",
+  }).then(json => {
+    if (json.data.created){
+      console.log("yay");
+    }
+    else
+    {
+      console.log(json);
+    }
+  });
+  count = count + 1;
+  itemCount = item+count;
+  linkCount = link+count;
+}
+*/
 
 export default function CenteredGrid(props) {
     const classes = useStyles();
@@ -247,7 +267,7 @@ export default function CenteredGrid(props) {
             style = {{width: 80, height: 60, }}
             variant="contained"
             color= "secondary"
-            onClick = {(e) => createPost(e, history, values.photo, values.title, values.Description, values.item, values.link)}
+            onClick = {(e) => createPost(e, history, values.photo, values.title, values.Description)}
             className={classes.submit}>Post
         </Button>
         </div>

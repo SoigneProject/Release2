@@ -246,7 +246,9 @@ router.put("/addItem/:id", function (req, res) {
     var queryID = req.params.id;
     var body = req.body;
     var itemToAdd = body.itemName;
+    var itemID = body.itemID;
     var itemObj = {
+        _id: itemID,
         itemName: itemToAdd
     };
     PostModel.findOneAndUpdate({
