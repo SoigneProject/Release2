@@ -7,12 +7,15 @@
 ```
 cd backend
 ```
-4. Install all required packages with:
+4. **Install concurrently or else the steps below will not work**
+```
+npm install concurrently
+```
+5. Install all required packages with:
 ```
 npm run hatch
-npm run update
 ```
-5. Go back into backend directory and start the app with:
+6. Go back into backend directory and start the app with:
 ```
 npm run dev
 ```
