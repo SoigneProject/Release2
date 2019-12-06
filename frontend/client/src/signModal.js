@@ -50,9 +50,12 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  error: {
+    backgroundColor: "#FFCCCC"
+  }
 }));
 
-function onSignUp(e, history, fn, ln, em, pass, uname) {
+function onSignUp(e, history, fn, ln, em, pass, cPass, uname) {
   e.preventDefault();
   // Grab state
     const email = em;
@@ -60,38 +63,56 @@ function onSignUp(e, history, fn, ln, em, pass, uname) {
     const firstName = fn;
     const lastName = ln;
     const username = uname;
+    const confirmPassword = cPass;
 
-  // Post request to backend
-  axios.post('http://localhost:6969/users/signup', {
-    firstName: firstName,
-    lastName: lastName,
-    username: username,
-    emailAddress: email,
-    password: password,
-  }).then(json => {
-    if (json.data.success) {
-      console.log("SUCCESS");
-      axios.post('http://localhost:6969/users/signin', {
+    if(password !== confirmPassword)
+    {
+      document.getElementById("errorMessage").innerText = "Password did not match. Please make sure you enter the same password.";
+    }
+    else
+    {
+      axios.post('http://localhost:6969/users/signup', {
+        firstName: firstName,
+        lastName: lastName,
         username: username,
+        emailAddress: email,
         password: password,
-      }, {
-        withCredentials: true
       }).then(json => {
-          if (json.data.success) {
-            history.push('/');
-          } else {
-            console.log("SIGN IN FAILED");
+        if (json.data.success) {
+          axios.post('http://localhost:6969/users/signin', {
+            username: username,
+            password: password,
+          }, {
+            withCredentials: true
+          }).then(json => {
+              if (json.data.success) {
+                history.push('/');
+              } else {
+                document.getElementById("errorMessage").innerText = "Sign in failed. Please use the login button to try signing in with your new account.";
+              }
+            });
+          }
+          else
+          {
+            if(json.data.message === "Error: Account already exists with that username.")
+            {
+              document.getElementById("errorMessage").innerText = "Username already in use. Please try a different username";
+            }
+            else if(json.data.message === "Error: Account already exists with that email.")
+            {
+              document.getElementById("errorMessage").innerText = "Email already in use. Please use a different email.";
+            }
+            else if(json.data.error === 'INVALID INPUTS')
+            {
+              document.getElementById("errorMessage").innerText = "Please fill out all areas on the form before submitting.";
+            }
+            else
+            {
+              document.getElementById("errorMessage").innerText = "Server error. Please try again later.";
+            }
           }
         });
-      }});
-  /*
-      history.push('/');
-    } else {
-      // Handle failed signup
-      console.log("FAIL");
     }
-  });
-  */
 }
 
 export default function ServerModal(props) {
@@ -103,6 +124,7 @@ export default function ServerModal(props) {
   const [lname, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <div className={classes.root} ref={rootRef}>
@@ -123,7 +145,11 @@ export default function ServerModal(props) {
           <img src = {logo} alt = "Logo" style = {{width: '100px'}}/>    
           </Typography>
         <Typography component="h2" fontsize = {14} align="center" id = "server-modal-title">
-          Enter your information and join our growing community! <p></p>
+          Enter your information and join our growing community! 
+          <p 
+            id="errorMessage" 
+            className={classes.error}
+            ></p>
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -203,7 +229,8 @@ export default function ServerModal(props) {
                 label="Confirm Password"
                 type="password"
                 id="confirmPassword"
-                //autoComplete="current-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -215,7 +242,7 @@ export default function ServerModal(props) {
             variant="contained"
             color="primary first"
             className={classes.submit}
-            onClick = {(e) => onSignUp(e, history, fname, lname, email, password, username)}
+            onClick = {(e) => onSignUp(e, history, fname, lname, email, password, confirmPassword, username)}
           >
           Sign Up
           </Button><p></p>

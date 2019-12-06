@@ -49,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  error: {
+    backgroundColor: "#FFCCCC"
+  }
 }));
 
 function onSignIn(e, history, pass, uname) {
@@ -66,9 +69,10 @@ function onSignIn(e, history, pass, uname) {
       if (json.data.success) {
         history.push('/');
       } else {
-        console.log("SIGN IN FAILED");
+        document.getElementById("errorMessage").innerText = "Username or password invalid. Please input valid username and password.";
       }
     });
+  document.getElementById("errorMessage").innerText = "Username or password invalid. Please input valid username and password.";
 }
 
 export default function ServerModal(props) {
@@ -97,7 +101,11 @@ export default function ServerModal(props) {
           <img src = {logo} alt = "Logo" style = {{width: '100px'}}/>    
           </Typography>
         <Typography component="h2" fontsize = {18} align="center" id = "server-modal-title">
-          Welcome Back! <p></p>
+          Welcome Back! 
+          <p 
+            id="errorMessage" 
+            className={classes.error}
+            ></p>
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
