@@ -54,21 +54,27 @@ class MyFeed extends Component
     // Retreive user data
     axios.get("http://localhost:6969/user/currentuser", {withCredentials: true})
     .then(json => {
-      axios.get("http://localhost:6969/users/" + json.data.username)
-      .then(json => {
-        const temp = [];
-        for(var i = 0; i < json.data.following.length; i++)
-        {
-          axios.get("http://localhost:6969/posts/username/" + json.data.following[i].username)
-          .then(json => {
-            for(var j = 0; j < json.data.length; j++)
-            {
-              temp.push(json.data[j]);
-            }
-            this.setState({userPosts: temp});
-          });
-        }
-      });
+      if (!json.data.username) {
+        this.props.history.push("/signModal");
+      }
+      else
+      {
+        axios.get("http://localhost:6969/users/" + json.data.username)
+        .then(json => {
+          const temp = [];
+          for(var i = 0; i < json.data.following.length; i++)
+          {
+            axios.get("http://localhost:6969/posts/username/" + json.data.following[i].username)
+            .then(json => {
+              for(var j = 0; j < json.data.length; j++)
+              {
+                temp.push(json.data[j]);
+              }
+              this.setState({userPosts: temp});
+            });
+          }
+        });
+      }
     });
   }
 

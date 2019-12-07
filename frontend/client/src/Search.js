@@ -28,6 +28,10 @@ const SearchChoices = [
    value: 'item',
    label: 'item',
  },
+ {
+   value: 'tags',
+   label: 'tags',
+ }
 ];
 
 const searchClient = algoliasearch(

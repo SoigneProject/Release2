@@ -69,6 +69,13 @@ class Results extends Component
         this.setState({ queryPosts: json.data, id: "item " + id, type: "post"})
       });
     }
+    else if(type === 'tags')
+    {
+      axios.get('http://localhost:6969/posts/AllPostsByTag/' + id)
+      .then(json => {
+        this.setState({queryPosts: json.data, id: "tags " + id, type: "post"})
+      });
+    }
     else
     {
       this.state.queryPosts.pop();

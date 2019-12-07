@@ -18,7 +18,7 @@ import SelectInput from '@material-ui/core/Select/SelectInput';
 
 var user = "";
 axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
-.then(json => user = json.data.username);
+.then(json =>  user = json.data.username);
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,6 +42,10 @@ const useStyles = makeStyles(theme => ({
   control: {
       padding: theme.spacing(1),
   },
+  error: {
+    backgroundColor: "#FFCCCC",
+    marginBottom: 0,
+  },
 }));
 
 const titleStyle = {
@@ -49,7 +53,7 @@ const titleStyle = {
     marginBottom: 10,
   }
 
-async function createPost(e, history, ph, ti, desc) {
+function createPost(e, history, ph, ti, desc) {
   let tags = document.getElementById("outlined-tag").innerText.split("\n");
   var count = 0;
   var item = "item";
@@ -60,69 +64,87 @@ async function createPost(e, history, ph, ti, desc) {
   var priceCount = price;
   var madePost = "";
   e.preventDefault();
-  const formData = new FormData();
-  formData.append("file", ph);
-  formData.append("title", ti);
-  formData.append("description", desc);
-  formData.append("username", user);
-  axios.post("http://localhost:6969/posts", formData)
-  .then(json => {
-    if (json.data.created) { //Creates post
-      axios.get("http://localhost:6969/posts/username/" + user) //Get post
-      .then(json => {
-        madePost = json.data[json.data.length-1];
-        for(let i = 0; i < tags.length; i++)
-        {
-          axios.put("http://localhost:6969/posts/addTag/" + madePost._id, {
-            tagName: tags[i],
-          })
-        }
-        while(document.getElementById(itemCount) !== null && document.getElementById(linkCount) !== null && document.getElementById(priceCount) !== null)
-        {
-            let itemName = document.getElementById(itemCount).value;
-            let linkName = document.getElementById(linkCount).value;
-            let priceValue = document.getElementById(priceCount).value;
-            axios.post('http://localhost:6969/items', { 
-            name: itemName,
-            url: linkName,
-            clothingCategory: "test",
-            retailerID: "1111",
-            price: priceValue,
-          }).then(json => {
-            console.log(itemName);
-            axios.get('http://localhost:6969/items/name/' + itemName)
-            .then(json => {
-              axios.put('http://localhost:6969/posts/addItem/' + madePost._id, {
-                itemID: json.data[json.data.length-1]._id,
-                itemName: json.data[json.data.length-1].name,
-              }).then(json => {
-                console.log("Done!");
-              })
-            });
-          });
-          count = count + 1;
-          itemCount = item+count;
-          linkCount = link+count;
-          priceCount = price+count;  
-        }
-        history.push('/');
-      });
-    } else {
-      // Handle failed post creation?
-      console.log("POST CREATION FAIL");
-    }
-  });
+  if(ti === "" || desc === "")
+  {
+    document.getElementById("errorMessage").innerText = "Title or Description left empty. please fill out both fields.";
+  }
+  else if(ph === "")
+  {
+    document.getElementById("errorPhoto").innerText = "Please insert a photo.";
+  }
+  else
+  {
+    const formData = new FormData();
+    formData.append("file", ph);
+    formData.append("title", ti);
+    formData.append("description", desc);
+    formData.append("username", user);
+    axios.post("http://localhost:6969/posts", formData)
+    .then(json => {
+      if (json.data.created) { //Creates post
+        axios.get("http://localhost:6969/posts/username/" + user) //Get post
+        .then(json => {
+          madePost = json.data[json.data.length-1];
+          for(let i = 0; i < tags.length; i++)
+          {
+            axios.put("http://localhost:6969/posts/addTag/" + madePost._id, {
+              tagName: tags[i],
+            })
+          }
+          while(document.getElementById(itemCount) !== null && document.getElementById(linkCount) !== null && document.getElementById(priceCount) !== null)
+          {
+              let itemName = document.getElementById(itemCount).value;
+              let linkName = document.getElementById(linkCount).value;
+              let priceValue = document.getElementById(priceCount).value;
+              if(itemName === "" || linkName === "" || priceValue === "")
+              {
+                console.log("no items linked to this post");
+              }
+              else
+              {
+                axios.post('http://localhost:6969/items', { 
+                  name: itemName,
+                  url: linkName,
+                  clothingCategory: "test",
+                  retailerID: "1111",
+                  price: priceValue,
+                }).then(json => {
+                  console.log(itemName);
+                  axios.get('http://localhost:6969/items/name/' + itemName)
+                  .then(json => {
+                    axios.put('http://localhost:6969/posts/addItem/' + madePost._id, {
+                      itemID: json.data[json.data.length-1]._id,
+                      itemName: json.data[json.data.length-1].name,
+                    }).then(json => {
+                      console.log("Done!");
+                    })
+                  });
+                });
+              }
+            count = count + 1;
+            itemCount = item+count;
+            linkCount = link+count;
+            priceCount = price+count;  
+          }
+          history.push('/');
+        });
+      } else {
+        // Handle failed post creation?
+        console.log("POST CREATION FAIL");
+      }
+    });
+  }
 }
 
 export default function CenteredGrid(props) {
     const classes = useStyles();
     const {history} = props;
     const [values, setValues] = React.useState({
-      name: '',
-      age: '',
+      title: '',
+      description: '',
       multiline: 'Controlled',
       Choices: '',
-      photo: "temp",
+      photo: '',
     });
     const state = {
       clicked: false
@@ -197,7 +219,12 @@ export default function CenteredGrid(props) {
       <Grid container spacing={3}>
         <Grid item xs>
         <Typography style = {titleStyle} align = 'Center' variant="h4" component="h4" >
-    Upload a Photo</Typography>
+    Upload a Photo
+            <p 
+            id="errorPhoto" 
+            className={classes.error}
+            ></p>
+          </Typography>
           <div className={classes.paper}>
           <Button
           name="photo"
@@ -214,8 +241,13 @@ export default function CenteredGrid(props) {
         </Grid>
 
         <Grid item xs>
-        <Typography style = {titleStyle} align = 'Center' variant="h4" component="h4" >
-    Describe it</Typography>
+        <Typography id="describe" style = {titleStyle} align = 'Center' variant="h4" component="h4" >
+    Describe it          
+            <p 
+            id="errorMessage" 
+            className={classes.error}
+            ></p>
+          </Typography>
           <div className={classes.paper}>
           <TextField
             id="name"
@@ -234,7 +266,7 @@ export default function CenteredGrid(props) {
                 fullWidth
                 className={classes.textField}
                 value={values.description}
-                onChange={handleChange('Description')}
+                onChange={handleChange('description')}
                 margin="normal"
                 variant="outlined"
                 />
@@ -255,7 +287,7 @@ export default function CenteredGrid(props) {
             style = {{width: 80, height: 60, }}
             variant="contained"
             color= "secondary"
-            onClick = {(e) => createPost(e, history, values.photo, values.title, values.Description)}
+            onClick = {(e) => createPost(e, history, values.photo, values.title, values.description)}
             className={classes.submit}>Post
         </Button>
         </div>
