@@ -23,9 +23,10 @@ class PostPopup extends Component
     super(props);
 
     this.state = {
-      post: [{
+      post: {
         title: "test",
-      }],
+        tags: [{tagName: "test"}],
+      },
       items: [{
         name: "test",
         link: "test",
@@ -46,6 +47,13 @@ class PostPopup extends Component
       this.setState({open: false});
     }
   };
+  deletePost(){
+    Axios.delete("http://localhost:6969/posts/id/" + this.state.post._id)
+    .then(json => {
+      this.setState({open: false});
+      window.location.assign("http://localhost:3000/")
+    });
+  }
 
   componentDidMount(){
     Axios.get("http://localhost:6969/posts/id/" + this.props.id)
@@ -68,7 +76,9 @@ class PostPopup extends Component
 
   render(){
 
-    const {post, items} = this.state;
+    let post = this.state.post;
+    let items = this.state.items;
+    console.log(post.tags);
     let open = this.state.open;
 
     const root = {
@@ -111,10 +121,15 @@ class PostPopup extends Component
         </Button>
         <Dialog maxWidth = 'md' fullWidth = "true" onClose={(e) => this.handleClose()} aria-labelledby="customized-dialog-title" open={open}>
           <DialogTitle id="customized-dialog-title" onClose={(e) => this.handleClose()}>
-            {post.title}
+            {post.title} <Button style = {{float: 'right', marginTop: 20, size: 'small', border: '0.5px', }} size = 'small' color="secondary" onClick={(e) => this.deletePost()}>Delete</Button>
           </DialogTitle>
           <Grid container spacing={0}>
           <Grid item xs={5}>
+          <div>
+          {post.tags.map(tag => (
+            <Button style = {{float: 'left', marginTop: 1, marginRight: 3, marginBottom: 3, size: 'small', border: '1.0px',}} variant="contained">{tag.tagName}</Button>
+          ))}
+          </div>
           <img style = {{marginLeft: 20, flex: 1, width: 350, resizeMode: 'contain', }} src={post.photo} alt={post.photo} />
           </Grid>
 

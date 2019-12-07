@@ -50,6 +50,7 @@ const titleStyle = {
   }
 
 async function createPost(e, history, ph, ti, desc) {
+  let tags = document.getElementById("outlined-tag").innerText.split("\n");
   var count = 0;
   var item = "item";
   var itemCount = item;
@@ -70,7 +71,12 @@ async function createPost(e, history, ph, ti, desc) {
       axios.get("http://localhost:6969/posts/username/" + user) //Get post
       .then(json => {
         madePost = json.data[json.data.length-1];
-        console.log(madePost);
+        for(let i = 0; i < tags.length; i++)
+        {
+          axios.put("http://localhost:6969/posts/addTag/" + madePost._id, {
+            tagName: tags[i],
+          })
+        }
         while(document.getElementById(itemCount) !== null && document.getElementById(linkCount) !== null && document.getElementById(priceCount) !== null)
         {
             let itemName = document.getElementById(itemCount).value;
