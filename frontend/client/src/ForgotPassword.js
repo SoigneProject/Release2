@@ -12,9 +12,12 @@ import TextField from '@material-ui/core/TextField';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import axios from 'axios';
 import Container from '@material-ui/core/Container';
 
-
+var user = "";
+axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
+.then(json =>  user = json.data.username);
 
 const styles = theme => ({
   root: {
@@ -74,6 +77,42 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
+
+function changePassword(e, pass, cpass, npass, cnpass)
+{
+  //There is no call to unhash/hash password through put method. Therefore, we can't compare the entered password with the account's password.
+  //We also can't update the user's password because it will be unhashed.
+
+  //Below is the changePassword (after some changes to test it) that we used. It is flawed.
+
+  /*
+  console.log(user);
+  axios.get('http://localhost:6969/users/' + user)
+  .then(json => {
+    console.log(json.data);
+    if(pass !== cpass || pass === "" || cpass === "")
+    {
+      console.log("passwords did not match");
+    }
+    else if(npass !== cnpass || npass === "" || cnpass === "")
+    {
+      console.log("new passwords did not match ");
+    }
+    else
+    {
+      var temp = json.data;
+      temp.password = npass;
+      console.log(temp);
+      axios.put('http://localhost:6969/users/info/'+user, temp)
+      .then(json => {
+        console.log("password changed");
+      });
+    }
+  });
+  */
+};
+
+
 export default function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
 
@@ -84,7 +123,16 @@ export default function CustomizedDialogs(props) {
     setOpen(false);
   };
   const classes = styles();
+  const [values, setValues] = React.useState({
+    password: '',
+    confirmPass: '',
+    newPass: '',
+    confirmNew: '',
+  });
 
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
 
   return (
     <div>
@@ -99,7 +147,7 @@ export default function CustomizedDialogs(props) {
       <div className={classes.paper}>
 
       
-        <form className={classes.form} noValidate>
+        <form className={classes.form} Validate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -110,6 +158,8 @@ export default function CustomizedDialogs(props) {
                 fullWidth
                 id="firstName"
                 label="Old Password"
+                value={values.password}
+                onChange={handleChange('password')}
                 autoFocus
               />
             </Grid>
@@ -121,6 +171,8 @@ export default function CustomizedDialogs(props) {
                 id="lastName"
                 label="Confirm Password"
                 name="lastName"
+                value={values.confirmPass}
+                onChange={handleChange('confirmPass')}
                 autoComplete="lname"
               />
             </Grid>
@@ -134,6 +186,8 @@ export default function CustomizedDialogs(props) {
                 label="New Password"
                 type="password"
                 id="password"
+                value={values.newPass}
+                onChange={handleChange('newPass')}
                 autoComplete="current-password"
               />
             </Grid>
@@ -146,6 +200,8 @@ export default function CustomizedDialogs(props) {
                 label="Confirm Password"
                 type="password"
                 id="confirmPassword"
+                value={values.confirmNew}
+                onChange={handleChange('confirmNew')}
                 //autoComplete="current-password"
               />
             </Grid>
@@ -156,6 +212,7 @@ export default function CustomizedDialogs(props) {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick = {(e) => changePassword(e, values.password, values.confirmPass, values.newPass, values.confirmNew)}
             >
               Change your Password
             </Button>

@@ -78,7 +78,6 @@ class PostPopup extends Component
 
     let post = this.state.post;
     let items = this.state.items;
-    console.log(post.tags);
     let open = this.state.open;
 
     const root = {
