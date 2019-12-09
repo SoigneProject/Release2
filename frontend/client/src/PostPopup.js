@@ -9,6 +9,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Axios from 'axios';
+import axios from 'axios';
+
+var user = "";
+axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
+.then(json =>  user = json.data.username);
 
 class PostPopup extends Component
 {
@@ -25,13 +30,19 @@ class PostPopup extends Component
         link: "test",
       }],
       open: false,
+      owner: true,
     };
   }
 
   handleClickOpen(){
+    let state = false;
+    if(this.state.post.username === user)
+    {
+      state = true;
+    }
     if(this.state.open === false)
     {
-      this.setState({open: true});
+      this.setState({open: true, owner: state});
     }
   };
   handleClose(){
@@ -113,7 +124,11 @@ class PostPopup extends Component
         </Button>
         <Dialog maxWidth = 'md' fullWidth = "true" onClose={(e) => this.handleClose()} aria-labelledby="customized-dialog-title" open={open}>
           <DialogTitle id="customized-dialog-title" onClose={(e) => this.handleClose()}>
-            {post.title} <Button style = {{float: 'right', marginTop: 20, size: 'small', border: '0.5px', }} size = 'small' color="secondary" onClick={(e) => this.deletePost()}>Delete</Button>
+            {post.title} 
+            {(this.state.owner) ?  <Button style = {{float: 'right', marginTop: 20, size: 'small', border: '0.5px', }} size = 'small' color="secondary" 
+                onClick={(e) => this.deletePost()}>
+                  Delete
+                </Button> : <div></div>}
           </DialogTitle>
           <Grid container spacing={0}>
           <Grid item xs={5}>
