@@ -1,11 +1,7 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import algoliasearch from "algoliasearch/lite";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Button from '@material-ui/core/Button';
-import axios from 'axios';
-import { Redirect } from 'react-router-dom'
 import {
  InstantSearch,
  Hits,

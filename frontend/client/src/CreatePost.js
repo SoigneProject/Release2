@@ -1,5 +1,4 @@
 import React from 'react';
-import { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -11,10 +10,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import TopMenu from "./TopMenu";
 import axios from 'axios';
 import TagList from './TagList.js';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import MultLinks from './MultLinks.js';
-import PostButton from './PostButton';
-import SelectInput from '@material-ui/core/Select/SelectInput';
 
 var user = "";
 axios.get('http://localhost:6969/user/currentuser', {withCredentials: true})
@@ -146,9 +142,6 @@ export default function CenteredGrid(props) {
       Choices: '',
       photo: '',
     });
-    const state = {
-      clicked: false
-    };
 
   
     const handleChange = name => event => {

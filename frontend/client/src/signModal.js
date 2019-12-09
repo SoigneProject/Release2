@@ -1,28 +1,14 @@
 import Modal from '@material-ui/core/Modal';
-import React, { Component, useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-//import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-//import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/styles';
-import { Route, BrowserRouter as Router } from 'react-router-dom'
-import Feed from "./Feed";
-import { Dimensions } from 'react';
 import logo from './soigne.png';
 import bgd from './landingbgd.png';
 import axios from 'axios';
-import {Redirect} from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,9 +41,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+/**
+ * onSignup takes in the fields on the form, checks if password matches with confirmPassword, and then
+ * calls signUp() on backend. If there are issues, there will be error messages displayed on the form. If there
+ * are no issues, the user will be signed in and routed to his/her profile page  
+ */
 function onSignUp(e, history, fn, ln, em, pass, cPass, uname) {
   e.preventDefault();
-  // Grab state
     const email = em;
     const password = pass;
     const firstName = fn;
@@ -65,7 +55,7 @@ function onSignUp(e, history, fn, ln, em, pass, cPass, uname) {
     const username = uname;
     const confirmPassword = cPass;
 
-    if(password !== confirmPassword)
+    if(password !== confirmPassword) //Error catching.
     {
       document.getElementById("errorMessage").innerText = "Password did not match. Please make sure you enter the same password.";
     }
@@ -92,7 +82,7 @@ function onSignUp(e, history, fn, ln, em, pass, cPass, uname) {
               }
             });
           }
-          else
+          else //Error catching.
           {
             if(json.data.message === "Error: Account already exists with that username.")
             {
@@ -114,6 +104,10 @@ function onSignUp(e, history, fn, ln, em, pass, cPass, uname) {
         });
     }
 }
+
+/**
+ * This renders the form for the user to fill out.
+ */
 
 export default function ServerModal(props) {
   const {history} = props;

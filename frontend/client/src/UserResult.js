@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import InputField from "./InputField";
 import TopMenu from "./TopMenu";
 import Avatar from "@material-ui/core/Avatar";
 import FollowersList from "./FollowersList";
@@ -13,11 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import "typeface-roboto";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
-import pic from "./kennet.JPG";
 import axios from "axios";
-import Paper from "@material-ui/core/Paper";
-import { createMuiTheme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -26,25 +16,7 @@ import TableRow from "@material-ui/core/TableRow";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import IconButton from "@material-ui/core/IconButton";
-import InfoIcon from "@material-ui/icons/Info";
-import Dialog from "@material-ui/core/Dialog";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import MuiDialogActions from "@material-ui/core/DialogActions";
-import CloseIcon from "@material-ui/icons/Close";
-import pic3 from "./3.jpeg";
-import pic4 from "./4.jpeg";
-import pic5 from "./5.jpeg";
-import Signup from "./Signup";
-import logo from "./images/soigne.png";
-import signModal from "./signModal";
-import CreatePost from "./CreatePost";
-import Nav from "./nav";
-import ForgotPassword from "./ForgotPassword";
 import Bio from "./Bio";
-import { isUndefined } from "util";
 import PostPopup from './PostPopup';
 
 class App extends Component {
@@ -171,22 +143,6 @@ class App extends Component {
 
     const { userObj, userPosts } = this.state;
 
-    const theme = createMuiTheme({
-      overrides: {
-        // Style sheet name ⚛️
-        MuiTypography: {
-          // Name of the rule
-          textSecondary: {
-            // Some CSS
-            color: "gray"
-          }
-        }
-      }
-    });
-
-    const inputProps = {
-      step: 300
-    };
     const avatarStyle = {
       alignSelf: "center",
       height: 250,
@@ -206,11 +162,6 @@ class App extends Component {
       minWidth: 20,
       marginTop: 0,
       marginBottom: 40
-    };
-
-    const tableStyle1 = {
-      minWidth: 100,
-      marginTop: 0
     };
 
     const tileStyle = {};

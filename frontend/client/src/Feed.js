@@ -1,31 +1,13 @@
 import React, { Component } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-//import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-//import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import ReactDOM from 'react-dom'
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
-import pic3 from './images/3.jpeg';
-import pic4 from './images/4.jpeg';
-import pic5 from './images/5.jpeg';
 import TopMenu from './TopMenu';
 import PostPopup from './PostPopup';
 import axios from 'axios';
-import { createMuiTheme } from "@material-ui/core/styles";
 
 class Feed extends Component
 {
@@ -66,37 +48,6 @@ class Feed extends Component
   render()
   {
     const {allPosts} = this.state;
-    const theme = createMuiTheme({
-      '@global' : {
-        body: {
-          backgroundColor: "white",
-        }
-      }
-    });
-
-    const paperStyle = {
-      marginTop: 8,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    }
-
-    const avatarStyle = {
-      margin: 1,
-      backgroundColor: "gray",
-    }
-
-    const formStyle = {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: 3,
-    }
-
-    const submitStyle = {
-      marginTop: 3,
-      marginBottom: 0,
-      marginRight: 2,
-    }
-
     const tileStyle = {
   
     }

@@ -1,6 +1,4 @@
 import React from 'react';
-import { render } from 'react-dom';
-import Typography from "@material-ui/core/Typography";
 import axios from 'axios';
 
 function contentEditable(WrappedComponent) {
@@ -130,14 +128,8 @@ class Bio extends React.Component {
     }
   }
 
-  changeBio()
-  {
-    console.log("Hello");
-  };
-
   render() {
     const userObj = this.state.userObj;
-    let EditableDIV = contentEditable('div');
     let EditableH1 = contentEditable('Typography');
   
     return (

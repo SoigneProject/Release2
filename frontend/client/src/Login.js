@@ -1,24 +1,11 @@
 import Modal from '@material-ui/core/Modal';
-import React, { Component, useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-//import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-//import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/styles';
-import { Route, BrowserRouter as Router } from 'react-router-dom'
-import Feed from "./Feed";
-import { Dimensions } from 'react';
 import logo from './images/soigne.png';
 import bgd from './images/landingbgd.png';
 import axios from 'axios';
@@ -54,6 +41,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+/**
+ * After taking in the user's password and username, it will try to sign in the user.
+ * If the combination of user and password fail, the form will update saying the user failed to log in.
+ * If the combination of user and password work, the user will be routed to his/her profile page.
+ */
 function onSignIn(e, history, pass, uname) {
   e.preventDefault();
     const password = pass;
@@ -75,6 +67,9 @@ function onSignIn(e, history, pass, uname) {
   document.getElementById("errorMessage").innerText = "Username or password invalid. Please input valid username and password.";
 }
 
+/**
+ * This function renders the login form for the user to fill out.
+ */
 export default function ServerModal(props) {
   const {history} = props;
   const classes = useStyles();
