@@ -26,6 +26,13 @@ import TopMenu from './TopMenu';
 import PostPopup from './PostPopup';
 import axios from 'axios';
 import { createMuiTheme } from "@material-ui/core/styles";
+import styles from './App.css';
+import leaguePhoto from './leaguePhoto.jpg'
+import Brightness1Icon from '@material-ui/icons/Brightness1';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 class Feed extends Component
 {
@@ -45,6 +52,7 @@ class Feed extends Component
       ],
     }
   }
+  
 
   
   componentDidMount() {
@@ -108,44 +116,118 @@ class Feed extends Component
 
     const titleStyle = {
       marginTop: 20,
+      color: "#535353",
     }
 
+    const gameTitle = {
+      color: "black",
+      marginTop: 20,
+      marginLeft: 8,
+
+    }
+    const gameDesc = {
+      color: "#535353",
+      marginTop: 5,
+      marginLeft: 8,
+
+    }
+  
+  /*const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };*/
+
+
     return (
-      <div>
+ <div>
       <TopMenu></TopMenu>
+      <div className = "content">
       <Grid container spacing={3}>
       <Grid item xs={6}>
-      <Typography style = {titleStyle} align = 'Left' variant="h3" component="h2" >
-      Trending</Typography>
+      <Typography style = {titleStyle} align = 'Left' variant="h4" component="h2" >
+      Browse Games</Typography>
       </Grid>
       <Grid item xs = {6}>
-      <Button style = {{marginTop: 28, padding: 10, marginRight: 40, float: 'right'}} variant="contained" color="secondary" className="button" href="./CreatePost">
-      Create Post
-    </Button>
+      <div style = {{}}>
+
+
+      <Button  size = "large" style = {{textTransform: "none", marginTop: 28, padding: 10,  marginRight: 40, float: 'right',}}>Filter by:
+      <FilterListIcon style = {{marginLeft: 20,}}></FilterListIcon>
+
+
+      </Button>
+      
+      </div>
+
     </Grid>
     </Grid>
       <Grid container spacing={3}>
-      <Grid item xs={12}>
-      <GridList cols = {4} spacing={5} style = {gridStyle} cellHeight={500} >
-  
-      {allPosts.map(post => (
-        <GridListTile style = {tileStyle} key={post.title}>
-          <img src={post.photo} alt={post.photo} />
-          <GridListTileBar
-            title={post.title}
-            subtitle={<span>by: {post.username}</span>}
-            actionIcon={
-              <PostPopup id={post._id}></PostPopup>
-            }
-          />
-        </GridListTile>
-      ))}
-    </GridList>
+      <Grid item xs={4}>
+   
+      <img className = "photos" src={leaguePhoto} />
+      <Typography style = {gameTitle}>League of Legends</Typography>
+      <div style = {{display: "inline-flex"}}>
+      <Brightness1Icon style={{ color: "#26AD00", marginTop: "4"}}></Brightness1Icon>
+      <Typography style = {gameDesc}>1492 players looking now</Typography>
+      </div>
+          
+      </Grid>
+      <Grid item xs={4}>
+   
+          <img className = "photos" src={leaguePhoto} />
+          <Typography style = {gameTitle}>League of Legends</Typography>
+          <div style = {{display: "inline-flex"}}>
+          <Brightness1Icon style={{ color: "#26AD00", marginTop: "4"}}></Brightness1Icon>
+          <Typography style = {gameDesc}>1492 players looking now</Typography>
+          </div>
     
       </Grid>
+      <Grid item xs={4}>
+      <img className = "photos" src={leaguePhoto} />
+      <Typography style = {gameTitle}>League of Legends</Typography>
+      <div style = {{display: "inline-flex"}}>
+      <Brightness1Icon style={{ color: "#26AD00", marginTop: "4"}}></Brightness1Icon>
+      <Typography style = {gameDesc}>1492 players looking now</Typography>
+      </div>
+      </Grid>
+      <Grid item xs={4}>
+   
+      <img className = "photos" src={leaguePhoto} />
+      <Typography style = {gameTitle}>League of Legends</Typography>
+      <div style = {{display: "inline-flex"}}>
+      <Brightness1Icon style={{ color: "#26AD00", marginTop: "4"}}></Brightness1Icon>
+      <Typography style = {gameDesc}>1492 players looking now</Typography>
+      </div>
+          
+      </Grid>
+      <Grid item xs={4}>
+   
+      <img className = "photos" src={leaguePhoto} />
+      <Typography style = {gameTitle}>League of Legends</Typography>
+      <div style = {{display: "inline-flex"}}>
+      <Brightness1Icon style={{ color: "#26AD00", marginTop: "4"}}></Brightness1Icon>
+      <Typography style = {gameDesc}>1492 players looking now</Typography>
+      </div>
+          
+      </Grid>
+      <Grid item xs={4}>
+   
+      <img className = "photos" src={leaguePhoto} />
+      <Typography style = {gameTitle}>League of Legends</Typography>
+      <div style = {{display: "inline-flex"}}>
+      <Brightness1Icon style={{ color: "#26AD00", marginTop: "4"}}></Brightness1Icon>
+      <Typography style = {gameDesc}>1492 players looking now</Typography>
+      </div>
+          
+      </Grid>
       
-    
     </Grid>
+    </div>
     </div>
   
     );

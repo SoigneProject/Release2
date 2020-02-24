@@ -1,4 +1,3 @@
-/*
 import Modal from '@material-ui/core/Modal';
 import React, { Component, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
@@ -93,61 +92,38 @@ export default function ServerModal(props) {
         className={classes.modal}
         container={() => rootRef.current}
       >
-        <div className={classes.paper}>
+        <div className={classes.paper} style = {{padding: 45}}>
 
           <p id="server-modal-description">
           <Typography align="center" id = "server-modal-title">
           <img src = {logo} alt = "Logo" style = {{width: '100px'}}/>    
           </Typography>
-        <Typography component="h2" fontsize = {18} align="center" id = "server-modal-title">
-          Connecting Gamers Worldwide. <p></p>
-        </Typography>
-        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="userName"
-                label="Username"
-                name="userName"
-                autoComplete="usrname"
-                value={username}
-                onChange={(e) => setUserName(e.target.value)}
-              />
+        <Typography component="h2" fontsize = {18} align="center" id = "server-modal-title">
+          Connecting Gamers Worldwide. <p></p>
+        </Typography>
+        </Grid>
+        <Grid item xs={12}></Grid>
+        </Grid>
+        <form className={classes.form} noValidate>
+          <Grid container spacing={4}>
+            
+            <Grid item xs={12}>
+            <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color= "primary"
+            className={classes.submit}
+            onClick = {(e) => onSignIn(e, history, password, username)}
+            >
+            Sign in with Steam
+          </Button>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Grid>
-          </Grid>
-            <p>      
-            </p>
-
             <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color= "primary"
-          className={classes.submit}
-          onClick = {(e) => onSignIn(e, history, password, username)}
-          >
-          Sign 
-        </Button> <p></p>
-        
-        <Button
             type="button"
             fullWidth
             variant="contained"
@@ -155,8 +131,21 @@ export default function ServerModal(props) {
             className={classes.submit}
             onClick = {() => history.push('/signModal')}
           >
-          Not a Member? Sign Up
-          </Button><p></p>
+          Sign up with Email
+          </Button>
+            </Grid>
+          </Grid>
+          <Grid container spacing = {10}>
+          <Grid item xs = {12}></Grid>
+          <Grid item xs ={12} style ={{textAlign: 'right'}}>
+         
+          <Typography display = "inline" component="h2" fontsize = {18} align="center" id = "server-modal-title">
+          Already have an account?
+        </Typography>
+        <Typography display = "inline" color = "primary" component="h2" fontsize = {18} align="center" id = "server-modal-title">
+        {' '} Sign in. </Typography>
+        </Grid></Grid>
+       
 
         </form>
       <Box mt={5}>
@@ -168,4 +157,3 @@ export default function ServerModal(props) {
     </div>
   );
 }
-*/
